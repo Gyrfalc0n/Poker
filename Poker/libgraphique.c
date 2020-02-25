@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 0. directives préprocesseur
 
-#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS //no warning pour le fopen non sécurisé
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -67,10 +67,11 @@ void ouvrir_fenetre(int largeur, int hauteur){
     //printf("LARGEUR %d HAUTEUR %d\n",LARGEUR,HAUTEUR);
 
     // pour permettre les répétitions de touche si elles restent enfoncées
-    SDL_EnableKeyRepeat(5, 5);
+    //SDL_EnableKeyRepeat(5, 5); DEPRECATED
 
     //initialisation du hasard
-    srand(time(NULL));
+    //srand((time(NULL))); DEPRECATED
+    srand((unsigned int)time(NULL));
 }
 
 
@@ -98,7 +99,7 @@ void _test_arret() {
 void actualiser(){
     SDL_PollEvent(&lastevent) ;
     _test_arret();
-    SDL_Flip(ecran) ;
+    //SDL_Flip(ecran) ; DEPRECATED
 }
 
 
@@ -286,7 +287,7 @@ int attendre_touche_duree(int duree_ms)
     SDL_Event e;
     while(SDL_PollEvent(&e))
         _test_arret() ;
-    while(code==0 && courant - depart < duree_ms)
+    while(code==0 && courant - depart < (unsigned)duree_ms) //correction types
     {
         courant = SDL_GetTicks();
         SDL_PollEvent(&e) ;
@@ -295,7 +296,7 @@ int attendre_touche_duree(int duree_ms)
             code = e.key.keysym.sym;
         _test_arret() ;
     }
-    while(courant - depart < duree_ms ) 
+    while(courant - depart < (unsigned)duree_ms )   //correction types
     {
         courant = SDL_GetTicks();
         _test_arret() ;

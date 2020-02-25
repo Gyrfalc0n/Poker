@@ -1,2 +1,12 @@
-﻿  main.c
-  Poker.vcxproj -> D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\Debug\Poker.exe
+﻿  libgraphique.c
+D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\libgraphique.c(62,51): warning C4133: '=' : types incompatibles - de 'SDL_Window *' à 'SDL_Surface *'
+D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\libgraphique.c(70,24): warning C4013: 'SDL_EnableKeyRepeat' non défini(e) ; extern retournant int pris par défaut
+D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\libgraphique.c(73,21): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\libgraphique.c(101,13): warning C4013: 'SDL_Flip' non défini(e) ; extern retournant int pris par défaut
+D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\libgraphique.c(289,39): warning C4018: '<' : incompatibilité signed/unsigned
+D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\libgraphique.c(298,28): warning C4018: '<' : incompatibilité signed/unsigned
+  main.c
+  Génération de code en cours...
+libgraphique.obj : error LNK2019: symbole externe non résolu _SDL_EnableKeyRepeat référencé dans la fonction _ouvrir_fenetre
+libgraphique.obj : error LNK2019: symbole externe non résolu _SDL_Flip référencé dans la fonction _actualiser
+D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\Debug\Poker.exe : fatal error LNK1120: 2 externes non résolus
