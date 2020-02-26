@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-
 #include <SDL2/SDL.h>
+
+//images
+#include "images/background.png"
 
 // Utility macros
 #define CHECK_ERROR(test, message) \
@@ -20,8 +22,8 @@ int randInt(int rmin, int rmax) {
 }
 
 // Window dimensions
-static const int width = 800;
-static const int height = 600;
+static const int width = 1280;
+static const int height = 720;
 
 int main(int argc, char** argv) {
     // Initialize the random number generator
@@ -31,15 +33,24 @@ int main(int argc, char** argv) {
     CHECK_ERROR(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 
     // Create an SDL window
-    SDL_Window* window = SDL_CreateWindow("Hello, SDL2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL);
+    SDL_Window* window = SDL_CreateWindow("Poker", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL);
     CHECK_ERROR(window == NULL, SDL_GetError());
 
     // Create a renderer (accelerated and in sync with the display refresh rate)
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     CHECK_ERROR(renderer == NULL, SDL_GetError());
 
+    SDL_Surface* image = IMG_Load("background.png");
+    if (!image)
+    {
+        printf("Erreur de chargement de l'image : %s", SDL_GetError());
+        return -1;
+    }
+    SDL_Texture* monImage = SDL_CreateTextureFromSurface(renderer, image);  //La texture monImage contient maintenant l'image importée
+    SDL_FreeSurface(monImage); //Équivalent du destroyTexture pour les surface, permet de libérer la mémoire quand on n'a plus besoin d'une surface
+
     // Initial renderer color
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
     bool running = true;
     SDL_Event event;
