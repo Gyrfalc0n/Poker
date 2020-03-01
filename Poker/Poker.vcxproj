@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="base.c" />
+    <ClCompile Include="struct.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

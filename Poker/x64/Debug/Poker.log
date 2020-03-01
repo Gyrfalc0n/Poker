@@ -1,2 +1,6 @@
-﻿  main.c
-  Poker.vcxproj -> D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\x64\Debug\Poker.exe
+﻿  struct.c
+  main.c
+  Génération de code en cours...
+SDL2maind.lib(SDL_windows_main.c.obj) : error LNK2005: main dÚjÓ dÚfini(e) dans main.obj
+SDL2maind.lib(SDL_windows_main.c.obj) : error LNK2019: symbole externe non rÚsolu SDL_main rÚfÚrencÚ dans la fonction main_getcmdline
+D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\x64\Debug\Poker.exe : fatal error LNK1120: 1 externes non rÚsolus

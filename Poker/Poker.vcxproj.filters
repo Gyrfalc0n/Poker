@@ -18,7 +18,7 @@
     <ClCompile Include="main.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="base.c">
+    <ClCompile Include="struct.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
