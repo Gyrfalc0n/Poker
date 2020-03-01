@@ -1,9 +1,0 @@
-﻿  main.c
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\images\background.png(1,1): error C3873: '0x2030' : ce caractère n'est pas autorisé comme premier caractère d'identifiant
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\main.c(20,5): error C2054: '(' attendu après '‰PNG'
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\main.c(20,33): error C2085: 'randInt' : ne figure pas dans la liste de paramètres formels
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\main.c(20,33): error C2143: erreur de syntaxe : absence de ';' avant '{'
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\main.c(43,34): warning C4013: 'IMG_Load' non défini(e) ; extern retournant int pris par défaut
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\main.c(50,29): warning C4133: 'fonction' : types incompatibles - de 'SDL_Texture *' à 'SDL_Surface *'
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\main.c(66,61): warning C4013: 'randInt' non défini(e) ; extern retournant int pris par défaut
-D:\Document D\NEXTCLOUD\IUT Velizy\Programmation\Poker\Poker\main.c(43,1): warning C4047: 'initialisation' : les niveaux d'indirection de 'SDL_Surface *' et de 'int' sont différents
