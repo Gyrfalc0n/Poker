@@ -21,6 +21,9 @@
     <ClCompile Include="struct.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="game.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fonctions.h">

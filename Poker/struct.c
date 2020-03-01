@@ -32,14 +32,10 @@ typedef struct {
 	int solde; // solde d'argent
 	int mise; // mise actuelle perso
 	int main[2]; // tableau de deux elements pour les valeur des 2 cartes
-	bool is_dealer; // est dealer pour la manche ?
-	bool is_big_blind; // est big blind pour la manche ?
-	bool is_small_blind; // est small blind pour la manche ?
 	int score_main; // score de la main calculé à la fin de la manche pour déterminer WIN
 }Joueur;
 
-//     REPARTITION DES CARTES DANS LE TABLEAU actuel
-// fonction du nombre de joueurs (les 5 derniers slots réservés pour les cartes du jeu et pas des joueurs)
+//     REPARTITION DES CARTES DANS LE TABLEAU actuel ( 5 JOUEURS )
 
 // +-------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------++-----------+-----------+-----------+-----------+-----------+
 // | Valeur 1    | Valeur 2    | Valeur 3    | Valeur 4    | Valeur 5    | Valeur 6    | Valeur 7    | Valeur 8    | Valeur 9    | Valeur 10   || Valeur 11 | Valeur 12 | Valeur 13 | Valeur 14 | Valeur 15 |
@@ -49,16 +45,24 @@ typedef struct {
 
 
 typedef struct {
-	int actuel[15]; // 5 joueurs x2 + 5 cartes
+	int cartes[15]; // 5 joueurs x2 + 5 cartes
 	int pot; // valeur du pot
 	int dealer_indice; // indice du joueur donneur (0 a 4)
+	int small_blind_indice; // indice du joueur small blind (0 a 4) (= indice donneur + 1)
+	int big_blind_indice; // indice du joueur donneur (0 a 4) (= indice donneur +2)
 	int small_blind; // valeur small blind
 	int big_blind; // valeur big blind (= small_blind x2)
 }Manche;
 
-// STRUCTURES SYSTEMES
+
+// STRUCTURE SYSTEME
+
+typedef struct {
+	int game_solde; // valeur de solde de base (= default solde si pas indiqué)
+	int composition_joueurs[5]; // valeur pour indiquer pour chaque joueur s'il est humain ou la personnalité tirée pour l'IA
+	Joueur joueur[5]; //instanciation des 5 joueurs de la partie
+	Manche manche; // instanciation de la manche
+}Jeu;
 
 
-
-
-
+// STRUCTURE IA

@@ -1,2 +1,2 @@
 ﻿  main.c
-  Poker.vcxproj -> D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\x64\Debug\Poker.exe
+D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\main.c(13): error C4700: variable locale 'jeu' non initialisée utilisée
