@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include <stdbool.h>
 #include <math.h>
+#include <string.h>
 
 #include "struct.c"
 
@@ -14,91 +14,12 @@ int random(int lower, int upper) // génération basée sur le temps d'un entier al
 }
 
 void translate_cartes(Carte *carte, int id) { //return un tableau qui quand on l'affiche, affiche la carte (exemple : As de coeur pour carte n°1)
-	switch (id) {
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	case 5:
-		break;
-	case 6:
-		break;
-	case 7:
-		break;
-	case 8:
-		break;
-	case 9:
-		break;
-	case 10:
-		break;
-	case 11:
-		break;
-	case 12:
-		break;
-	case 13:
-		break;
-	case 14:
-		break;
-	case 15:
-		break;
-	case 6:
-		break;
-	case 7:
-		break;
-	case 8:
-		break;
-	case 9:
-		break;
-	case 10:
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	case 5:
-		break;
-	case 6:
-		break;
-	case 7:
-		break;
-	case 8:
-		break;
-	case 9:
-		break;
-	case 10:
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	case 5:
-		break;
-	case 6:
-		break;
-	case 7:
-		break;
-	case 8:
-		break;
-	case 9:
-		break;
-	case 10:
-		break;
-	default:
-		break;
+	if (id == 1 || id == 14 || id == 27 || id == 40) {
+		carte->nom[20] = "As de";
 	}
-	return carte;
+	if (id < 15) {
+		strcat(carte->nom, " Coeur");
+	} // TO CONTINUE
 }
 
 void distribution(Jeu *jeu) {
