@@ -30,7 +30,7 @@
 
 typedef struct {
 	int solde; // solde d'argent
-	int mise; // mise actuelle perso
+	int mise; // mise actuelle perso pour la manche courante
 	int main[2]; // tableau de deux elements pour les valeur des 2 cartes
 	int score_main; // score de la main calculé à la fin de la manche pour déterminer WIN
 }Joueur;
@@ -58,11 +58,11 @@ typedef struct {
 // STRUCTURE SYSTEME
 
 typedef struct {
-	int game_solde; // valeur de solde de base (= default solde si pas indiqué)
+	int initial_solde; // valeur de solde de base (= default solde si pas indiqué)
 	int composition_joueurs[5]; // valeur pour indiquer pour chaque joueur s'il est humain ou la personnalité tirée pour l'IA
 	Joueur joueur[5]; //instanciation des 5 joueurs de la partie
 	Manche manche; // instanciation de la manche
 }Jeu;
 
 
-// STRUCTURE IA
+// STRUCTURE BOT
