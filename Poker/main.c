@@ -11,6 +11,8 @@ int main(int argc, char** argv) {
     srand((unsigned)time(NULL));
     int i;
     Jeu jeu;
+    Carte carte;
+    
     
     // ---------------------------------------------INITIALISATION-------------------------------------------------------------
     //initialisation parametres généraux Jeu
@@ -37,6 +39,11 @@ int main(int argc, char** argv) {
     jeu.manche.small_blind = default_small_blind;
     jeu.manche.big_blind = default_big_blind;
 
+    //initialisation parametres Carte
+    for (i = 0; i < 20; i++) {
+        carte.nom[i] = 0;
+    }
+
     // -------------------------------------------------------------------------------------------------------------------------
 
     distribution(&jeu);
@@ -48,3 +55,13 @@ int main(int argc, char** argv) {
     return 0;
 }
 
+
+
+/* while (!done){
+{
+
+get input
+actualiser variables
+afficher
+
+*/

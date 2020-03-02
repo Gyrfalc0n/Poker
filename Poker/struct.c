@@ -64,5 +64,9 @@ typedef struct {
 	Manche manche; // instanciation de la manche
 }Jeu;
 
+typedef struct { //sert a renvoyer un tableau qui converti la valeur de la carte en tableau de caracteres (string) pour afficher le nom. Contournement de l'impossibilité de renvoyer un tableau
+	char nom[20];
+}Carte;
+
 
 // STRUCTURE BOT
