@@ -10,9 +10,8 @@ const int dealer_indice = 0;
 // PROTOTYPES
 
 int random(int, int);
-void translate_cartes(Carte*, int);
+void afficher_cartes(int);
 void distribution(Jeu*);
 void actualisation_blind(Jeu*);
 void mise(Jeu*, int, int);
-void afficher_cartes(Jeu*, int);
-void afficher_manche(Jeu*);
+void afficher_round(Jeu*);

@@ -2,17 +2,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
 
 #include "struct.c"
 #include "fonctions.h"
-
 
 int main(int argc, char** argv) {
     srand((unsigned)time(NULL));
     int i;
     Jeu jeu;
-    Carte carte;
-    
     
     // ---------------------------------------------INITIALISATION-------------------------------------------------------------
     //initialisation parametres généraux Jeu
@@ -20,6 +18,8 @@ int main(int argc, char** argv) {
     for (i = 0; i < 5; i++) {
         jeu.composition_joueurs[i] = 0;
     }
+    jeu.win.indice = 0;
+    jeu.win.main = 0;
     //initialisation parametres Joueur
     for (i = 0; i < 5; i++) {
         jeu.joueur[i].main[0] = 0;
@@ -46,6 +46,14 @@ int main(int argc, char** argv) {
     for (i = 0; i < 15; i++) {
         printf("%d\t", jeu.manche.cartes[i]);
     }
+    printf("\n");
+
+    printf("Traduction jeu :\n\n");
+    for (i = 0; i < 15; i++) {
+        afficher_cartes(jeu.manche.cartes[i]);
+        printf("\n");
+    }
+    
     printf("\n");
     return 0;
 }

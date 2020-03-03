@@ -1,8 +1,4 @@
 ﻿  game.c
-D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\game.c(17,27): warning C4047: '=' : les niveaux d'indirection de 'char' et de 'char [6]' sont différents
-D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\game.c(19,14): warning C4098: 'translate_cartes' : fonction 'void' retournant une valeur
-  struct.c
-  main.c
-D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\main.c(14,11): warning C4101: 'carte' : variable locale non référencée
+  win.c
   Génération de code en cours...
-  Poker.vcxproj -> D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker\x64\Debug\Poker.exe
+  Poker.vcxproj -> C:\Users\utilisateur\Documents\EVIE\Git\Poker\Poker\x64\Debug\Poker.exe

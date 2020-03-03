@@ -3,9 +3,13 @@
 #include <stdbool.h>
 #include <time.h>
 
+//             TERMINOLOGIE
+//  Jeu = une partie complete jusqua win d'un joueur
+//  Manche = une manche de poker = tous les round qui sont faits avec un meme flop
+//  Round = un tour de table avec les mises égalisées. Se termine par l'apparition d'une nouvelle carte sur le flop (1 manche = 3 round)
+
 
 //     VALEUR DES CARTES DANS LE JEU COMPLET 
-//     /!\ indice = valeur - 1
 
 // +-------+-------+---------+-------+--------+
 // | Carte | Coeur | Carreau | Pique | Trefle |
@@ -54,6 +58,11 @@ typedef struct {
 	int big_blind; // valeur big blind (= small_blind x2)
 }Manche;
 
+typedef struct {
+	int main; // variable donnant la main qui win (ex: 1 = carte haute, 2 = paire etc)
+	int indice; //indice du joueur qui win la manche
+}Win;
+
 
 // STRUCTURE SYSTEME
 
@@ -62,11 +71,26 @@ typedef struct {
 	int composition_joueurs[5]; // valeur pour indiquer pour chaque joueur s'il est humain ou la personnalité tirée pour l'IA
 	Joueur joueur[5]; //instanciation des 5 joueurs de la partie
 	Manche manche; // instanciation de la manche
+	Win win; //instanciation de la victoire
 }Jeu;
 
-typedef struct { //sert a renvoyer un tableau qui converti la valeur de la carte en tableau de caracteres (string) pour afficher le nom. Contournement de l'impossibilité de renvoyer un tableau
-	char nom[];
-}Carte;
-
+//   WIN
+//  indice
+// 0 - personne
+// 1 - J1
+// 2 -J2
+// ...
+// main
+// 0 - rien
+// 1 - carte haute
+// 2 - paire
+// 3 - 2 paires
+// 4 - brelan
+// 5 - quinte (suite)
+// 6 - couleur
+// 7 - full
+// 8 - carré
+// 9 - quinte flush (suite + couleur)
+// 10 - quinte flush royale
 
 // STRUCTURE BOT

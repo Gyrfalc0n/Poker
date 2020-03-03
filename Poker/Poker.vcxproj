@@ -22,6 +22,7 @@
     <ClCompile Include="game.c" />
     <ClCompile Include="struct.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="win.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fonctions.h" />
