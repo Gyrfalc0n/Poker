@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
         jeu.manche.cartes[i] = 0;
     }
     jeu.manche.pot = 0;
-    jeu.manche.dealer_indice = random(0, 4); // le premier dealer de la partie est aléatoire parmi les 5 joueurs
+    jeu.manche.dealer_indice = 0; // le premier dealer de la partie est le joueur 1
     jeu.manche.small_blind_indice = jeu.manche.dealer_indice + 1;
     jeu.manche.big_blind_indice = jeu.manche.dealer_indice + 2;
     jeu.manche.small_blind = default_small_blind;
@@ -55,10 +55,9 @@ int main(int argc, char** argv) {
     }
     
     printf("\n");
-    for (i = 0; i < 5; i++) {
-        afficher_round(&jeu, i, 3);
-        printf("\n\n");
-    }
+    afficher_round(&jeu, 2, 4);
+    printf("\n");
+    afficher_round(&jeu, 2, 4);
     
     return 0;
 }

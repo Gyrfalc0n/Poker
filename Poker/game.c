@@ -106,7 +106,7 @@ void mise(Jeu* jeu, int ammount, int joueur_indice) { //trigger quand un joueur 
 	jeu->joueur[joueur_indice].solde -= ammount;
 }
 
-void actualisation_blind(Jeu* jeu) { //trigger en debut de round pour trigger les mises dues au blind
+void actualisation_blind(Jeu *jeu) { //trigger en debut de round pour trigger les mises dues au blind
 	mise(jeu, jeu->manche.small_blind, jeu->manche.small_blind_indice);
 	mise(jeu, jeu->manche.big_blind, jeu->manche.big_blind_indice);
 }
@@ -132,6 +132,20 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 	}
 	printf("\n\n");
 	printf("Solde : \033[1;32m%d\033[0m$\t\t\t Mise actuelle : \033[1;32m%d\033[0m$", jeu->joueur[joueur_indice].solde, jeu->joueur[joueur_indice].mise);
+	if (joueur_indice == jeu->manche.dealer_indice) {
+		printf("\n\n");
+		printf("Vous etes le donneur\n");
+	}
+	if (joueur_indice == jeu->manche.small_blind_indice) {
+		printf("\n\n");
+		printf("Vous payez le small blind (\033[1;32m%d\033[0m$)\n",jeu->manche.small_blind);
+		actualisation_blind(jeu);
+	}
+	if (joueur_indice == jeu->manche.big_blind_indice) {
+		printf("\n\n");
+		printf("Vous payez le big blind (\033[1;32m%d\033[0m$)\n", jeu->manche.big_blind);
+		actualisation_blind(jeu);
+	}
 
 	
 }
