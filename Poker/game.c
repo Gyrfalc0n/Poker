@@ -132,27 +132,28 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 	}
 	printf("\n\n");
 	printf("Solde : \033[1;32m%d\033[0m$\t\t\t Mise actuelle : \033[1;32m%d\033[0m$", jeu->joueur[joueur_indice].solde, jeu->joueur[joueur_indice].mise);
-	if (joueur_indice == jeu->manche.dealer_indice) {
-		printf("\n\n");
-		printf("Vous etes le donneur\n");
+	if (flop_indice == 0) { // on ne paye les blinds qu'une fois par manche au debut (pas a chaque tour de table!)
+		if (joueur_indice == jeu->manche.dealer_indice) {
+			printf("\n\n");
+			printf("Vous etes le donneur\n");
+		}
+		if (joueur_indice == jeu->manche.small_blind_indice) {
+			printf("\n\n");
+			printf("Vous payez le small blind (\033[1;32m%d\033[0m$)\n", jeu->manche.small_blind);
+			actualisation_blind(jeu);
+		}
+		if (joueur_indice == jeu->manche.big_blind_indice) {
+			printf("\n\n");
+			printf("Vous payez le big blind (\033[1;32m%d\033[0m$)\n", jeu->manche.big_blind);
+			actualisation_blind(jeu);
+		}
 	}
-	if (joueur_indice == jeu->manche.small_blind_indice) {
-		printf("\n\n");
-		printf("Vous payez le small blind (\033[1;32m%d\033[0m$)\n",jeu->manche.small_blind);
-		actualisation_blind(jeu);
-	}
-	if (joueur_indice == jeu->manche.big_blind_indice) {
-		printf("\n\n");
-		printf("Vous payez le big blind (\033[1;32m%d\033[0m$)\n", jeu->manche.big_blind);
-		actualisation_blind(jeu);
-	}
-
-	
 }
 
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants
 	for (int i = 0; i < 5; i++) {
 		jeu->manche.pot += jeu->joueur[i].mise; //le pot est egale a la somme des mises des joueurs
+		jeu->joueur[i].mise = 0;
 	}
 
 
@@ -161,7 +162,27 @@ void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs),
 
 void nouveau_round(Jeu* jeu) { //reset les valeurs du pot, update donneur et blind, en somme mets tout pret pour re boucler
 	//actualiser gains TO CONTINUE
-	jeu->manche.pot = 0;
+	jeu->joueur[jeu->win.indice].solde += jeu->manche.pot; //la gagnant remporte les gains
+	jeu->manche.pot = 0; // reset du pot
+	if (jeu->manche.big_blind_indice <= 3) { //update big blind indice
+		jeu->manche.big_blind_indice += 1;
+	}
+	else {
+		jeu->manche.big_blind_indice = 0;
+	}
+	if (jeu->manche.small_blind_indice <= 3) { //  update small blind indice
+		jeu->manche.small_blind_indice += 1;
+	}
+	else {
+		jeu->manche.small_blind_indice = 0;
+	}
+	if (jeu->manche.dealer_indice <= 3) { // update donneur indice
+		jeu->manche.dealer_indice += 1;
+	}
+	else {
+		jeu->manche.dealer_indice = 0;
+	}
+	
 }
 
 void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joueur courant (joueur_indice) 
