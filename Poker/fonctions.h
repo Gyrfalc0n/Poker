@@ -14,4 +14,4 @@ void afficher_cartes(int);
 void distribution(Jeu*);
 void actualisation_blind(Jeu*);
 void mise(Jeu*, int, int);
-void afficher_round(Jeu*);
+void afficher_round(Jeu*, int, int);

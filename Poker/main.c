@@ -1,14 +1,14 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include <string.h>
+#include <stdio.h>
 
 #include "struct.c"
 #include "fonctions.h"
 
 int main(int argc, char** argv) {
     srand((unsigned)time(NULL));
+
     int i;
     Jeu jeu;
     
@@ -55,6 +55,11 @@ int main(int argc, char** argv) {
     }
     
     printf("\n");
+    for (i = 0; i < 5; i++) {
+        afficher_round(&jeu, i, 3);
+        printf("\n\n");
+    }
+    
     return 0;
 }
 

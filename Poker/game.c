@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <time.h>
 #include <math.h>
-#include <string.h>
 
 #include "struct.c"
 #include "win.c"
@@ -17,56 +16,56 @@ int random(int lower, int upper) // génération basée sur le temps d'un entier al
 void afficher_cartes(int id) { //print quelle est la carte a partir de son id (ex : As de Coeur pour id = 1)
 	// print valeur de la carte
 	if (id == 1 || id == 14 || id == 27 || id == 40) {
-		printf("As de ");
+		printf("\033[01;33mAs \033[0mde ");
 	}
 	else if (id == 2 || id == 15 || id == 28 || id == 41) {
-		printf("2 de ");
+		printf("\033[01;33m2 \033[0mde ");
 	}
 	else if (id == 3 || id == 16 || id == 29 || id == 42) {
-		printf("3 de ");
+		printf("\033[01;33m3 \033[0mde ");
 	}
 	else if (id == 4 || id == 17 || id == 30 || id == 43) {
-		printf("4 de ");
+		printf("\033[01;33m4 \033[0mde ");
 	}
 	else if (id == 5 || id == 18 || id == 31 || id == 44) {
-		printf("5 de ");
+		printf("\033[01;33m5 \033[0mde ");
 	}
 	else if (id == 6 || id == 19 || id == 32 || id == 45) {
-		printf("6 de ");
+		printf("\033[01;33m6 \033[0mde ");
 	}
 	else if (id == 7 || id == 20 || id == 33 || id == 46) {
-		printf("7 de ");
+		printf("\033[01;33m7 \033[0mde ");
 	}
 	else if (id == 8 || id == 21 || id == 34 || id == 47) {
-		printf("8 de ");
+		printf("\033[01;33m8 \033[0mde ");
 	}
 	else if (id == 9 || id == 22 || id == 35 || id == 48) {
-		printf("9 de ");
+		printf("\033[01;33m9 \033[0mde ");
 	}
 	else if (id == 10 || id == 23 || id == 36 || id == 49) {
-		printf("10 de ");
+		printf("\033[01;33m10 \033[0mde ");
 	}
 	else if (id == 11 || id == 24 || id == 37 || id == 50) {
-		printf("Valet de ");
+		printf("\033[01;33mValet \033[0mde ");
 	}
 	else if (id == 12 || id == 25 || id == 38 || id == 51) {
-		printf("Dame de ");
+		printf("\033[01;33mDame \033[0mde ");
 	}
 	else {
-		printf("Roi de ");
+		printf("\033[01;33mRoi de ");
 	}
 	// print couleur de la carte
 	if (id <= 13) {
-		printf("Coeur");
+		printf("\033[1;31mCoeur\033[0m");
 	}
 	else if (id > 13 && id <= 26) {
-		printf("Carreau");
+		printf("\033[1;31mCarreau\033[0m");
 	}
 	else if (id > 26 && id <= 39) {
-		printf("Pique");
+		printf("\033[1;34mPique\033[0m");
 	}
 	else {
-		printf("Trefle");
+		printf("\033[1;34mTrefle\033[0m");
 	}
 }
 
@@ -119,8 +118,22 @@ void actualisation_blind(Jeu* jeu) { //trigger en debut de round pour trigger le
 // ROUND
 
 
-void afficher_round(Jeu* jeu, int joueur_indice) { // affiche les infos qu'on voit en tant que joueur = les mises des joueurs, le flop, le pot, les blind et donneurs, ses propres cartes
+void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche les infos qu'on voit en tant que joueur = les mises des joueurs, le flop, le pot, les blind et donneurs, ses propres cartes
+	printf("Joueur %d\n", joueur_indice + 1);
+	printf("Cartes en main : ");
+	afficher_cartes(jeu->joueur[joueur_indice].main[0]);
+	printf(" et ");
+	afficher_cartes(jeu->joueur[joueur_indice].main[1]);
+	printf("\n");
+	printf("Cartes sur le tapis : ");
+	for (int i = 10; i < 10 + flop_indice; i++) { //afficher les cartes sur la table (3 pour le 1er round, 4 pour le suivant et 5 pour le dernier)
+		afficher_cartes(jeu->manche.cartes[i]);
+		printf(" | ");
+	}
+	printf("\n\n");
+	printf("Solde : \033[1;32m%d\033[0m$\t\t\t Mise actuelle : \033[1;32m%d\033[0m$", jeu->joueur[joueur_indice].solde, jeu->joueur[joueur_indice].mise);
 
+	
 }
 
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants
