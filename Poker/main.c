@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
     jeu.manche.couche[4] = 1;
     printf("joueur precedent pas couche est le %d",joueur_precedent(&jeu, 0)+1);
     printf("\n");
-    choix(&jeu, 1);
+    choix(&jeu, 0);
     return 0;
 }
 

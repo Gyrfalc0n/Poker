@@ -187,33 +187,25 @@ int joueur_precedent(Jeu* jeu, int joueur_indice) { //fonction qui teste pour le
 void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joueur courant (joueur_indice) 
 	int entry;
 	int suivre = jeu->joueur[joueur_precedent(jeu, joueur_indice)].mise - jeu->joueur[joueur_indice].mise; //montant pour suivre
+	int precedent = joueur_precedent(jeu, joueur_indice);
 	printf("\n\tSuivre(\033[1;32m%d\033[0m$) [1] - Relancer [2] - Parole [3] - Se coucher [4]\n\n",suivre); //affiche les options avec le montant pour suivre (= difference de mise entre le dernier joueur sur la table et le joueur courant)
 	scanf_s("%d", &entry);
 	switch (entry) {
 	case 4:
 		jeu->manche.couche[joueur_indice] = 1;
-		printf("\n\033[1;35mJoueur %d s'est couche\033[0m", joueur_indice);
+		printf("\n\033[1;35mJoueur %d s'est couche\033[0m", joueur_indice+1);
 		break;
 	case 3:
-		if (joueur_indice <= 4) {
-			if (jeu->joueur[joueur_indice].mise == jeu->joueur[joueur_indice - 1].mise) {
-				printf("\n\033[1;35mJoueur %d a parle\033[0m", joueur_indice);
-			}
-			else {
-				printf("\n\033[0;36mVous ne pouvez pas parler\033[0m");
-			}
+		if (jeu->joueur[joueur_indice].mise == jeu->joueur[precedent].mise) {
+			printf("\n\033[1;35mJoueur %d a parle\033[0m", joueur_indice+1);
 		}
-		else { //on est forcement au joueur[0]
-			if (jeu->joueur[0].mise == jeu->joueur[4].mise) { //cas ou joueur 0 joue = compare avec joueur 4
-				printf("\n\033[1;35mJoueur %d a parle\033[0m", joueur_indice);
-			}
-			else {
-				printf("\n\033[0;36mVous ne pouvez pas parler\033[0m");
-			}
+		else {
+			printf("\n\033[0;36mVous ne pouvez pas parler\033[0m");
 		}
 		break;
 	case 1:
 		mise(jeu, suivre, joueur_indice);
+		printf("\n\033[1;35mJoueur %d mise\033[0m \033[1;32m%d\033[0m$", joueur_indice+1, suivre);
 		break;
 	case 2: // TO CONTINUE
 		break;
