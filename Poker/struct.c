@@ -56,6 +56,7 @@ typedef struct {
 	int big_blind_indice; // indice du joueur donneur (0 a 4) (= indice donneur +2)
 	int small_blind; // valeur small blind
 	int big_blind; // valeur big blind (= small_blind x2)
+	int flop_indice; // 3 pour premier round, 4 pour 2eme et 5 pour dernier (correspond au nb de cartes sur la table)
 }Manche;
 
 typedef struct {

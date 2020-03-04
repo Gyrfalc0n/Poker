@@ -7,6 +7,8 @@
 #include "struct.c"
 #include "win.c"
 
+// GENERAL FONCTIONS
+
 int random(int lower, int upper) // génération basée sur le temps d'un entier aléatoire entre lower et upper
 {
 	int num = (rand() % (upper - lower + 1)) + lower;
@@ -69,7 +71,7 @@ void afficher_cartes(int id) { //print quelle est la carte a partir de son id (e
 	}
 }
 
-void distribution(Jeu *jeu) {
+void distribution(Jeu* jeu) {
 	bool to_add;
 	int random_carte, j;
 	for (int i = 0; i<15;)
@@ -99,24 +101,17 @@ void distribution(Jeu *jeu) {
 	jeu->joueur[4].main[1] = jeu->manche.cartes[9];
 }
 
-// GENERAL FONCTIONS
-
 void mise(Jeu* jeu, int ammount, int joueur_indice) { //trigger quand un joueur mise (n'actualise pas le pot)
 	jeu->joueur[joueur_indice].mise += ammount;
 	jeu->joueur[joueur_indice].solde -= ammount;
 }
 
-void actualisation_blind(Jeu *jeu) { //trigger en debut de round pour trigger les mises dues au blind
+void actualisation_blind(Jeu* jeu) { //trigger en debut de round pour trigger les mises dues au blind
 	mise(jeu, jeu->manche.small_blind, jeu->manche.small_blind_indice);
 	mise(jeu, jeu->manche.big_blind, jeu->manche.big_blind_indice);
 }
 
-// MANCHE
-
-
-
 // ROUND
-
 
 void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche les infos qu'on voit en tant que joueur = les mises des joueurs, le flop, le pot, les blind et donneurs, ses propres cartes
 	printf("Joueur %d\n", joueur_indice + 1);
@@ -132,7 +127,7 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 	}
 	printf("\n\n");
 	printf("Solde : \033[1;32m%d\033[0m$\t\t\t Mise actuelle : \033[1;32m%d\033[0m$", jeu->joueur[joueur_indice].solde, jeu->joueur[joueur_indice].mise);
-	if (flop_indice == 0) { // on ne paye les blinds qu'une fois par manche au debut (pas a chaque tour de table!)
+	if (flop_indice == 3) { // on ne paye les blinds qu'une fois par manche au debut (pas a chaque tour de table!)
 		if (joueur_indice == jeu->manche.dealer_indice) {
 			printf("\n\n");
 			printf("Vous etes le donneur\n");
@@ -155,12 +150,17 @@ void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs),
 		jeu->manche.pot += jeu->joueur[i].mise; //le pot est egale a la somme des mises des joueurs
 		jeu->joueur[i].mise = 0;
 	}
-
-
+	jeu->manche.flop_indice += 1;
 }
 
 
-void nouveau_round(Jeu* jeu) { //reset les valeurs du pot, update donneur et blind, en somme mets tout pret pour re boucler
+void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joueur courant (joueur_indice) 
+	printf("selectionnez une action");
+}
+
+// MANCHE
+
+void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et blind, en somme mets tout pret pour re boucler
 	//actualiser gains TO CONTINUE
 	jeu->joueur[jeu->win.indice].solde += jeu->manche.pot; //la gagnant remporte les gains
 	jeu->manche.pot = 0; // reset du pot
@@ -182,9 +182,7 @@ void nouveau_round(Jeu* jeu) { //reset les valeurs du pot, update donneur et bli
 	else {
 		jeu->manche.dealer_indice = 0;
 	}
-	
-}
-
-void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joueur courant (joueur_indice) 
-	printf("selectionnez une action");
+	jeu->manche.flop_indice = 3;
+	jeu->manche.small_blind *= 2;
+	jeu->manche.big_blind *= 2;
 }

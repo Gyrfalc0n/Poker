@@ -6,12 +6,16 @@ const int default_small_blind = 10;
 const int default_big_blind = 20;
 const int default_pot = 0;
 const int dealer_indice = 0;
+const int default_flop_indice = 3;
 
 // PROTOTYPES
 
 int random(int, int);
 void afficher_cartes(int);
 void distribution(Jeu*);
-void actualisation_blind(Jeu*);
 void mise(Jeu*, int, int);
+void actualisation_blind(Jeu*);
 void afficher_round(Jeu*, int, int);
+void fin_round(Jeu*);
+void choix(Jeu*, int);
+void nouvelle_manche(Jeu*);

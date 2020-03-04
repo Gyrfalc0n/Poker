@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
     jeu.manche.big_blind_indice = jeu.manche.dealer_indice + 2;
     jeu.manche.small_blind = default_small_blind;
     jeu.manche.big_blind = default_big_blind;
+    jeu.manche.flop_indice = default_flop_indice;
 
     // -------------------------------------------------------------------------------------------------------------------------
 
@@ -55,7 +56,9 @@ int main(int argc, char** argv) {
     }
     
     printf("\n");
-    afficher_round(&jeu, 2, 4);
+    afficher_round(&jeu, 2, 2);
+    printf("\n");
+    afficher_round(&jeu, 2, 3);
     printf("\n");
     afficher_round(&jeu, 2, 4);
     
