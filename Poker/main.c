@@ -39,15 +39,15 @@ int main(int argc, char** argv) {
     jeu.manche.small_blind = default_small_blind;
     jeu.manche.big_blind = default_big_blind;
     jeu.manche.flop_indice = default_flop_indice;
+    for (i = 0; i < 5; i++) {
+        jeu.manche.couche[i] = 0; // initialise l'état des 5 joueurs a 0 (pas couché) (serait a 1 si joueur couché)
+    }
 
     // -------------------------------------------------------------------------------------------------------------------------
 
+    // TESTS 
+
     distribution(&jeu);
-    printf("Disribution :\n\n");
-    for (i = 0; i < 15; i++) {
-        printf("%d\t", jeu.manche.cartes[i]);
-    }
-    printf("\n");
 
     printf("Traduction jeu :\n\n");
     for (i = 0; i < 15; i++) {
@@ -56,12 +56,18 @@ int main(int argc, char** argv) {
     }
     
     printf("\n");
-    afficher_round(&jeu, 2, 2);
+    afficher_round(&jeu, 0, 3);
     printf("\n");
-    afficher_round(&jeu, 2, 3);
+    afficher_round(&jeu, 1, 3);
+
     printf("\n");
-    afficher_round(&jeu, 2, 4);
-    
+    printf("\n");
+    jeu.manche.couche[1] = 1;
+    jeu.manche.couche[3] = 1;
+    jeu.manche.couche[4] = 1;
+    printf("joueur precedent pas couche est le %d",joueur_precedent(&jeu, 0)+1);
+    printf("\n");
+    choix(&jeu, 1);
     return 0;
 }
 

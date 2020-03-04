@@ -102,8 +102,13 @@ void distribution(Jeu* jeu) {
 }
 
 void mise(Jeu* jeu, int ammount, int joueur_indice) { //trigger quand un joueur mise (n'actualise pas le pot)
-	jeu->joueur[joueur_indice].mise += ammount;
-	jeu->joueur[joueur_indice].solde -= ammount;
+	if (jeu->joueur[joueur_indice].solde >= ammount) {
+		jeu->joueur[joueur_indice].mise += ammount;
+		jeu->joueur[joueur_indice].solde -= ammount;
+	}
+	else {
+		printf("\n\033[0;36mVous ne pouvez pas miser, fonds insuffisants\033[0m");
+	}
 }
 
 void actualisation_blind(Jeu* jeu) { //trigger en debut de round pour trigger les mises dues au blind
@@ -153,9 +158,68 @@ void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs),
 	jeu->manche.flop_indice += 1;
 }
 
+int joueur_precedent(Jeu* jeu, int joueur_indice) { //fonction qui teste pour le joueur courant qui est le joueur précédent encore en jeu (pas couché) et renvoie son id dans jeu.manche.carte[]
+	int indice = joueur_indice, to_check;
+	bool found = false;
+	while (!found) {
+		if (indice == 0) {
+			to_check = 4;
+		}
+		else {
+			to_check = indice - 1;
+		}
+		if (jeu->manche.couche[to_check] == 0) {
+			found = true;
+			indice = to_check;
+		}
+		else {
+			if (indice == 0) {
+				indice = 4;
+			}
+			else {
+				indice--;
+			}
+		}
+	}
+	return indice;
+}
 
 void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joueur courant (joueur_indice) 
-	printf("selectionnez une action");
+	int entry;
+	int suivre = jeu->joueur[joueur_precedent(jeu, joueur_indice)].mise - jeu->joueur[joueur_indice].mise; //montant pour suivre
+	printf("\n\tSuivre(\033[1;32m%d\033[0m$) [1] - Relancer [2] - Parole [3] - Se coucher [4]\n\n",suivre); //affiche les options avec le montant pour suivre (= difference de mise entre le dernier joueur sur la table et le joueur courant)
+	scanf_s("%d", &entry);
+	switch (entry) {
+	case 4:
+		jeu->manche.couche[joueur_indice] = 1;
+		printf("\n\033[1;35mJoueur %d s'est couche\033[0m", joueur_indice);
+		break;
+	case 3:
+		if (joueur_indice <= 4) {
+			if (jeu->joueur[joueur_indice].mise == jeu->joueur[joueur_indice - 1].mise) {
+				printf("\n\033[1;35mJoueur %d a parle\033[0m", joueur_indice);
+			}
+			else {
+				printf("\n\033[0;36mVous ne pouvez pas parler\033[0m");
+			}
+		}
+		else { //on est forcement au joueur[0]
+			if (jeu->joueur[0].mise == jeu->joueur[4].mise) { //cas ou joueur 0 joue = compare avec joueur 4
+				printf("\n\033[1;35mJoueur %d a parle\033[0m", joueur_indice);
+			}
+			else {
+				printf("\n\033[0;36mVous ne pouvez pas parler\033[0m");
+			}
+		}
+		break;
+	case 1:
+		mise(jeu, suivre, joueur_indice);
+		break;
+	case 2: // TO CONTINUE
+		break;
+	default:
+		break;
+	}
 }
 
 // MANCHE
@@ -185,4 +249,6 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 	jeu->manche.flop_indice = 3;
 	jeu->manche.small_blind *= 2;
 	jeu->manche.big_blind *= 2;
+
+	//rajouter reset de couche
 }

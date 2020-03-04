@@ -57,6 +57,7 @@ typedef struct {
 	int small_blind; // valeur small blind
 	int big_blind; // valeur big blind (= small_blind x2)
 	int flop_indice; // 3 pour premier round, 4 pour 2eme et 5 pour dernier (correspond au nb de cartes sur la table)
+	int couche[5]; //tableau rempli de 0 pour joueurs qui jouent et devient un 1 pour un joueur 
 }Manche;
 
 typedef struct {
