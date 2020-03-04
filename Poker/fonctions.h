@@ -19,3 +19,4 @@ void afficher_round(Jeu*, int, int);
 void fin_round(Jeu*);
 void choix(Jeu*, int);
 void nouvelle_manche(Jeu*);
+int joueur_precedent(Jeu*, int);
