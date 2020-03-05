@@ -228,6 +228,9 @@ void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joue
 	switch (entry) {
 	case 4: // se coucher
 		jeu->manche.couche[joueur_indice] = 1;
+		if (jeu->manche.nb_couche == 4) {
+			jeu->manche.is_end_round = true;
+		}
 		printf("\n\033[1;35mJoueur %d s'est couche\033[0m\n\n", joueur_indice+1);
 		break;
 	case 3: // parole
@@ -301,4 +304,7 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 	for (int i = 0; i < 5; i++) { //tous les joueurs sont de nouveau dans la partie
 		jeu->manche.couche[i] = 0;
 	}
+	jeu->manche.nb_couche = 0;
+	jeu->manche.is_end_round = false;
+	
 }

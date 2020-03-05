@@ -43,8 +43,16 @@ int main(int argc, char** argv) {
     for (i = 0; i < 5; i++) {
         jeu.manche.couche[i] = 0; // initialise l'état des 5 joueurs a 0 (pas couché) (serait a 1 si joueur couché)
     }
+    jeu.manche.nb_couche = 0;
+    jeu.manche.is_end_round = false;
 
     // -------------------------------------------------------------------------------------------------------------------------
+
+    while (jeu.win.indice > 4) { //boucle des manches tant que personne a win
+        distribution(&jeu);
+        printf("\n");
+        nouvelle_manche(&jeu);
+    }
 
     // TESTS 
 
