@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <stdio.h>
+#include <stdio.h>
 
 #include "struct.c"
 #include "fonctions.h"
@@ -48,29 +49,39 @@ int main(int argc, char** argv) {
     // TESTS 
 
     distribution(&jeu);
-
-    printf("Traduction jeu :\n\n");
-    for (i = 0; i < 15; i++) {
-        afficher_cartes(jeu.manche.cartes[i]);
-        printf("\n");
-    }
-    
     printf("\n");
     afficher_round(&jeu, 0, 3);
-    printf("\n");
     afficher_round(&jeu, 1, 3);
-
-    printf("\n");
-    printf("\n");
-    jeu.manche.couche[1] = 1;
-    jeu.manche.couche[3] = 1;
-    jeu.manche.couche[4] = 1;
-    printf("joueur precedent pas couche est le %d",joueur_precedent(&jeu, 0)+1);
-    printf("\n");
+    afficher_round(&jeu, 2, 3);
+    system("cls"); //pour faire trigger les blind
+    afficher_round(&jeu, 3, 3);
+    choix(&jeu, 3);
+    system("pause");
+    system("cls");
+    afficher_round(&jeu, 4, 3);
+    choix(&jeu, 4);
+    system("pause");
+    system("cls");
+    afficher_round(&jeu, 0, 4);
     choix(&jeu, 0);
+    system("pause");
+    system("cls");
+    afficher_round(&jeu, 1, 4);
+    choix(&jeu, 1);
+    system("pause");
+    system("cls");
+    afficher_round(&jeu, 2, 4);
+    choix(&jeu, 2);
+    system("pause");
+    system("cls");
+    afficher_round(&jeu, 3, 4);
+    choix(&jeu, 3);
+
     return 0;
 }
-
+// premier joueur a jouer est celui apres le big blind
+// premier tour cartes masquées les gens doivent s'aligner sur le big blind
+// parole dispo apres
 
 
 /* while (!done){

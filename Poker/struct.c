@@ -57,7 +57,7 @@ typedef struct {
 	int small_blind; // valeur small blind
 	int big_blind; // valeur big blind (= small_blind x2)
 	int flop_indice; // 3 pour premier round, 4 pour 2eme et 5 pour dernier (correspond au nb de cartes sur la table)
-	int couche[5]; //tableau rempli de 0 pour joueurs qui jouent et devient un 1 pour un joueur 
+	int couche[5]; //tableau rempli de 0 pour joueurs qui jouent et devient un 1 pour un joueur couché
 }Manche;
 
 typedef struct {
@@ -94,5 +94,26 @@ typedef struct {
 // 8 - carré
 // 9 - quinte flush (suite + couleur)
 // 10 - quinte flush royale
+
+// COULEURS (code echappement : \033 )
+
+// +---------+--------------+
+// |  CODE   |    COLOR     |
+// +---------+--------------+
+// | [0;31m  | Red          |
+// | [1;31m  | Bold Red     |
+// | [0;32m  | Green        |
+// | [1;32m  | Bold Green   |
+// | [0;33m  | Yellow       |
+// | [01;33m | Bold Yellow  |
+// | [0;34m  | Blue         |
+// | [1;34m  | Bold Blue    |
+// | [0;35m  | Magenta      |
+// | [1;35m  | Bold Magenta |
+// | [0;36m  | Cyan         |
+// | [1;36m  | Bold Cyan    |
+// | [0m     | Reset        |
+// +---------+--------------+
+
 
 // STRUCTURE BOT
