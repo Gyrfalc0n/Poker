@@ -10,7 +10,7 @@
 int main(int argc, char** argv) {
     srand((unsigned)time(NULL));
 
-    int i;
+    int i, j;
     Jeu jeu;
     
     // ---------------------------------------------INITIALISATION-------------------------------------------------------------
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     for (i = 0; i < 5; i++) {
         jeu.composition_joueurs[i] = 0;
     }
-    jeu.win.indice = 0;
+    jeu.win.indice = 99;
     jeu.win.main = 0;
     //initialisation parametres Joueur
     for (i = 0; i < 5; i++) {
@@ -48,9 +48,28 @@ int main(int argc, char** argv) {
 
     // -------------------------------------------------------------------------------------------------------------------------
 
+    // affichage menu initial
+    int joueur_indice = 0; // compteur de 0 a 5 pour joueurs
     while (jeu.win.indice > 4) { //boucle des manches tant que personne a win
         distribution(&jeu);
-        printf("\n");
+        blind(&jeu, jeu.manche.dealer_indice); //affiche qui est le donneur
+        blind(&jeu, jeu.manche.small_blind_indice);
+        blind(&jeu, jeu.manche.big_blind_indice);
+
+        //redemmarer une nouvelle manche
+        for (i = 0; i < 3; i++) { // 4 FOIS / les 4 rounds (1, round a vide pour dévoiler cartes, 1 round pour flop un round pour 4eme carte et dernier roune pour cinquieme carte)
+            while (!jeu.manche.is_end_round) { //on boucle l
+                for (j = 0; j < 5; j++) {
+                    if (jeu.manche.couche[joueur_indice] == 0) {
+                        afficher_round(&jeu, joueur_indice, i);
+                        choix(&jeu, joueur_indice);
+                        system("pause");
+                        system("cls");
+                    }
+                }
+            }
+            fin_round(&jeu);
+        }
         nouvelle_manche(&jeu);
     }
 

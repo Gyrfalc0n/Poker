@@ -15,6 +15,15 @@ int random(int lower, int upper) // génération basée sur le temps d'un entier al
 	return num;
 }
 
+bool is_winner_game(Jeu* jeu) {
+	for (int i = 0; i < 5; i++) {
+		if (jeu->manche.couche[i] == 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
 void afficher_cartes(int id) { //print quelle est la carte a partir de son id (ex : As de Coeur pour id = 1)
 	// print valeur de la carte
 	if (id == 1 || id == 14 || id == 27 || id == 40) {
@@ -134,6 +143,23 @@ void actualisation_blind(Jeu* jeu) { //trigger en debut de round pour trigger le
 
 // ROUND
 
+void blind(Jeu* jeu, int joueur_indice) {
+	if (joueur_indice == jeu->manche.dealer_indice) {
+			printf("\n\n");
+			printf("\033[1;35mJoueur %d le donneur\033[0m\n", joueur_indice);
+	}
+	if (joueur_indice == jeu->manche.small_blind_indice) {
+			printf("\n\n");
+			printf("\033[1;35mJoueur %d paye le small blind\033[0m (\033[1;32m%d\033[0m$)\n", joueur_indice, jeu->manche.small_blind);
+			actualisation_blind(jeu);
+	}
+	if (joueur_indice == jeu->manche.big_blind_indice) {
+			printf("\n\n");
+			printf("\033[1;35mJoueur %d paye le big blind\033[0m (\033[1;32m%d\033[0m$)\n", joueur_indice,jeu->manche.big_blind);
+			actualisation_blind(jeu);
+	}
+}
+
 void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche les infos qu'on voit en tant que joueur = les mises des joueurs, le flop, le pot, les blind et donneurs, ses propres cartes
 	printf("--------------------------------------------------------------------------");
 	printf("\nTable :\n");
@@ -142,14 +168,15 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 			printf("Joueur %d : \033[1;32m%d\033[0m$\n", i+1,jeu->joueur[i].mise);
 		}
 	}
-	printf("--------------------------------------------------------------------------\n");
-	printf("\t\t\t\t[ \033[1;36mJoueur %d\033[0m ]\n", joueur_indice + 1);
-	printf("--------------------------------------------------------------------------\n");
-	printf("Cartes sur le tapis : ");
+	printf("\nCartes sur le tapis : ");
 	for (int i = 10; i < 10 + flop_indice; i++) { //afficher les cartes sur la table (3 pour le 1er round, 4 pour le suivant et 5 pour le dernier)
 		afficher_cartes(jeu->manche.cartes[i]);
 		printf(" | ");
 	}
+	printf("\n\n");
+	printf("--------------------------------------------------------------------------\n");
+	printf("\t\t\t\t[ \033[1;36mJoueur %d\033[0m ]\n", joueur_indice + 1);
+	printf("--------------------------------------------------------------------------\n");
 	printf("\n\nCartes en main : ");
 	afficher_cartes(jeu->joueur[joueur_indice].main[0]);
 	printf(" et ");
@@ -157,22 +184,6 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 	printf("\n");
 	printf("\n\n");
 	printf("Solde : \033[1;32m%d\033[0m$\t\t\t Mise actuelle : \033[1;32m%d\033[0m$", jeu->joueur[joueur_indice].solde, jeu->joueur[joueur_indice].mise);
-	if (flop_indice == 3) { // on ne paye les blinds qu'une fois par manche au debut (pas a chaque tour de table!)
-		if (joueur_indice == jeu->manche.dealer_indice) {
-			printf("\n\n");
-			printf("Vous etes le donneur\n");
-		}
-		if (joueur_indice == jeu->manche.small_blind_indice) {
-			printf("\n\n");
-			printf("Vous payez le small blind (\033[1;32m%d\033[0m$)\n", jeu->manche.small_blind);
-			actualisation_blind(jeu);
-		}
-		if (joueur_indice == jeu->manche.big_blind_indice) {
-			printf("\n\n");
-			printf("Vous payez le big blind (\033[1;32m%d\033[0m$)\n", jeu->manche.big_blind);
-			actualisation_blind(jeu);
-		}
-	}
 }
 
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants
@@ -223,7 +234,12 @@ void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joue
 	// calcul de la relance par rapport a la difference de mise avec le joueur précédent = calcul de la relance par defaut + suivre (valeur de la mise pour egaliser)
 	int tapis = jeu->joueur[joueur_indice].solde;
 	int precedent = joueur_precedent(jeu, joueur_indice);
-	printf("\n\t>>> Suivre(\033[1;32m%d\033[0m$) [1] - Relancer [2] - Parole [3] - Se coucher [4]\n\n",suivre); //affiche les options avec le montant pour suivre (= difference de mise entre le dernier joueur sur la table et le joueur courant)
+	if (jeu->joueur[joueur_indice].mise == jeu->joueur[precedent].mise) { //test si parole possible
+		printf("\n\t>>> Suivre(\033[1;32m%d\033[0m$) [\033[1;36m1\033[0m] - Relancer [\033[1;36m2\033[0m] - Parole [\033[1;36m3\033[0m] - Se coucher [\033[1;36m4\033[0m]\n\n", suivre); //affiche les options avec le montant pour suivre (= difference de mise entre le dernier joueur sur la table et le joueur courant)
+	}
+	else {
+		printf("\n\t>>> Suivre(\033[1;32m%d\033[0m$) [\033[1;36m1\033[0m] - Relancer [\033[1;36m2\033[0m] - Se coucher [\033[1;36m4\033[0m]\n\n", suivre); //idem mais sans parole
+	}
 	scanf_s("%d", &entry);
 	switch (entry) {
 	case 4: // se coucher
@@ -234,12 +250,7 @@ void choix(Jeu* jeu, int joueur_indice) { //demande l'action de jeu pour le joue
 		printf("\n\033[1;35mJoueur %d s'est couche\033[0m\n\n", joueur_indice+1);
 		break;
 	case 3: // parole
-		if (jeu->joueur[joueur_indice].mise == jeu->joueur[precedent].mise) {
-			printf("\n\033[1;35mJoueur %d a parle\033[0m\n\n", joueur_indice+1);
-		}
-		else {
-			printf("\n\033[0;36mVous ne pouvez pas parler\033[0m\n");
-		}
+		printf("\n\033[1;35mJoueur %d a parle\033[0m\n\n", joueur_indice+1);
 		break;
 	case 1: // suivre
 		mise(jeu, suivre, joueur_indice);

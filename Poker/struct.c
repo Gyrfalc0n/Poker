@@ -59,12 +59,12 @@ typedef struct {
 	int flop_indice; // 3 pour premier round, 4 pour 2eme et 5 pour dernier (correspond au nb de cartes sur la table)
 	int couche[5]; //tableau rempli de 0 pour joueurs qui jouent et devient un 1 pour un joueur couché
 	int nb_couche; //compteur de personnes couchées
-	bool is_end_round;
+	bool is_end_round; //est a true si le round est fini
 }Manche;
 
 typedef struct {
 	int main; // variable donnant la main qui win (ex: 1 = carte haute, 2 = paire etc)
-	int indice; //indice du joueur qui win la manche
+	int indice; //indice du joueur qui win la manche. Est a 99 si manche non terminée
 }Win;
 
 
