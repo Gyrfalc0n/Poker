@@ -11,7 +11,7 @@ const int default_flop_indice = 3;
 // PROTOTYPES
 
 int random(int, int);
-bool is_winner_game(Jeu*);
+bool is_winner_game(Jeu*); //pas utilisé encore
 void afficher_cartes(int);
 void distribution(Jeu*);
 void mise(Jeu*, int, int);
@@ -19,6 +19,6 @@ void actualisation_blind(Jeu*);
 void blind(Jeu*, int);
 void afficher_round(Jeu*, int, int);
 void fin_round(Jeu*);
-void choix(Jeu*, int);
+void choix(Jeu*, int, int);
 void nouvelle_manche(Jeu*);
 int joueur_precedent(Jeu*, int);

@@ -60,6 +60,7 @@ typedef struct {
 	int couche[5]; //tableau rempli de 0 pour joueurs qui jouent et devient un 1 pour un joueur couché
 	int nb_couche; //compteur de personnes couchées
 	bool is_end_round; //est a true si le round est fini
+	int who_win; //id du joueur qui gagne la manche
 }Manche;
 
 typedef struct {

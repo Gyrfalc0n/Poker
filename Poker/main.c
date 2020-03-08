@@ -10,7 +10,7 @@
 int main(int argc, char** argv) {
     srand((unsigned)time(NULL));
 
-    int i, j;
+    int i, compteur=1;
     Jeu jeu;
     
     // ---------------------------------------------INITIALISATION-------------------------------------------------------------
@@ -49,61 +49,61 @@ int main(int argc, char** argv) {
     // -------------------------------------------------------------------------------------------------------------------------
 
     // affichage menu initial
+
+    printf("\n\t8888888b.  .d88888b. 888    d8P 88888888888888888b.  \n");
+    printf("\t888   Y88bd88P\" \"Y88b888   d8P  888       888   Y88b \n");
+    printf("\t888    888888     888888  d8P   888       888    888\n");
+    printf("\t888   d88P888     888888d88K    8888888   888   d88P \n");
+    printf("\t8888888P\" 888     8888888888b   888       8888888P\"  \n");
+    printf("\t888       888     888888  Y88b  888       888 T88b  \n");
+    printf("\t888       Y88b. .d88P888   Y88b 888       888  T88b  \n");
+    printf("\t888        \"Y88888P\" 888    Y88b8888888888888   T88b \n");
+    printf("\t                                Enguerrand VIE");
+
+
     int joueur_indice = 0; // compteur de 0 a 5 pour joueurs
+    int count = 0;
     while (jeu.win.indice > 4) { //boucle des manches tant que personne a win
+        printf("\n\n\n\n--------------------------------------------------------------------------\n");
+        printf("\t\t\t\t\033[1;35m[ Manche %d ]\033[0m", compteur);
+        printf("\n--------------------------------------------------------------------------\n");
+
         distribution(&jeu);
         blind(&jeu, jeu.manche.dealer_indice); //affiche qui est le donneur
         blind(&jeu, jeu.manche.small_blind_indice);
         blind(&jeu, jeu.manche.big_blind_indice);
+        joueur_indice = jeu.manche.big_blind_indice + 1; // initialisation des indices
+
 
         //redemmarer une nouvelle manche
-        for (i = 0; i < 3; i++) { // 4 FOIS / les 4 rounds (1, round a vide pour dévoiler cartes, 1 round pour flop un round pour 4eme carte et dernier roune pour cinquieme carte)
-            while (!jeu.manche.is_end_round) { //on boucle l
-                for (j = 0; j < 5; j++) {
-                    if (jeu.manche.couche[joueur_indice] == 0) {
+        for (i = 2; i <= 5; i++) { // 4 FOIS / les 4 rounds (1, round a vide pour dévoiler cartes, 1 round pour flop un round pour 4eme carte et dernier roune pour cinquieme carte)
+            joueur_indice = jeu.manche.big_blind_indice+1;
+            while (!jeu.manche.is_end_round) { //on boucle le round courant tant que les mises sont pas égales
+                    joueur_indice += count;
+                    if (joueur_indice >= 5) {
+                        joueur_indice = 0;
+                        count = 0;
+                    }
+                    if (jeu.manche.couche[joueur_indice] == 0) { //test si le joueur est toujours dans la manche
                         afficher_round(&jeu, joueur_indice, i);
-                        choix(&jeu, joueur_indice);
+                        choix(&jeu, joueur_indice, i);
                         system("pause");
                         system("cls");
                     }
-                }
+                    count = 1;
             }
             fin_round(&jeu);
+            printf("\n\n\n\n--------------------------------------------------------------------------\n");
+            printf("\033[1;35m\t\t\t      Le pot est a \033[1;32m%d\033[0m$\n", jeu.manche.pot);
+            count = 0;
+            jeu.manche.is_end_round = false;
         }
         nouvelle_manche(&jeu);
+        compteur++;
+        printf("\nNouvelle manche");
+        jeu.manche.small_blind += jeu.manche.small_blind/2;
+        jeu.manche.big_blind += jeu.manche.big_blind/2;
     }
-
-    // TESTS 
-
-    distribution(&jeu);
-    printf("\n");
-    afficher_round(&jeu, 0, 3);
-    afficher_round(&jeu, 1, 3);
-    afficher_round(&jeu, 2, 3);
-    system("cls"); //pour faire trigger les blind
-    afficher_round(&jeu, 3, 3);
-    choix(&jeu, 3);
-    system("pause");
-    system("cls");
-    afficher_round(&jeu, 4, 3);
-    choix(&jeu, 4);
-    system("pause");
-    system("cls");
-    afficher_round(&jeu, 0, 4);
-    choix(&jeu, 0);
-    system("pause");
-    system("cls");
-    afficher_round(&jeu, 1, 4);
-    choix(&jeu, 1);
-    system("pause");
-    system("cls");
-    afficher_round(&jeu, 2, 4);
-    choix(&jeu, 2);
-    system("pause");
-    system("cls");
-    afficher_round(&jeu, 3, 4);
-    choix(&jeu, 3);
-
     return 0;
 }
 // premier joueur a jouer est celui apres le big blind
