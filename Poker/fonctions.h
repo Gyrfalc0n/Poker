@@ -6,7 +6,7 @@ const int default_small_blind = 10;
 const int default_big_blind = 20;
 const int default_pot = 0;
 const int dealer_indice = 0;
-const int default_flop_indice = 3;
+const int default_flop_indice = 2;
 
 // PROTOTYPES
 

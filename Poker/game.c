@@ -190,7 +190,7 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants
 	for (int i = 0; i < 5; i++) {
-		jeu->manche.pot += jeu->joueur[i].mise; //le pot est egale a la somme des mises des joueurs
+		jeu->manche.pot += jeu->joueur[i].mise; //le pot est egal a la somme des mises des joueurs
 		//jeu->joueur[i].mise = 0; desactiver pour continuer a afficher les mises des gens (comme le pot est actualisé, on effacera les mises a la nouvelle manche)
 	}
 }
@@ -247,9 +247,10 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 	switch (entry) {
 	case 4: // se coucher
 		jeu->manche.couche[joueur_indice] = 1;
-		if (jeu->manche.nb_couche == 4) {
+		jeu->manche.nb_couche++;
+		if (jeu->manche.nb_couche == 4) {// si se coucher pour le joueur courant laisse un seul joueur en jeu = ce joueur a gagné la manche
 			jeu->manche.is_end_round = true;
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 5; i++) { //condition pour coucher le dernier joueur en vie = le gagnant pour mettre fin a la manche
 				if (jeu->manche.couche[i] == 0) { //le gagnant de la manche est le seul a etre encore en jeu (pas couché) = victoire par forfait
 					jeu->manche.who_win = i; // RESTE A AJOUTER DETERMINATION WIN POUR QUAND RESTE PLUS QUE 1 JOUEUR EN JEU A LA FIN DE LA MANCHE
 					jeu->manche.couche[i] = 1; //on couche le joueur pour passer a la manche suivante
@@ -298,7 +299,14 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 	default:
 		break;
 	}
-	//detection de fin de premier round // TO FIX QUAND UN OU PLUSIEURS JOUEURS SE SONT COUCHES DES LE DEBUT
+	//detection de fin de premier round (soit que tout le monde a les memes mises (pas 0) // TO FIX QUAND UN OU PLUSIEURS JOUEURS SE SONT COUCHES DES LE DEBUT
+	
+	
+	// TO CONTINUE
+	// scan si toutes les mises des joueurs pas couchés sont les memes et differentes de 0
+	
+	
+	
 	if (flop_indice == 2) { 
 		jeu->manche.is_end_round = true;
 		for (int i = 0; i < 5; i++) {
@@ -341,7 +349,7 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 	else {
 		jeu->manche.dealer_indice = 0;
 	}
-	jeu->manche.flop_indice = 3;
+	jeu->manche.flop_indice = 2;
 	jeu->manche.small_blind *= 2;
 	jeu->manche.big_blind *= 2;
 
