@@ -26,7 +26,8 @@ int main(int argc, char** argv) {
         jeu.joueur[i].main[0] = 0;
         jeu.joueur[i].main[1] = 0;
         jeu.joueur[i].solde = default_solde;
-        jeu.joueur[i].score_main = 0;
+        jeu.joueur[i].score_main[0] = 0;
+        jeu.joueur[i].score_main[1] = 0;
         jeu.joueur[i].mise = 0;
     }
     //initialisation parametres Manche

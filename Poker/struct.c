@@ -36,7 +36,7 @@ typedef struct {
 	int solde; // solde d'argent
 	int mise; // mise actuelle perso pour la manche courante
 	int main[2]; // tableau de deux elements pour les valeur des 2 cartes
-	int score_main; // score de la main calculé à la fin de la manche pour déterminer WIN
+	int score_main[2]; // score de la main calculé à la fin de la manche pour déterminer WIN | 1er valeur : main 2eme valeur valeur de la main (ex : carré par les as)
 }Joueur;
 
 //     REPARTITION DES CARTES DANS LE TABLEAU actuel ( 5 JOUEURS )
