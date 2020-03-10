@@ -15,7 +15,7 @@ int random(int lower, int upper) // génération basée sur le temps d'un entier al
 	return num;
 }
 
-bool is_winner_game(Jeu* jeu) { //return true si tous les joueurs sont couchés = quand un joueur a win la partie (on lui mets sa variable couché a 1) false sinon
+bool is_winner_game(Jeu* jeu) { //return true si tous les joueurs sont couchés = quand un joueur a win la partie (on lui mets sa variable couché a 1) false sinon // AJOUTER ID JOUEUR QUI WIN LE JEU
 	for (int i = 0; i < 5; i++) {
 		if (jeu->manche.couche[i] == 0) { //METTRE CETTE FONCTION AVANT NOUVELLE MANCHE DANS BOUCLE
 			return false;
@@ -192,6 +192,7 @@ void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs),
 	for (int i = 0; i < 5; i++) {
 		jeu->manche.pot += jeu->joueur[i].mise; //le pot est egal a la somme des mises des joueurs
 		//jeu->joueur[i].mise = 0; desactiver pour continuer a afficher les mises des gens (comme le pot est actualisé, on effacera les mises a la nouvelle manche)
+		jeu->manche.parole[i] = 0; //reset des paroles
 	}
 }
 
@@ -222,7 +223,8 @@ int joueur_precedent(Jeu* jeu, int joueur_indice) { //fonction qui teste pour le
 }
 
 void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de jeu pour le joueur courant et la fait(joueur_indice) 
-	int entry, entry2;
+	int entry, entry2, i;
+	bool just_couche = false;
 	int suivre = jeu->joueur[joueur_precedent(jeu, joueur_indice)].mise - jeu->joueur[joueur_indice].mise; //montant pour suivre
 	if (suivre < 0) {
 		suivre = 0;
@@ -230,7 +232,7 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 	// calcul de la relance par défaut
 	int mise_val = jeu->manche.small_blind;
 	int relance_base = jeu->manche.big_blind;
-	int relance = relance_base*2 + suivre;
+	int relance = relance_base * 2 + suivre;
 	int relance2 = relance_base * 5 + suivre;
 	int relance3 = relance_base * 10 + suivre;
 	// calcul de la relance par rapport a la difference de mise avec le joueur précédent = calcul de la relance par defaut + suivre (valeur de la mise pour egaliser)
@@ -257,10 +259,12 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 				}
 			}
 		}
-		printf("\n\033[1;35mJoueur %d s'est couche\033[0m\n\n", joueur_indice+1);
+		just_couche = true;
+		printf("\n\033[1;35mJoueur %d s'est couche\033[0m\n\n", joueur_indice + 1);
 		break;
 	case 3: // parole
-		printf("\n\033[1;35mJoueur %d a parle\033[0m\n\n", joueur_indice+1);
+		printf("\n\033[1;35mJoueur %d a parle\033[0m\n\n", joueur_indice + 1);
+		jeu->manche.parole[joueur_indice] = 1;
 		break;
 	case 1: // suivre
 		if (jeu->joueur[joueur_indice].mise == jeu->joueur[precedent].mise) {
@@ -282,7 +286,7 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			break;
 		case 2:
 			mise(jeu, relance2, joueur_indice);
-			printf("\n\033[1;35mJoueur %d relance\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1,relance2);
+			printf("\n\033[1;35mJoueur %d relance\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1, relance2);
 			break;
 		case 3:
 			mise(jeu, relance3, joueur_indice);
@@ -299,27 +303,23 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 	default:
 		break;
 	}
-	//detection de fin de premier round (soit que tout le monde a les memes mises (pas 0) // TO FIX QUAND UN OU PLUSIEURS JOUEURS SE SONT COUCHES DES LE DEBUT
-	
-	
-	// TO CONTINUE
-	// scan si toutes les mises des joueurs pas couchés sont les memes et differentes de 0
-	
-	
-	
-	if (flop_indice == 2) { 
-		jeu->manche.is_end_round = true;
-		for (int i = 0; i < 5; i++) {
-			if (i == 0) {
-				if (jeu->joueur[i].mise != jeu->joueur[4].mise) {
-					jeu->manche.is_end_round = false;
-					break;
-				}
+
+	jeu->manche.is_end_round = true;
+	if (entry == 3) { //le cas ou tous les joueurs ont fait parole
+		for (i = 0; i < 5; i++) {
+			if (jeu->manche.parole[i] != 1 && jeu->manche.couche[i] == 0) { //le joueur n'a pas fait parole et n'est pas couché
+				jeu->manche.is_end_round = false;
 			}
-			else {
-				if (jeu->joueur[i].mise != jeu->joueur[i-1].mise) {
-					jeu->manche.is_end_round = false;
-					break;
+		}
+	}
+	else {
+		for (i = 0; i < 5; i++) {
+			if (jeu->manche.couche[i] == 0 || just_couche) { //si le joueur n'est pas couché, ou vient de se coucher
+				for (int j = 0; j < 5; j++) {
+					if (jeu->manche.couche[j] == 0 && jeu->joueur[i].mise != 0 && jeu->joueur[i].mise != jeu->joueur[j].mise) { //si joueur comparés en lignes, mises pas 0 (pas trigger quand parole) et si les mises sont pas égales
+						jeu->manche.is_end_round = false;
+						break;
+					}
 				}
 			}
 		}
@@ -350,8 +350,8 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 		jeu->manche.dealer_indice = 0;
 	}
 	jeu->manche.flop_indice = 2;
-	jeu->manche.small_blind *= 2;
-	jeu->manche.big_blind *= 2;
+	jeu->manche.small_blind += jeu->manche.big_blind/2;
+	jeu->manche.big_blind += jeu->manche.big_blind/2;
 
 	for (int i = 0; i < 5; i++) { //tous les joueurs sont de nouveau dans la partie
 		jeu->manche.couche[i] = 0;

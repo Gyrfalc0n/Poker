@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     srand((unsigned)time(NULL));
 
     int i, compteur=1;
-    Jeu jeu;
+    Jeu jeu; //instanciation du jeu
     
     // ---------------------------------------------INITIALISATION-------------------------------------------------------------
     //initialisation parametres généraux Jeu
@@ -42,7 +42,9 @@ int main(int argc, char** argv) {
     jeu.manche.flop_indice = default_flop_indice;
     for (i = 0; i < 5; i++) {
         jeu.manche.couche[i] = 0; // initialise l'état des 5 joueurs a 0 (pas couché) (serait a 1 si joueur couché)
+        jeu.manche.parole[i] = 0;
     }
+
     jeu.manche.nb_couche = 0;
     jeu.manche.is_end_round = false;
 
@@ -70,8 +72,8 @@ int main(int argc, char** argv) {
 
         distribution(&jeu);
         blind(&jeu, jeu.manche.dealer_indice); //affiche qui est le donneur
-        blind(&jeu, jeu.manche.small_blind_indice);
-        blind(&jeu, jeu.manche.big_blind_indice);
+        blind(&jeu, jeu.manche.small_blind_indice); //trigger blind & afiche
+        blind(&jeu, jeu.manche.big_blind_indice);//trigger blind & afiche
         joueur_indice = jeu.manche.big_blind_indice + 1; // initialisation des indices
 
 
@@ -101,8 +103,6 @@ int main(int argc, char** argv) {
         nouvelle_manche(&jeu);
         compteur++;
         printf("\nNouvelle manche");
-        jeu.manche.small_blind += jeu.manche.small_blind/2;
-        jeu.manche.big_blind += jeu.manche.big_blind/2;
     }
     return 0;
 }
@@ -111,6 +111,7 @@ int main(int argc, char** argv) {
 // parole dispo apres
 
 
+// MODELE
 /* while (!done){
 {
 
