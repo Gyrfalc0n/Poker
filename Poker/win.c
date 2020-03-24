@@ -101,13 +101,13 @@ void check_main(Jeu* jeu, int joueur_indice) {
 // main
 // 0 - rien
 // 1 - carte haute
-// 2 - paire
-// 3 - 2 paires
-// 4 - brelan
+// 2 - paire OK
+// 3 - 2 paires OK
+// 4 - brelan OK
 // 5 - quinte (suite)
 // 6 - couleur
-// 7 - full
-// 8 - carré
+// 7 - full OK
+// 8 - carré OK
 // 9 - quinte flush (suite + couleur)
 // 10 - quinte flush royale
 
@@ -150,7 +150,9 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	case 4: //carré
 		jeu->joueur[joueur_indice].score_main[0] = 8;
 		jeu->joueur[joueur_indice].score_main[1] = indice;
-		//TO FIX recupperer la couleur
+		break;
+	case 1:
+
 		break;
 	default:
 		break;

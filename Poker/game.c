@@ -361,8 +361,10 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 
 	for (int i = 0; i < 5; i++) {
 		jeu->joueur[i].mise = 0; //reset des mises
-		jeu->joueur[i].score_main[0] = 0;
-		jeu->joueur[i].score_main[1] = 0;// reset des scores et type de mains
+		jeu->joueur[i].score_main[0] = -1;
+		jeu->joueur[i].score_main[1] = -1;// reset des scores et type de mains
+		jeu->joueur[i].score_main[1] = 0;
+		jeu->joueur[i].score_main[1] = 0;
 	}
 	
 }
