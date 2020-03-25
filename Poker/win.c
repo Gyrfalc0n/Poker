@@ -113,7 +113,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 
 	int indice1, indice2 = -1;
 	indice1 = indice;
-	int is_quinte = false, count = 0;
+	int is_quinte = false, count = 0, nombre_suite = 0;
 	switch (max)
 	{
 	case 2: // pair ou double pair
@@ -155,20 +155,37 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	case 1: //quinte, flush, flush royale, couleur (pas quinte), carte haute
 		if (effectif_carte[0] == 1) { //cas de la quinte flush ou royale (max as)
 			int i = 12;
-			while (count != 4 && effectif_carte[i - 1] == effectif_carte[i]) {
+			while (count <= 4) {
+				if (effectif_carte[i - 1] == effectif_carte[i]) {
+					nombre_suite++;
+				}
 				count++;
 			}
+			count = 0;
+			if (nombre_suite == 4) { //quinte flush ou royale
+				//  TO FIX
+			}
+			nombre_suite = 0;
 		}
 		else {
 			for (int i = 12; i > 2; i--) {// 9 fois possible dans le tableau d'effectif d'avoir une suite de 5
 				//detection quinte la plus haute (de droite a gauche)
-				while (count != 5 && effectif_carte[i - 1] == effectif_carte[i]) {
+				while (count <= 5) {
+					if (effectif_carte[i - 1] == effectif_carte[i]) {
+						nombre_suite++;
+					}
 					count++;
 				}
-				//count = 5
+				count = 0;
+				if (nombre_suite == 5) { //quinte simple ou couleur
+					//  TO FIX
+				}
 				indice1 = i; //indice val max de la quinte
 				count = 0;
+				nombre_suite = 0;
 				//check couleur TO FIX
+
+
 
 				jeu->joueur[joueur_indice].score_main[0] = 5; //quinte simple pas couleur
 				jeu->joueur[joueur_indice].score_main[1] = indice1;
