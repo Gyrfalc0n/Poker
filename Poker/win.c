@@ -13,29 +13,29 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	int to_check[2] = { 0 }, jeu_joueur[7] = { 0 }; //les id dans cartes du joueur courant vont se mettre dedans
 	switch (joueur_indice) {
 	case 0:
-		to_check[0] = 0;
-		to_check[1] = 1;
+		to_check[0] = jeu->manche.cartes[0];
+		to_check[1] = jeu->manche.cartes[1];
 		break;
 	case 1:
-		to_check[0] = 2;
-		to_check[1] = 3;
+		to_check[0] = jeu->manche.cartes[2];
+		to_check[1] = jeu->manche.cartes[3];
 		break;
 	case 2:
-		to_check[0] = 4;
-		to_check[1] = 5;
+		to_check[0] = jeu->manche.cartes[4];
+		to_check[1] = jeu->manche.cartes[5];
 		break;
 	case 3:
-		to_check[0] = 6;
-		to_check[1] = 7;
+		to_check[0] = jeu->manche.cartes[6];
+		to_check[1] = jeu->manche.cartes[7];
 		break;
 	case 4:
-		to_check[0] = 8;
-		to_check[1] = 9;
+		to_check[0] = jeu->manche.cartes[8];
+		to_check[1] = jeu->manche.cartes[9];
 		break;
 	default:
 		break;
 	}
-
+	
 	jeu_joueur[0] = to_check[0];
 	jeu_joueur[1] = to_check[1];
 	jeu_joueur[2] = jeu->manche.cartes[10];
@@ -48,7 +48,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	int effectif_carte[13] = { 0 };
 	for (int i = 0; i < 7; i++) {
 		if (jeu_joueur[i] == 1 || jeu_joueur[i] == 14 || jeu_joueur[i] == 27 || jeu_joueur[i] == 40) {
-			effectif_carte[0]++;
+			effectif_carte[0]++; //as
 		}
 		if (jeu_joueur[i] == 2 || jeu_joueur[i] == 15 || jeu_joueur[i] == 28 || jeu_joueur[i] == 41) {
 			effectif_carte[1]++;
@@ -113,6 +113,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 
 	int indice1, indice2 = -1;
 	indice1 = indice;
+	int is_quinte = false, count = 0;
 	switch (max)
 	{
 	case 2: // pair ou double pair
@@ -151,10 +152,31 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		jeu->joueur[joueur_indice].score_main[0] = 8;
 		jeu->joueur[joueur_indice].score_main[1] = indice;
 		break;
-	case 1:
+	case 1: //quinte, flush, flush royale, couleur (pas quinte), carte haute
+		if (effectif_carte[0] == 1) { //cas de la quinte flush ou royale (max as)
+			int i = 12;
+			while (count != 4 && effectif_carte[i - 1] == effectif_carte[i]) {
+				count++;
+			}
+		}
+		else {
+			for (int i = 12; i > 2; i--) {// 9 fois possible dans le tableau d'effectif d'avoir une suite de 5
+				//detection quinte la plus haute (de droite a gauche)
+				while (count != 5 && effectif_carte[i - 1] == effectif_carte[i]) {
+					count++;
+				}
+				//count = 5
+				indice1 = i; //indice val max de la quinte
+				count = 0;
+				//check couleur TO FIX
+
+				jeu->joueur[joueur_indice].score_main[0] = 5; //quinte simple pas couleur
+				jeu->joueur[joueur_indice].score_main[1] = indice1;
+			}
+		}
 
 		break;
-	default:
+	default://empty
 		break;
 	}
 

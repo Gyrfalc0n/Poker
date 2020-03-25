@@ -22,3 +22,4 @@ void fin_round(Jeu*);
 void choix(Jeu*, int, int);
 void nouvelle_manche(Jeu*);
 int joueur_precedent(Jeu*, int);
+void check_main(Jeu*, int);
