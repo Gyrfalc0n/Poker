@@ -22,4 +22,7 @@ void fin_round(Jeu*);
 void choix(Jeu*, int, int);
 void nouvelle_manche(Jeu*);
 int joueur_precedent(Jeu*, int);
+int check_couleur(Jeu*, int, int*);
 void check_main(Jeu*, int);
+void afficher_main(Jeu*, int);
+void compare_main(Jeu*);

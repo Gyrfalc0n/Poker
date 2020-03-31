@@ -99,21 +99,22 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	}
 
 // main
-// 0 - rien
-// 1 - carte haute
+// 0 - rien OK
+// 1 - carte haute OK
 // 2 - paire OK
 // 3 - 2 paires OK
 // 4 - brelan OK
-// 5 - quinte (suite)
-// 6 - couleur
+// 5 - quinte (suite) OK
+// 6 - couleur OK
 // 7 - full OK
 // 8 - carré OK
-// 9 - quinte flush (suite + couleur)
-// 10 - quinte flush royale
+// 9 - quinte flush (suite + couleur) OK
+// 10 - quinte flush royale OK
 
+	int couleur = 0;
 	int indice1, indice2 = -1;
 	indice1 = indice;
-	int is_quinte = false, count = 0, nombre_suite = 0;
+	int count = 0, nombre_suite = 0;
 	switch (max)
 	{
 	case 2: // pair ou double pair
@@ -124,8 +125,8 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		}
 		if (indice2 != -1) { //double pair
 			jeu->joueur[joueur_indice].score_main[0] = 2;
-			jeu->joueur[joueur_indice].score_main[1] = indice1;
-			jeu->joueur[joueur_indice].score_main[1] = indice2;
+			jeu->joueur[joueur_indice].score_main[1] = indice;
+			jeu->joueur[joueur_indice].score_main[2] = jeu_joueur[indice2];
 		}
 		else { //paire simple
 			jeu->joueur[joueur_indice].score_main[0] = 2;
@@ -141,7 +142,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		if (indice2 != -1) { //full
 			jeu->joueur[joueur_indice].score_main[0] = 7;
 			jeu->joueur[joueur_indice].score_main[1] = indice1;
-			jeu->joueur[joueur_indice].score_main[1] = indice2;
+			jeu->joueur[joueur_indice].score_main[2] = jeu_joueur[indice2];
 		}
 		else { //brelan
 			jeu->joueur[joueur_indice].score_main[0] = 7;
@@ -154,6 +155,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		break;
 	case 1: //quinte, flush, flush royale, couleur (pas quinte), carte haute
 		if (effectif_carte[0] == 1) { //cas de la quinte flush ou royale (max as)
+			indice1 = 0;
 			int i = 12;
 			while (count <= 4) {
 				if (effectif_carte[i - 1] == effectif_carte[i]) {
@@ -162,14 +164,25 @@ void check_main(Jeu* jeu, int joueur_indice) {
 				count++;
 			}
 			count = 0;
-			if (nombre_suite == 4) { //quinte flush ou royale
-				//  TO FIX
+			if (nombre_suite == 4) { //quinte flush ou flush royale
+				// check couleur en plus pour quinte flush royale sinon quinte flush
+				couleur = check_couleur(jeu, joueur_indice, *jeu_joueur);
+				if (couleur != 0) {
+					jeu->joueur[joueur_indice].score_main[0] = 10; //quinte flush royale
+					jeu->joueur[joueur_indice].score_main[1] = indice1;
+					jeu->joueur[joueur_indice].score_main[2] = couleur;
+				}
+				else {
+					jeu->joueur[joueur_indice].score_main[0] = 9; //quinte flush non royale
+					jeu->joueur[joueur_indice].score_main[1] = indice1;
+				}
 			}
 			nombre_suite = 0;
 		}
 		else {
 			for (int i = 12; i > 2; i--) {// 9 fois possible dans le tableau d'effectif d'avoir une suite de 5
 				//detection quinte la plus haute (de droite a gauche)
+				indice1 = i; //indice val max de la quinte
 				while (count <= 5) {
 					if (effectif_carte[i - 1] == effectif_carte[i]) {
 						nombre_suite++;
@@ -177,38 +190,129 @@ void check_main(Jeu* jeu, int joueur_indice) {
 					count++;
 				}
 				count = 0;
-				if (nombre_suite == 5) { //quinte simple ou couleur
-					//  TO FIX
+				if (nombre_suite == 5) { //si pas couleur, quinte simple (pas possible quinte flush)
+					//check couleur sinon quinte simple
+					couleur = check_couleur(jeu, joueur_indice, *jeu_joueur);
+					if (couleur != 0) {
+						jeu->joueur[joueur_indice].score_main[0] = 6; //couleur
+						jeu->joueur[joueur_indice].score_main[1] = indice1;
+						jeu->joueur[joueur_indice].score_main[2] = couleur;
+					}
+					else {//il ne nous reste qu'une quinte simple = une suite
+						jeu->joueur[joueur_indice].score_main[0] = 5; //suite
+						jeu->joueur[joueur_indice].score_main[1] = indice1;
+					}
 				}
-				indice1 = i; //indice val max de la quinte
+				else { // carte haute
+					//determination de la carte la plus haute
+					i = 12;
+					int carte_haute = 0;
+					while (effectif_carte[i] == 0) {
+						i--;
+					}
+					carte_haute = effectif_carte[i];
+					jeu->joueur[joueur_indice].score_main[0] = 1; //carte haute
+					jeu->joueur[joueur_indice].score_main[1] = carte_haute;
+				}
 				count = 0;
 				nombre_suite = 0;
-				//check couleur TO FIX
-
-
-
-				jeu->joueur[joueur_indice].score_main[0] = 5; //quinte simple pas couleur
-				jeu->joueur[joueur_indice].score_main[1] = indice1;
 			}
 		}
-
 		break;
 	default://empty
 		break;
 	}
-
-
-
-
-
-
-
-
-
 }
 
-//determination carte haute ou carte valeur pour les mains 
+int check_couleur(Jeu* jeu, int joueur_indice, int* jeu_joueur) {
+	int range_carte[7] = { 0 }; // tableau pour couleur de chaque carte (1 coeur, 2 carreau, 3 pique, 4 trefle)
+	//int min_coeur = 1, max_coeur = 13, min_carreau = 14, max_carreau = 26, min_pique = 27, max_pique = 39, min_trefle = 40, max_trefle = 52;
+	int score[4] = { 0 }, score_global = 0;
+	for (int i = 0; i < 7; i++) {//determination de la couleur de chaque carte
+		if (jeu_joueur[i] <= 13) {
+			range_carte[i] = 1;
+		}
+		else if (jeu_joueur[i] >= 40) {
+			range_carte[i] = 4;
+		}
+		else if (jeu_joueur[i] > 13 && jeu_joueur[i] <= 26) {
+			range_carte[i] = 2;
+		}
+		else {
+			range_carte[i] = 3;
+		}
+	}
+	//score[] est le max de cartes de chaque couleur
+	for (int i = 1; i <= 4; i++) {
+		for (int j = 0; j < 7; j++) {
+			if (range_carte[j] = i) {
+				score[i-1]++;
+			}
+		}
+	}
+	int max = score[0];
+	for (int i = 0; i < 4; i++) {
+		if (score[i] >= 5) {
+			return i;
+		}
+	}
+	return 0;
+}
 
 // analyse de la main max courante en fonction du flop indice (pour IA)
 
-// comparaison des mains 
+// comparaison des mains
+
+void compare_main(Jeu* jeu) {
+	int max = 0;
+	/*bool one_winner = false;
+	for (int i = 0; i < 5; i++) {//determination du nombre de gagnants , par défaut il est a plusieurs
+
+	}*/
+	//TO FIX plusieurs gagnants
+
+
+	for (int i = 0; i < 5; i++) { //un seul gagnant
+		if (jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[0] > max) {
+			max = jeu->joueur[i].score_main[0];
+			jeu->win.indice = i;
+		}
+	}
+}
+
+void afficher_main(Jeu* jeu, int joueur_indice) {
+	printf("\tMain actuelle :  ");
+	switch (jeu->joueur[joueur_indice].score_main[joueur_indice]) {
+	case 1:
+		printf("carte haute");
+		break;
+	case 2:
+		printf("paire");
+		break;
+	case 3:
+		printf("double paire");
+		break;
+	case 4:
+		printf("brelan");
+		break;
+	case 5:
+		printf("quinte");
+		break;
+	case 6:
+		printf("couleur");
+		break;
+	case 7:
+		printf("full");
+		break;
+	case 8:
+		printf("carré");
+		break;
+	case 9:
+		printf("quinte flush");
+		break;
+	case 10:
+		printf("quinte flush royale");
+		break;
+	}
+}
+

@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <time.h>
 #include <stdio.h>
-#include <stdio.h>
 
 #include "struct.c"
 #include "fonctions.h"
@@ -103,9 +102,17 @@ int main(int argc, char** argv) {
             count = 0;
             jeu.manche.is_end_round = false;
         }
+        for (int i = 0; i < 5; i++) {
+            if (jeu.manche.couche[i] == 0) {
+                check_main(&jeu, i);
+                printf("\n\tJoueur %d : ", i);
+                afficher_main(&jeu, i);
+            }
+        }
+        compare_main(&jeu);
         nouvelle_manche(&jeu);
         compteur++;
-        printf("\nNouvelle manche");
+        printf("\n\nNouvelle manche");
     }
     return 0;
 }
