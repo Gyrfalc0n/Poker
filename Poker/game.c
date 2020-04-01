@@ -188,8 +188,10 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 
 	//debug
 	printf("\n\n");
+	check_main(jeu, joueur_indice);
 	afficher_main(jeu, joueur_indice);
 	printf("\n\n");
+	//debug
 }
 
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants

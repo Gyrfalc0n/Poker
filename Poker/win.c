@@ -66,7 +66,7 @@ void compare_main(Jeu* jeu) {
 
 void afficher_main(Jeu* jeu, int joueur_indice) {
 	printf("\tMain actuelle :  ");
-	switch (jeu->joueur[joueur_indice].score_main[joueur_indice]) {
+	switch (jeu->joueur[joueur_indice].score_main[0]) {
 	case 1:
 		printf("carte haute");
 		break;
@@ -96,6 +96,9 @@ void afficher_main(Jeu* jeu, int joueur_indice) {
 		break;
 	case 10:
 		printf("quinte flush royale");
+		break;
+	default:
+		printf("score_main du joueur = 0");
 		break;
 	}
 }
@@ -194,6 +197,14 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		}
 	}
 
+	//debug
+	for (int i = 0; i < 13; i++) {
+		printf("debug: effectif_carte[%d] = %d\n", i, effectif_carte[i]);
+	}
+	printf("indice max : %d", max);
+	printf("\n\n");
+	//debug
+
 // main
 // 0 - rien OK
 // 1 - carte haute OK
@@ -207,12 +218,11 @@ void check_main(Jeu* jeu, int joueur_indice) {
 // 9 - quinte flush (suite + couleur) OK
 // 10 - quinte flush royale OK
 
-	int couleur = 0;
+	int couleur = 0, j;
 	int indice1, indice2 = -1;
 	indice1 = indice;
 	int count = 0, nombre_suite = 0;
-	switch (max)
-	{
+	switch (max)  {
 	case 2: // pair ou double pair
 		for (int i = 0; i < 13; i++) {
 			if (effectif_carte[i] == 2 && i != indice1) {
@@ -220,7 +230,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 			}
 		}
 		if (indice2 != -1) { //double pair
-			jeu->joueur[joueur_indice].score_main[0] = 2;
+			jeu->joueur[joueur_indice].score_main[0] = 3;
 			jeu->joueur[joueur_indice].score_main[1] = indice;
 			jeu->joueur[joueur_indice].score_main[2] = indice2;
 		}
@@ -256,6 +266,10 @@ void check_main(Jeu* jeu, int joueur_indice) {
 			while (count <= 4) {
 				if (effectif_carte[i - 1] == effectif_carte[i]) {
 					nombre_suite++;
+					i--;
+				}
+				else {
+					break;
 				}
 				count++;
 			}
@@ -267,21 +281,28 @@ void check_main(Jeu* jeu, int joueur_indice) {
 					jeu->joueur[joueur_indice].score_main[0] = 10; //quinte flush royale
 					jeu->joueur[joueur_indice].score_main[1] = indice1;
 					jeu->joueur[joueur_indice].score_main[3] = couleur;
+					goto fin;
 				}
 				else {
 					jeu->joueur[joueur_indice].score_main[0] = 9; //quinte flush non royale
 					jeu->joueur[joueur_indice].score_main[1] = indice1;
+					goto fin;
 				}
 			}
 			nombre_suite = 0;
-		}
-		else {
+		}//ne fait rien si ni quinte flush, ni quinte flush royale
+		if (jeu->joueur[joueur_indice].score_main[0] == 0) {//si score_main pas modifié
 			for (int i = 12; i > 2; i--) {// 9 fois possible dans le tableau d'effectif d'avoir une suite de 5
-				//detection quinte la plus haute (de droite a gauche)
+			//detection quinte la plus haute (de droite a gauche)
 				indice1 = i; //indice val max de la quinte
+				j = i;
 				while (count <= 5) {
-					if (effectif_carte[i - 1] == effectif_carte[i]) {
+					if (effectif_carte[j - 1] == effectif_carte[j]) {
 						nombre_suite++;
+						j--;
+					}
+					else {
+						break;
 					}
 					count++;
 				}
@@ -293,29 +314,38 @@ void check_main(Jeu* jeu, int joueur_indice) {
 						jeu->joueur[joueur_indice].score_main[0] = 6; //couleur
 						jeu->joueur[joueur_indice].score_main[1] = indice1;
 						jeu->joueur[joueur_indice].score_main[3] = couleur;
+						goto fin;
 					}
 					else {//il ne nous reste qu'une quinte simple = une suite
 						jeu->joueur[joueur_indice].score_main[0] = 5; //suite
 						jeu->joueur[joueur_indice].score_main[1] = indice1;
+						goto fin;
 					}
-				}
-				else { // carte haute
-					//determination de la carte la plus haute
-					i = 12;
-					int carte_haute = 0;
-					while (effectif_carte[i] == 0) {
-						i--;
-					}
-					carte_haute = effectif_carte[i];
-					jeu->joueur[joueur_indice].score_main[0] = 1; //carte haute
-					jeu->joueur[joueur_indice].score_main[1] = carte_haute;
 				}
 				count = 0;
 				nombre_suite = 0;
 			}
 		}
+		if (jeu->joueur[joueur_indice].score_main[0] == 0) {// carte haute
+			int carte_haute = 0;
+			int i = 12;
+			while (effectif_carte[i] == 0) {
+				i--;
+			}
+			carte_haute = i;
+			jeu->joueur[joueur_indice].score_main[0] = 1; //carte haute
+			jeu->joueur[joueur_indice].score_main[1] = carte_haute;
+		}
+		fin://identificateur sortie de boucle
 		break;
-	default://empty
+	default:
+		printf("\ndebug default case max\n");//empty
 		break;
 	}
+	//debug
+	printf("\n");
+	for (int i = 0; i < 5; i++) {
+		printf("debug:j%d score main 0 = %d\n",i, jeu->joueur[i].score_main[0]);
+	}
+	//debug
 }

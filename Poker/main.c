@@ -121,6 +121,7 @@ int main(int argc, char** argv) {
         }
         system("pause");
         compare_main(&jeu);
+        //rajouter print pour qui a gagné
         nouvelle_manche(&jeu);
         compteur++;
         printf("\n\nNouvelle manche");
