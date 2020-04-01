@@ -112,19 +112,27 @@ int main(int argc, char** argv) {
             count = 0;
             jeu.manche.is_end_round = false;
         }
+        //affichage des mains
+        printf("\n\n\n\n--------------------------------------------------------------------------\n");
+        printf("\t\t\t\t\033[1;35m[  Mains  ]\033[0m");
+        printf("\n--------------------------------------------------------------------------\n");
         for (int i = 0; i < 5; i++) {
             if (jeu.manche.couche[i] == 0) {
                 check_main(&jeu, i);
-                printf("\n\tJoueur %d : ", i);
+                printf("\n\tJoueur %d : ", i+1);
                 afficher_main(&jeu, i);
             }
         }
+        printf("\n\n");
         system("pause");
         compare_main(&jeu);
         //rajouter print pour qui a gagné
         nouvelle_manche(&jeu);
         compteur++;
-        printf("\n\nNouvelle manche");
+        system("cls"); 
+        if (DEBUG == 1) {
+            printf("\n\nNouvelle manche");
+        }
     }
     return 0;
 }

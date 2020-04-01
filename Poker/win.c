@@ -65,40 +65,159 @@ void compare_main(Jeu* jeu) {
 }
 
 void afficher_main(Jeu* jeu, int joueur_indice) {
-	printf("\tMain actuelle :  ");
-	switch (jeu->joueur[joueur_indice].score_main[0]) {
+	char* indice1 = "";
+	char* indice2 = "";
+	char* couleur = "";
+	switch (jeu->joueur[joueur_indice].score_main[1]) {
+	case 0:
+		indice1 = "As";
+		break;
 	case 1:
-		printf("carte haute");
+		indice1 = "2";
 		break;
 	case 2:
-		printf("paire");
+		indice1 = "3";
 		break;
 	case 3:
-		printf("double paire");
+		indice1 = "4";
 		break;
 	case 4:
-		printf("brelan");
+		indice1 = "5";
 		break;
 	case 5:
-		printf("quinte");
+		indice1 = "6";
 		break;
 	case 6:
-		printf("couleur");
+		indice1 = "7";
 		break;
 	case 7:
-		printf("full");
+		indice1 = "8";
 		break;
 	case 8:
-		printf("carré");
+		indice1 = "9";
 		break;
 	case 9:
-		printf("quinte flush");
+		indice1 = "10";
 		break;
 	case 10:
-		printf("quinte flush royale");
+		indice1 = "Valet";
+		break;
+	case 11:
+		indice1 = "Dame";
+		break;
+	case 12:
+		indice1 = "Roi";
 		break;
 	default:
-		printf("score_main du joueur = 0");
+		break;
+	}
+	switch (jeu->joueur[joueur_indice].score_main[2]) {
+	case 0:
+		indice2 = "As";
+		break;
+	case 1:
+		indice2 = "2";
+		break;
+	case 2:
+		indice2 = "3";
+		break;
+	case 3:
+		indice2 = "4";
+		break;
+	case 4:
+		indice2 = "5";
+		break;
+	case 5:
+		indice2 = "6";
+		break;
+	case 6:
+		indice2 = "7";
+		break;
+	case 7:
+		indice2 = "8";
+		break;
+	case 8:
+		indice2 = "9";
+		break;
+	case 9:
+		indice2 = "10";
+		break;
+	case 10:
+		indice2 = "Valet";
+		break;
+	case 11:
+		indice2 = "Dame";
+		break;
+	case 12:
+		indice2 = "Roi";
+		break;
+	default:
+		break;
+	}
+	switch (jeu->joueur[joueur_indice].score_main[3]) {
+	case 1:
+		couleur = "Coeur";
+		break;
+	case 2:
+		couleur = "Carreau";
+		break;
+	case 3:
+		couleur = "Pique";
+		break;
+	case 4:
+		couleur = "Trefle";
+		break;
+	default:
+		break;
+	}
+	//printf("\tMain actuelle :  \033[1;36m");
+	printf("\033[1;36m");
+	switch (jeu->joueur[joueur_indice].score_main[0]) {
+	case 1:
+		printf("Carte haute ");
+		printf("\033[0m(\033[1;32m%s\033[0m)", indice1);
+		break;
+	case 2:
+		printf("Paire de ");
+		printf("\033[1;32m%s\033[0m", indice1);
+		break;
+	case 3:
+		printf("Double paire aux ");
+		printf("\033[1;32m%s\033[0m", indice1);
+		printf("\033[1;36m et aux ");
+		printf("\033[1;32m%s\033[0m", indice2);
+		break;
+	case 4:
+		printf("Brelan aux ");
+		printf("\033[1;32m%s\033[0m", indice1);
+		break;
+	case 5:
+		printf("Quinte ");
+		break;
+	case 6:
+		printf("Couleur ");
+		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
+		break;
+	case 7:
+		printf("Full aux ");
+		printf("\033[1;32m%s\033[0m", indice1);
+		printf("\033[1;36m par les ");
+		printf("\033[1;32m%s\033[0m", indice2);
+		break;
+	case 8:
+		printf("Carré aux ");
+		printf("\033[1;32m%s\033[0m", indice1);
+		break;
+	case 9:
+		printf("Quinte flush ");
+		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
+		break;
+	case 10:
+		printf("Quinte flush royale ");
+		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
+		break;
+	default:
+		printf("score_main du joueur = 0 ");
 		break;
 	}
 }
@@ -197,13 +316,16 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		}
 	}
 
-	//debug
-	for (int i = 0; i < 13; i++) {
-		printf("debug: effectif_carte[%d] = %d\n", i, effectif_carte[i]);
+	if (DEBUG == 1) {
+		//debug
+		for (int i = 0; i < 13; i++) {
+			printf("debug: effectif_carte[%d] = %d\n", i, effectif_carte[i]);
+		}
+		printf("indice max : %d", max);
+		printf("\n\n");
+		//debug
 	}
-	printf("indice max : %d", max);
-	printf("\n\n");
-	//debug
+
 
 // main
 // 0 - rien OK
@@ -339,13 +461,18 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		fin://identificateur sortie de boucle
 		break;
 	default:
-		printf("\ndebug default case max\n");//empty
+		if (DEBUG == 1) {
+			printf("\ndebug default case max\n");
+		}
 		break;
 	}
-	//debug
-	printf("\n");
-	for (int i = 0; i < 5; i++) {
-		printf("debug:j%d score main 0 = %d\n",i, jeu->joueur[i].score_main[0]);
+	if (DEBUG == 1) {
+		//debug
+		printf("\n");
+		for (int i = 0; i < 5; i++) {
+			printf("debug:j%d score main 0 = %d\n", i+1, jeu->joueur[i].score_main[0]);
+		}
+		//debug
 	}
-	//debug
+
 }

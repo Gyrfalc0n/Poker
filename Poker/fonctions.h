@@ -1,5 +1,7 @@
 #ifndef _FONCTIONS_H
 #define _FONCTIONS_H
+#define DEBUG 0 //debug  printf - set to 0 pour annuler les printf de debug
+
 // STRUCTURES
 
 

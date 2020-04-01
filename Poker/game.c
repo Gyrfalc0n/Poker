@@ -186,12 +186,16 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 	printf("\n\n");
 	printf("Solde : \033[1;32m%d\033[0m$\t\t\t Mise actuelle : \033[1;32m%d\033[0m$", jeu->joueur[joueur_indice].solde, jeu->joueur[joueur_indice].mise);
 
-	//debug
-	printf("\n\n");
-	check_main(jeu, joueur_indice);
-	afficher_main(jeu, joueur_indice);
-	printf("\n\n");
-	//debug
+
+	if (DEBUG == 1) {
+		//debug
+		printf("\n\n");
+		check_main(jeu, joueur_indice);
+		afficher_main(jeu, joueur_indice);
+		printf("\n\n");
+		//debug
+	}
+
 }
 
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants
@@ -367,9 +371,9 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 
 	for (int i = 0; i < 5; i++) {
 		jeu->joueur[i].mise = 0; //reset des mises
-		jeu->joueur[i].score_main[0] = -1;
+		jeu->joueur[i].score_main[0] = 0;
 		jeu->joueur[i].score_main[1] = -1;// reset des scores et type de mains
-		jeu->joueur[i].score_main[2] = 0;
+		jeu->joueur[i].score_main[2] = -1;
 		jeu->joueur[i].score_main[3] = 0;
 	}
 	
