@@ -4,8 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-#include "struct.c"
-//#include "win.c"
+#include "fonctions.h"
 
 // GENERAL FONCTIONS
 
@@ -186,6 +185,11 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 	printf("\n");
 	printf("\n\n");
 	printf("Solde : \033[1;32m%d\033[0m$\t\t\t Mise actuelle : \033[1;32m%d\033[0m$", jeu->joueur[joueur_indice].solde, jeu->joueur[joueur_indice].mise);
+
+	//debug
+	printf("\n\n");
+	afficher_main(jeu, joueur_indice);
+	printf("\n\n");
 }
 
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants
@@ -329,7 +333,7 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 // MANCHE
 
 void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et blind, en somme mets tout pret pour re boucler
-	jeu->joueur[jeu->win.indice].solde += jeu->manche.pot; //la gagnant remporte les gains
+	jeu->joueur[jeu->manche.who_win].solde += jeu->manche.pot; //la gagnant de la manche remporte les gains
 	jeu->manche.pot = 0; // reset du pot
 	if (jeu->manche.big_blind_indice <= 3) { //update big blind indice
 		jeu->manche.big_blind_indice += 1;

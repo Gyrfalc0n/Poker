@@ -5,7 +5,103 @@
 #include <math.h>
 #include <string.h>
 
-#include "struct.c"
+#include "fonctions.h"
+
+
+int check_couleur(Jeu* jeu, int joueur_indice, int jeu_joueur[]) {
+	int range_carte[7] = { 0 }; // tableau pour couleur de chaque carte (1 coeur, 2 carreau, 3 pique, 4 trefle)
+	//int min_coeur = 1, max_coeur = 13, min_carreau = 14, max_carreau = 26, min_pique = 27, max_pique = 39, min_trefle = 40, max_trefle = 52;
+	int score[4] = { 0 }, score_global = 0;
+	for (int i = 0; i < 7; i++) {//determination de la couleur de chaque carte
+		if (jeu_joueur[i] <= 13) {
+			range_carte[i] = 1;
+		}
+		else if (jeu_joueur[i] >= 40) {
+			range_carte[i] = 4;
+		}
+		else if (jeu_joueur[i] > 13 && jeu_joueur[i] <= 26) {
+			range_carte[i] = 2;
+		}
+		else {
+			range_carte[i] = 3;
+		}
+	}
+	//score[] est le max de cartes de chaque couleur
+	for (int i = 1; i <= 4; i++) {
+		for (int j = 0; j < 7; j++) {
+			if (range_carte[j] = i) {
+				score[i - 1]++;
+			}
+		}
+	}
+	int max = score[0];
+	for (int i = 0; i < 4; i++) {
+		if (score[i] >= 5) {
+			return i;
+		}
+	}
+	return 0;
+}
+
+// analyse de la main max courante en fonction du flop indice (pour IA)
+
+// comparaison des mains
+
+void compare_main(Jeu* jeu) {
+	int max = 0;
+	/*bool one_winner = false;
+	for (int i = 0; i < 5; i++) {//determination du nombre de gagnants , par défaut il est a plusieurs
+
+	}*/
+	//TO FIX plusieurs gagnants
+
+
+	for (int i = 0; i < 5; i++) { //un seul gagnant
+		if (jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[0] > max) {
+			max = jeu->joueur[i].score_main[0];
+			jeu->manche.who_win = i;
+		}
+	}
+}
+
+void afficher_main(Jeu* jeu, int joueur_indice) {
+	printf("\tMain actuelle :  ");
+	switch (jeu->joueur[joueur_indice].score_main[joueur_indice]) {
+	case 1:
+		printf("carte haute");
+		break;
+	case 2:
+		printf("paire");
+		break;
+	case 3:
+		printf("double paire");
+		break;
+	case 4:
+		printf("brelan");
+		break;
+	case 5:
+		printf("quinte");
+		break;
+	case 6:
+		printf("couleur");
+		break;
+	case 7:
+		printf("full");
+		break;
+	case 8:
+		printf("carré");
+		break;
+	case 9:
+		printf("quinte flush");
+		break;
+	case 10:
+		printf("quinte flush royale");
+		break;
+	}
+}
+
+
+
 
 // analyse des mains du joueur courant. Modifie les valeurs de sa main (de score main de struct Joueur)
 
@@ -92,9 +188,9 @@ void check_main(Jeu* jeu, int joueur_indice) {
 
 	int max = INT_MIN, indice = -1;
 	for (int i = 0; i < 13; i++) {
-		if (jeu_joueur[i] > max) {
-			max = jeu_joueur[i];
-			indice = i;
+		if (effectif_carte[i] > max) {
+			max = effectif_carte[i];
+			indice = i; //indice c'est l'ID de effectif carte le plus haut
 		}
 	}
 
@@ -119,14 +215,14 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	{
 	case 2: // pair ou double pair
 		for (int i = 0; i < 13; i++) {
-			if (jeu_joueur[i] == 2 && i != indice1) {
+			if (effectif_carte[i] == 2 && i != indice1) {
 				indice2 = i;
 			}
 		}
 		if (indice2 != -1) { //double pair
 			jeu->joueur[joueur_indice].score_main[0] = 2;
 			jeu->joueur[joueur_indice].score_main[1] = indice;
-			jeu->joueur[joueur_indice].score_main[2] = jeu_joueur[indice2];
+			jeu->joueur[joueur_indice].score_main[2] = indice2;
 		}
 		else { //paire simple
 			jeu->joueur[joueur_indice].score_main[0] = 2;
@@ -135,17 +231,17 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		break;
 	case 3: //brelan min ou full
 		for (int i = 0; i < 13; i++) {
-			if (jeu_joueur[i] == 2 && i != indice1) {
+			if (effectif_carte[i] == 2 && i != indice1) {//on recherche une paire en plus du brelan
 				indice2 = i;
 			}
 		}
 		if (indice2 != -1) { //full
 			jeu->joueur[joueur_indice].score_main[0] = 7;
 			jeu->joueur[joueur_indice].score_main[1] = indice1;
-			jeu->joueur[joueur_indice].score_main[2] = jeu_joueur[indice2];
+			jeu->joueur[joueur_indice].score_main[2] = indice2;
 		}
 		else { //brelan
-			jeu->joueur[joueur_indice].score_main[0] = 7;
+			jeu->joueur[joueur_indice].score_main[0] = 4;
 			jeu->joueur[joueur_indice].score_main[1] = indice;
 		}
 		break;
@@ -166,11 +262,11 @@ void check_main(Jeu* jeu, int joueur_indice) {
 			count = 0;
 			if (nombre_suite == 4) { //quinte flush ou flush royale
 				// check couleur en plus pour quinte flush royale sinon quinte flush
-				couleur = check_couleur(jeu, joueur_indice, *jeu_joueur);
+				couleur = check_couleur(jeu, joueur_indice, jeu_joueur);
 				if (couleur != 0) {
 					jeu->joueur[joueur_indice].score_main[0] = 10; //quinte flush royale
 					jeu->joueur[joueur_indice].score_main[1] = indice1;
-					jeu->joueur[joueur_indice].score_main[2] = couleur;
+					jeu->joueur[joueur_indice].score_main[3] = couleur;
 				}
 				else {
 					jeu->joueur[joueur_indice].score_main[0] = 9; //quinte flush non royale
@@ -192,11 +288,11 @@ void check_main(Jeu* jeu, int joueur_indice) {
 				count = 0;
 				if (nombre_suite == 5) { //si pas couleur, quinte simple (pas possible quinte flush)
 					//check couleur sinon quinte simple
-					couleur = check_couleur(jeu, joueur_indice, *jeu_joueur);
+					couleur = check_couleur(jeu, joueur_indice, jeu_joueur);
 					if (couleur != 0) {
 						jeu->joueur[joueur_indice].score_main[0] = 6; //couleur
 						jeu->joueur[joueur_indice].score_main[1] = indice1;
-						jeu->joueur[joueur_indice].score_main[2] = couleur;
+						jeu->joueur[joueur_indice].score_main[3] = couleur;
 					}
 					else {//il ne nous reste qu'une quinte simple = une suite
 						jeu->joueur[joueur_indice].score_main[0] = 5; //suite
@@ -223,96 +319,3 @@ void check_main(Jeu* jeu, int joueur_indice) {
 		break;
 	}
 }
-
-int check_couleur(Jeu* jeu, int joueur_indice, int* jeu_joueur) {
-	int range_carte[7] = { 0 }; // tableau pour couleur de chaque carte (1 coeur, 2 carreau, 3 pique, 4 trefle)
-	//int min_coeur = 1, max_coeur = 13, min_carreau = 14, max_carreau = 26, min_pique = 27, max_pique = 39, min_trefle = 40, max_trefle = 52;
-	int score[4] = { 0 }, score_global = 0;
-	for (int i = 0; i < 7; i++) {//determination de la couleur de chaque carte
-		if (jeu_joueur[i] <= 13) {
-			range_carte[i] = 1;
-		}
-		else if (jeu_joueur[i] >= 40) {
-			range_carte[i] = 4;
-		}
-		else if (jeu_joueur[i] > 13 && jeu_joueur[i] <= 26) {
-			range_carte[i] = 2;
-		}
-		else {
-			range_carte[i] = 3;
-		}
-	}
-	//score[] est le max de cartes de chaque couleur
-	for (int i = 1; i <= 4; i++) {
-		for (int j = 0; j < 7; j++) {
-			if (range_carte[j] = i) {
-				score[i-1]++;
-			}
-		}
-	}
-	int max = score[0];
-	for (int i = 0; i < 4; i++) {
-		if (score[i] >= 5) {
-			return i;
-		}
-	}
-	return 0;
-}
-
-// analyse de la main max courante en fonction du flop indice (pour IA)
-
-// comparaison des mains
-
-void compare_main(Jeu* jeu) {
-	int max = 0;
-	/*bool one_winner = false;
-	for (int i = 0; i < 5; i++) {//determination du nombre de gagnants , par défaut il est a plusieurs
-
-	}*/
-	//TO FIX plusieurs gagnants
-
-
-	for (int i = 0; i < 5; i++) { //un seul gagnant
-		if (jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[0] > max) {
-			max = jeu->joueur[i].score_main[0];
-			jeu->win.indice = i;
-		}
-	}
-}
-
-void afficher_main(Jeu* jeu, int joueur_indice) {
-	printf("\tMain actuelle :  ");
-	switch (jeu->joueur[joueur_indice].score_main[joueur_indice]) {
-	case 1:
-		printf("carte haute");
-		break;
-	case 2:
-		printf("paire");
-		break;
-	case 3:
-		printf("double paire");
-		break;
-	case 4:
-		printf("brelan");
-		break;
-	case 5:
-		printf("quinte");
-		break;
-	case 6:
-		printf("couleur");
-		break;
-	case 7:
-		printf("full");
-		break;
-	case 8:
-		printf("carré");
-		break;
-	case 9:
-		printf("quinte flush");
-		break;
-	case 10:
-		printf("quinte flush royale");
-		break;
-	}
-}
-
