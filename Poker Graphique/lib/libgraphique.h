@@ -18,8 +18,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //0. Directive préprocesseur
-#include "../sdl1_x64-windows/include/SDL/SDL.h"
-//#include<SDL/SDL_ttf.h>
+#include "SDL/SDL.h"
+#include "SDL_ttf.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -133,7 +133,7 @@ Point deplacement_souris_a_eu_lieu();
 // (la police peut être changée en changeant la variable globale NOM_POLICE )
 
 //affiche du texte de taille de police donnée ; coin est le coin haut gauche du texte
-void afficher_texte(char *texte, int taille, Point coin, Couleur couleur);
+void afficher_texte(char *texte, int taille, Point coin, Couleur couleur); 
 
 //renvoie un point qui contient la taille en pixels que prendrait ce texte si on l'affichait
 //(largeur,hauteur) à la taille de police donnée

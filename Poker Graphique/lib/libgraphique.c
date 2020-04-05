@@ -408,6 +408,8 @@ Point deplacement_souris_a_eu_lieu()
 // (la police peut être changée en changeant la variable globale NOM_POLICE )
 
 
+
+
 // TEXTE
 TTF_Font * __police = NULL ;  // police courante , ne pas modidier
 
@@ -441,6 +443,10 @@ void afficher_texte(char *texte, int taille, Point coin, Couleur couleur)
     }
 }
 
+
+
+
+
 //renvoie un point qui contient la taille en pixels que prendrait ce texte si on l'affichait
 //(largeur,hauteur) à la taille de police donnée
 Point taille_texte(char *texte, int taille)
@@ -449,7 +455,6 @@ Point taille_texte(char *texte, int taille)
     TTF_SizeText(__police, texte, &p.x, &p.y);
     return p;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // 5. Autres
