@@ -1,14 +1,4 @@
 ﻿  libgraphique.c
   main.c
   Génération de code en cours...
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003: Impossible d'exécuter la tâche exécutable spécifiée "CL.exe". System.IO.IOException: Le processus ne peut pas accéder au fichier 'D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\x64\Debug\Poker Graphique.tlog', car il est en cours d'utilisation par un autre processus.
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à System.IO.FileSystemEnumerableIterator`1.CommonInit()
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à System.IO.Directory.GetFiles(String path, String searchPattern)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à Microsoft.Build.Utilities.TrackedDependencies.ExpandWildcards(ITaskItem[] expand)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à Microsoft.Build.Utilities.CanonicalTrackedOutputFiles.InternalConstruct(ITask ownerTask, ITaskItem[] tlogFiles, Boolean constructOutputsFromTLogs)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à Microsoft.Build.Utilities.CanonicalTrackedOutputFiles..ctor(ITaskItem[] tlogFiles)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à Microsoft.Build.CPPTasks.CL.PostExecuteTool(Int32 exitCode)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à Microsoft.Build.CPPTasks.TrackedVCToolTask.ExecuteTool(String pathToTool, String responseFileCommands, String commandLineCommands)
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(502,5): error MSB6003:    à Microsoft.Build.Utilities.ToolTask.Execute()
+  Poker Graphique.vcxproj -> D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\x64\Debug\Poker Graphique.exe

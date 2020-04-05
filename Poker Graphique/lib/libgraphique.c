@@ -34,7 +34,7 @@ Trace_evts trace_evts ;                    // idem
 Point dernier_clic = {-1,-1};
 int LARGEUR = -1 ;                         // largeur de l'écran en pixels
 int HAUTEUR = -1 ;                         // hauteur de l'écran en pixels
-char *NOM_POLICE = "../lib/verdana.ttf" ;
+char *NOM_POLICE = "verdana.ttf" ;
 #define octets_par_pixel ecran->format->BytesPerPixel
 #define largeur_ecran (ecran->pitch / 4)
 

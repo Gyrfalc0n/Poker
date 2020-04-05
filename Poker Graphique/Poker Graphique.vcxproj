@@ -71,15 +71,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <ReferencePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf;$(ReferencePath)</ReferencePath>
-    <IncludePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\lib;$(LibraryPath)</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <IncludePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\include\SDL;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\debug\lib\manual-link;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <ReferencePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf;$(ReferencePath)</ReferencePath>
-    <IncludePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\lib;$(LibraryPath)</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <IncludePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\include\SDL;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\debug\lib\manual-link;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -101,7 +101,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDLmaind.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,7 +116,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDLmaind.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,11 +131,12 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>main</EntryPointSymbol>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,11 +149,12 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL.lib;SDL_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>main</EntryPointSymbol>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

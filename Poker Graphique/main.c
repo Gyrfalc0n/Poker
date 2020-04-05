@@ -18,8 +18,7 @@ void affiche_plateau()
 }
 
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]){
     Point p;
     int l, c;
 
