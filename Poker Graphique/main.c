@@ -5,15 +5,15 @@
 #include <time.h>
 
 #define COTE 122 // taille d'un côté d'une image
-#define BASEX 100 // posx de départ du plateau de jeu
-#define BASEY 100  // posy de départ du plateau de jeu0
+#define BASEX 0 // posx de départ du plateau de jeu
+#define BASEY 0  // posy de départ du plateau de jeu0
 
 
 
 void affiche_plateau()
 {
     Point p = { BASEX,BASEY };
-    afficher_image("./PlateaUJeuOie.bmp", p); //affiche l'image
+    afficher_image("images/background.bmp", p); //affiche l'image
     actualiser();
 }
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]){
     int l, c;
 
     //indispensable pour commencer
-    ouvrir_fenetre(1200, 800);
+    ouvrir_fenetre(1280, 720);
 
 
     affiche_plateau();
