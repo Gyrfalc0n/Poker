@@ -178,6 +178,7 @@ int entier_aleatoire(int n) ;
 #define vertclair  0x008000
 #define vertolive  0x808000
 #define violet     0x800080
+#define tapis_carte 0x1B5A0A
 
 
 // 140 couleurs en anglais
