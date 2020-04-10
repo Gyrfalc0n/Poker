@@ -1,71 +1,315 @@
-#include "lib/libgraphique.h"
-#include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <time.h>
+#include <stdio.h>
 
-#define COTE 122 // taille d'un côté d'une image
-#define BASEX 0 // posx de départ du plateau de jeu
-#define BASEY 0  // posy de départ du plateau de jeu0
+#include <Windows.h>
+#include <mmsystem.h>
 
-char *fichiers_cartes[53] = {"images/back.bmp", "images/AH.bmp", "images/2H.bmp", "images/3H.bmp", "images/4H.bmp", "images/5H.bmp", "images/6H.bmp", "images/7H.bmp", "images/8H.bmp", "images/9H.bmp", "images/10H.bmp", "images/JH.bmp", "images/QH.bmp", "images/KH.bmp",
-"images/AD.bmp", "images/2D.bmp", "images/3D.bmp", "images/4D.bmp", "images/5D.bmp", "images/6D.bmp", "images/7D.bmp", "images/8D.bmp", "images/9D.bmp", "images/10D.bmp", "images/JD.bmp", "images/QD.bmp", "images/KD.bmp",
-"images/AS.bmp", "images/2S.bmp", "images/3S.bmp", "images/4S.bmp", "images/5S.bmp", "images/6S.bmp", "images/7S.bmp", "images/8S.bmp", "images/9S.bmp", "images/10S.bmp", "images/JS.bmp", "images/QS.bmp", "images/KS.bmp",
-"images/AC.bmp", "images/2C.bmp", "images/3C.bmp", "images/4C.bmp", "images/5C.bmp", "images/6C.bmp", "images/7C.bmp", "images/8C.bmp", "images/9C.bmp", "images/10C.bmp", "images/JC.bmp", "images/QC.bmp", "images/KC.bmp"};
+#include "lib/libgraphique.h"
+#include "fonctions.h"
 
-void affiche_plateau()
-{
-    Point p = { BASEX,BASEY };
-    afficher_image("images/background.bmp", p);
-    actualiser();
-    afficher_image(fichiers_cartes[1], p);
-    actualiser();
-    p.x += 60;
-    afficher_image("images/AS.bmp", p);
-    actualiser();
-}
 
-void afficher_ttes_cartes() {
-    Point p = { BASEX, BASEY };
-    afficher_image("images/background.bmp", p);
-    actualiser();
-    int count = 0;
-    for (int i = 1; i < 53; i++) {
-        if (count == 13) {
-            p.y += 91;
-            p.x = 0;
-            count = 0;
-        }
-        afficher_image(fichiers_cartes[i], p);
-        actualiser();
-        count++;
-        p.x += 60;
+// DECLARATIONS CONSTANTES & VALEUR PAR DEFAUT POUR UN JEU NON PARAMÉTRÉ
+
+//const int reference_jeu[52] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52 };
+const int default_solde = 2000;
+const int default_small_blind = 10;
+const int default_big_blind = 20;
+const int default_pot = 0;
+const int dealer_indice = 0;
+const int default_flop_indice = 2;
+
+int main(int argc, char** argv) {
+    srand((unsigned)time(NULL));
+
+    int i, compteur = 1;
+    Jeu jeu; //instanciation du jeu
+
+    // ---------------------------------------------INITIALISATION-------------------------------------------------------------
+    //initialisation parametres généraux Jeu
+    jeu.initial_solde = default_solde;
+    for (i = 0; i < 5; i++) {
+        jeu.composition_joueurs[i] = 0;
     }
-    Point k = { 0, 364 };
-    afficher_image(fichiers_cartes[0], k);
-    actualiser();
-}
+    jeu.win.indice = 99;
+    jeu.win.main = 0;
+    //initialisation parametres Joueur
+    for (i = 0; i < 5; i++) {
+        jeu.joueur[i].main[0] = 0;
+        jeu.joueur[i].main[1] = 0;
+        jeu.joueur[i].solde = default_solde;
+        jeu.joueur[i].score_main[0] = 0;
+        jeu.joueur[i].score_main[1] = -1;
+        jeu.joueur[i].score_main[2] = -1;
+        jeu.joueur[i].score_main[3] = 0;
+        jeu.joueur[i].mise = 0;
+    }
+    //initialisation parametres Manche
+    for (i = 0; i < 15; i++) {
+        jeu.manche.cartes[i] = 0;
+    }
+    jeu.manche.pot = 0;
+    jeu.manche.dealer_indice = 0; // le premier dealer de la partie est le joueur 1
+    jeu.manche.small_blind_indice = jeu.manche.dealer_indice + 1;
+    jeu.manche.big_blind_indice = jeu.manche.dealer_indice + 2;
+    jeu.manche.small_blind = default_small_blind;
+    jeu.manche.big_blind = default_big_blind;
+    jeu.manche.flop_indice = default_flop_indice;
+    for (i = 0; i < 5; i++) {
+        jeu.manche.couche[i] = 0; // initialise l'état des 5 joueurs a 0 (pas couché) (serait a 1 si joueur couché)
+        jeu.manche.parole[i] = 0;
+    }
+
+    jeu.manche.who_win = -1;
+    jeu.manche.nb_couche = 0;
+    jeu.manche.is_end_round = false;
+
+    //initialisation graphique
+
+    //fichiers images
+    jeu.graph.cartes[0] = "images/back.bmp";
+    jeu.graph.cartes[1] = "images/AH.bmp";
+    jeu.graph.cartes[2] = "images/2H.bmp";
+    jeu.graph.cartes[3] = "images/3H.bmp";
+    jeu.graph.cartes[4] = "images/4H.bmp";
+    jeu.graph.cartes[5] = "images/5H.bmp";
+    jeu.graph.cartes[6] = "images/6H.bmp";
+    jeu.graph.cartes[7] = "images/7H.bmp";
+    jeu.graph.cartes[8] = "images/8H.bmp";
+    jeu.graph.cartes[9] = "images/9H.bmp";
+    jeu.graph.cartes[10] = "images/10H.bmp";
+    jeu.graph.cartes[11] = "images/JH.bmp";
+    jeu.graph.cartes[12] = "images/QH.bmp";
+    jeu.graph.cartes[13] = "images/KH.bmp";
+    jeu.graph.cartes[14] = "images/AD.bmp";
+    jeu.graph.cartes[15] = "images/2D.bmp";
+    jeu.graph.cartes[16] = "images/3D.bmp";
+    jeu.graph.cartes[17] = "images/4D.bmp";
+    jeu.graph.cartes[18] = "images/5D.bmp";
+    jeu.graph.cartes[19] = "images/6D.bmp";
+    jeu.graph.cartes[20] = "images/7D.bmp";
+    jeu.graph.cartes[21] = "images/8D.bmp";
+    jeu.graph.cartes[22] = "images/9D.bmp";
+    jeu.graph.cartes[23] = "images/10D.bmp";
+    jeu.graph.cartes[24] = "images/JD.bmp";
+    jeu.graph.cartes[25] = "images/QD.bmp";
+    jeu.graph.cartes[26] = "images/KD.bmp";
+    jeu.graph.cartes[27] = "images/AS.bmp";
+    jeu.graph.cartes[28] = "images/2S.bmp";
+    jeu.graph.cartes[29] = "images/3S.bmp";
+    jeu.graph.cartes[30] = "images/4S.bmp";
+    jeu.graph.cartes[31] = "images/5S.bmp";
+    jeu.graph.cartes[32] = "images/6S.bmp";
+    jeu.graph.cartes[33] = "images/7S.bmp";
+    jeu.graph.cartes[34] = "images/8S.bmp";
+    jeu.graph.cartes[35] = "images/9S.bmp";
+    jeu.graph.cartes[36] = "images/10S.bmp";
+    jeu.graph.cartes[37] = "images/JS.bmp";
+    jeu.graph.cartes[38] = "images/QS.bmp";
+    jeu.graph.cartes[39] = "images/KS.bmp";
+    jeu.graph.cartes[40] = "images/AC.bmp";
+    jeu.graph.cartes[41] = "images/2C.bmp";
+    jeu.graph.cartes[42] = "images/3C.bmp";
+    jeu.graph.cartes[43] = "images/4C.bmp";
+    jeu.graph.cartes[44] = "images/5C.bmp";
+    jeu.graph.cartes[45] = "images/6C.bmp";
+    jeu.graph.cartes[46] = "images/7C.bmp";
+    jeu.graph.cartes[47] = "images/8C.bmp";
+    jeu.graph.cartes[48] = "images/9C.bmp";
+    jeu.graph.cartes[49] = "images/10C.bmp";
+    jeu.graph.cartes[50] = "images/JC.bmp";
+    jeu.graph.cartes[51] = "images/QC.bmp";
+    jeu.graph.cartes[52] = "images/KC.bmp";
+    //jetons
+    jeu.graph.jetons[0] = "images/jeton1.bmp";
+    jeu.graph.jetons[1] = "images/jeton2.bmp";
+    jeu.graph.jetons[2] = "images/jeton3.bmp";
+    jeu.graph.jetons[3] = "images/jeton4.bmp";
+    jeu.graph.jetons[4] = "images/jeton5.bmp";
+    jeu.graph.jetons[5] = "images/jeton6.bmp";
+    jeu.graph.jetons[6] = "images/jeton7.bmp";
+    jeu.graph.jetons[7] = "images/jeton8.bmp";
+    jeu.graph.jetons[8] = "images/jeton9.bmp";
+    jeu.graph.jetons[9] = "images/jeton10.bmp";
+    // emplacement joueur 0
+    jeu.graph.slot_carte[0].slot[0].x = 579;
+    jeu.graph.slot_carte[0].slot[0].y = 538;
+    jeu.graph.slot_carte[0].slot[1].x = 642;
+    jeu.graph.slot_carte[0].slot[1].y = 538;
+    jeu.graph.slot_mises[0].x = 605;
+    jeu.graph.slot_mises[0].y = 427;
+    jeu.graph.slot_texte_mises[0].x = 605;
+    jeu.graph.slot_texte_mises[0].y = 499;
+    // emplacement joueur 1
+    jeu.graph.slot_carte[1].slot[0].x = 40;
+    jeu.graph.slot_carte[1].slot[0].y = 315;
+    jeu.graph.slot_carte[1].slot[1].x = 103;
+    jeu.graph.slot_carte[1].slot[1].y = 315;
+    jeu.graph.slot_mises[1].x = 186;
+    jeu.graph.slot_mises[1].y = 314;
+    jeu.graph.slot_texte_mises[1].x = 186;
+    jeu.graph.slot_texte_mises[1].y = 386;
+    // emplacement joueur 2
+    jeu.graph.slot_carte[2].slot[0].x = 203;
+    jeu.graph.slot_carte[2].slot[0].y = 18;
+    jeu.graph.slot_carte[2].slot[1].x = 266;
+    jeu.graph.slot_carte[2].slot[1].y = 18;
+    jeu.graph.slot_mises[2].x = 312;
+    jeu.graph.slot_mises[2].y = 124;
+    jeu.graph.slot_texte_mises[2].x = 312;
+    jeu.graph.slot_texte_mises[2].y = 196;
+    // emplacement joueur 3
+    jeu.graph.slot_carte[3].slot[0].x = 952;
+    jeu.graph.slot_carte[3].slot[0].y = 18;
+    jeu.graph.slot_carte[3].slot[1].x = 1015;
+    jeu.graph.slot_carte[3].slot[1].y = 18;
+    jeu.graph.slot_mises[3].x = 900;
+    jeu.graph.slot_mises[3].y = 124;
+    jeu.graph.slot_texte_mises[3].x = 900;
+    jeu.graph.slot_texte_mises[3].y = 197;
+    // emplacement joueur 4
+    jeu.graph.slot_carte[4].slot[0].x = 1118;
+    jeu.graph.slot_carte[4].slot[0].y = 315;
+    jeu.graph.slot_carte[4].slot[1].x = 1181;
+    jeu.graph.slot_carte[4].slot[1].y = 315;
+    jeu.graph.slot_mises[4].x = 1024;
+    jeu.graph.slot_mises[4].y = 314;
+    jeu.graph.slot_texte_mises[4].x = 1024;
+    jeu.graph.slot_texte_mises[4].y = 386;
+    // cartes communes & emplacements
+    jeu.graph.flop[0].x = 728;
+    jeu.graph.flop[1].x = 669;
+    jeu.graph.flop[2].x = 610;
+    jeu.graph.flop[3].x = 551;
+    jeu.graph.flop[4].x = 492;
+    for (int i = 0; i < 5; i++) {
+        jeu.graph.flop[i].y = 315;
+    }
+    jeu.graph.actions.x = 380;
+    jeu.graph.actions.y = 637;
+
+    // -------------------------------------------------------------------------------------------------------------------------
+
+    if (CONSOLE == 0) {
+
+        Point p = { BASEX, BASEY };
+        ouvrir_fenetre(1280, 720);
+        afficher_image("images/background.bmp", p);
+        distribution(&jeu);
+        PlaySound(L"sounds/shuffle.wav", NULL, SND_ASYNC | SND_FILENAME);
+        PlaySound(L"sounds/mise2.wav", NULL, SND_ASYNC | SND_FILENAME);
+        afficher_jeu(&jeu, 0, 5);
 
 
-int main(int argc, char* argv[]){
-    Point p;
-    int l, c;
-
-    //indispensable pour commencer
-    ouvrir_fenetre(1280, 720);
+        //afficher_texte("Joueur 1", 15, jeu.graph.slot_texte_mises[0], white);
 
 
-    afficher_ttes_cartes();
+        int l, c;
 
-    while (1)
-    {
-        p = attendre_clic();
-        l = (p.y - BASEY) / COTE;
-        c = (p.x - BASEX) / COTE;
-        printf("Ligne %d Colonne %d\n", l, c);
+        while (1)
+        {
+            p = attendre_clic();
+            l = (p.y - BASEY) / COTE;
+            c = (p.x - BASEX) / COTE;
+            printf("Ligne %d Colonne %d\n", l, c);
+        }
+
+    }
+
+    // -------------------------------------------------------------------------------------------------------------------------
+    
+    // affichage menu initial
+
+    printf("\n\t8888888b.  .d88888b. 888    d8P 88888888888888888b.  \n");
+    printf("\t888   Y88bd88P\" \"Y88b888   d8P  888       888   Y88b \n");
+    printf("\t888    888888     888888  d8P   888       888    888\n");
+    printf("\t888   d88P888     888888d88K    8888888   888   d88P \n");
+    printf("\t8888888P\" 888     8888888888b   888       8888888P\"  \n");
+    printf("\t888       888     888888  Y88b  888       888 T88b  \n");
+    printf("\t888       Y88b. .d88P888   Y88b 888       888  T88b  \n");
+    printf("\t888        \"Y88888P\" 888    Y88b8888888888888   T88b \n");
+    printf("\t                                Enguerrand VIE");
+
+
+    int joueur_indice = 0; // compteur de 0 a 5 pour joueurs
+    int count = 0;
+    while (jeu.win.indice > 4) { //boucle des manches tant que personne a win
+        printf("\n\n\n\n--------------------------------------------------------------------------\n");
+        printf("\t\t\t\t\033[1;35m[ Manche %d ]\033[0m", compteur);
+        printf("\n--------------------------------------------------------------------------\n");
+
+        distribution(&jeu);
+        blind(&jeu, jeu.manche.dealer_indice); //affiche qui est le donneur
+        blind(&jeu, jeu.manche.small_blind_indice); //trigger blind & afiche
+        blind(&jeu, jeu.manche.big_blind_indice);//trigger blind & afiche
+        joueur_indice = jeu.manche.big_blind_indice + 1; // initialisation des indices
+
+
+        //redemmarer une nouvelle manche
+        for (i = 2; i <= 5; i++) { // 4 FOIS / les 4 rounds (1, round a vide pour dévoiler cartes, 1 round pour flop un round pour 4eme carte et dernier roune pour cinquieme carte)
+            joueur_indice = jeu.manche.big_blind_indice + 1;
+            while (!jeu.manche.is_end_round) { //on boucle le round courant tant que les mises sont pas égales
+                joueur_indice += count;
+                if (joueur_indice >= 5) {
+                    joueur_indice = 0;
+                    count = 0;
+                }
+                if (jeu.manche.couche[joueur_indice] == 0) { //test si le joueur est toujours dans la manche
+                    afficher_round(&jeu, joueur_indice, i);
+                    choix(&jeu, joueur_indice, i);
+                    if (CONSOLE) {
+                        system("pause");
+                        system("cls");
+                    }
+
+                }
+                count = 1;
+            }
+            fin_round(&jeu);
+            printf("\n\n\n\n--------------------------------------------------------------------------\n");
+            printf("\033[1;35m\t\t\t      Le pot est a \033[1;32m%d\033[0m$\n", jeu.manche.pot);
+            count = 0;
+            jeu.manche.is_end_round = false;
+        }
+        //affichage des mains
+        printf("\n\n\n\n--------------------------------------------------------------------------\n");
+        printf("\t\t\t\t\033[1;35m[  Mains  ]\033[0m");
+        printf("\n--------------------------------------------------------------------------\n");
+        for (int i = 0; i < 5; i++) {
+            if (jeu.manche.couche[i] == 0) {
+                check_main(&jeu, i);
+                printf("\n\tJoueur %d : ", i + 1);
+                afficher_main(&jeu, i);
+            }
+        }
+        printf("\n\n");
+        if (CONSOLE) {
+            system("pause");
+        }
+        compare_main(&jeu);
+        //rajouter print pour qui a gagné
+        nouvelle_manche(&jeu);
+        compteur++;
+        if (CONSOLE) {
+            system("cls");
+        }
+        if (DEBUG == 1) {
+            printf("\n\nNouvelle manche");
+        }
     }
     fermer_fenetre();
     return 0;
 }
+// premier joueur a jouer est celui apres le big blind
+// premier tour cartes masquées les gens doivent s'aligner sur le big blind
+// parole dispo apres
 
 
+// MODELE
+/* while (!done){
+{
+get input
+actualiser variables
+afficher
+*/

@@ -250,6 +250,7 @@ void afficher_image(char *nom, Point coin){
     position_img.x = coin.x;
     position_img.y = coin.y;
     SDL_BlitSurface(img,NULL,ecran,&position_img);
+    actualiser();
 }
 
 
