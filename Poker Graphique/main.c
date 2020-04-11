@@ -188,6 +188,22 @@ int main(int argc, char** argv) {
     }
     jeu.graph.actions.x = 380;
     jeu.graph.actions.y = 637;
+    //emplacement textes joueurs
+    jeu.graph.texte_joueur[0].x = 492;
+    jeu.graph.texte_joueur[0].y = 573;
+    jeu.graph.texte_joueur[1].x = 66;
+    jeu.graph.texte_joueur[1].y = 419;
+    jeu.graph.texte_joueur[2].x = 117;
+    jeu.graph.texte_joueur[2].y = 53;
+    jeu.graph.texte_joueur[3].x = 865;
+    jeu.graph.texte_joueur[3].y = 53;
+    jeu.graph.texte_joueur[4].x = 1144;
+    jeu.graph.texte_joueur[4].y = 419;
+    //flop tapis
+    jeu.graph.tapis_image.x = 605;
+    jeu.graph.tapis_image.y = 197;
+    jeu.graph.tapis_texte.x = 605;
+    jeu.graph.tapis_texte.y = 269;
 
     // -------------------------------------------------------------------------------------------------------------------------
 
@@ -199,14 +215,10 @@ int main(int argc, char** argv) {
         distribution(&jeu);
         PlaySound(L"sounds/shuffle.wav", NULL, SND_ASYNC | SND_FILENAME);
         PlaySound(L"sounds/mise2.wav", NULL, SND_ASYNC | SND_FILENAME);
-        afficher_jeu(&jeu, 0, 5);
-
-
-        //afficher_texte("Joueur 1", 15, jeu.graph.slot_texte_mises[0], white);
+        afficher_jeu(&jeu, 2, 5);
 
 
         int l, c;
-
         while (1)
         {
             p = attendre_clic();
@@ -214,7 +226,6 @@ int main(int argc, char** argv) {
             c = (p.x - BASEX) / COTE;
             printf("Ligne %d Colonne %d\n", l, c);
         }
-
     }
 
     // -------------------------------------------------------------------------------------------------------------------------

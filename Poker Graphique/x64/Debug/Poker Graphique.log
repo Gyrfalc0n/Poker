@@ -1,2 +1,7 @@
-﻿  main.c
+﻿  game.c
+  graphique.c
+  libgraphique.c
+  main.c
+  win.c
+  Génération de code en cours...
   Poker Graphique.vcxproj -> D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\x64\Debug\Poker Graphique.exe

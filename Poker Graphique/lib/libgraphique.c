@@ -101,7 +101,8 @@ void actualiser(){
 void changer_pixel(Point pix, Couleur couleur) {
     if ((0 <= pix.x) && (pix.x < LARGEUR) && (0 <= pix.y ) && (pix.y < HAUTEUR))
     {
-        *( (Uint32*)ecran->pixels + pix.y * largeur_ecran + pix.x ) = couleur ;
+        int temp = pix.y * largeur_ecran;
+        *( (Uint32*)ecran->pixels + temp + pix.x ) = couleur ;
     }
 }
 
@@ -231,10 +232,15 @@ void dessiner_cercle(Point centre, int rayon, Couleur couleur)
 
     for (p.x = xmin; p.x <= xmax ; p.x++)
     {
-        for (p.y = ymin; p.y <= ymax ; p.y++)
-            if ((centre.x-p.x)*(centre.x-p.x)+(centre.y-p.y)*(centre.y-p.y)<=rayon*rayon+rayon/RATIO &&
-             (centre.x-p.x)*(centre.x-p.x)+(centre.y-p.y)*(centre.y-p.y)>=rayon*rayon-rayon/RATIO)
+        for (p.y = ymin; p.y <= ymax; p.y++) {
+            int temp1 = (centre.x - p.x) * (centre.x - p.x);
+            int temp2 = (centre.y - p.y) * (centre.y - p.y);
+            int temp3 = rayon * rayon;
+            int temp4 = temp1 + temp2;
+            if (temp4 <= temp3 + rayon / RATIO &&
+                temp4 >= temp3 - rayon / RATIO)
                 changer_pixel(p, couleur);
+        }
     }
 }
 
@@ -442,6 +448,7 @@ void afficher_texte(char *texte, int taille, Point coin, Couleur couleur)
         position.y=  coin.y;
         SDL_BlitSurface(surftexte, NULL, ecran, &position);
     }
+    actualiser();
 }
 
 
@@ -482,7 +489,8 @@ Couleur couleur_point(Point p)
 
     if ((0 <= p.x) && (p.x < LARGEUR) && (0 <= p.y ) && (p.y < HAUTEUR))
     {
-        return *( (Uint32*)ecran->pixels + p.y * largeur_ecran + p.x ) ;
+        int temp = p.x * largeur_ecran;
+        return *( (Uint32*)ecran->pixels + temp + p.x ) ;
     }
     else
         return noir ;

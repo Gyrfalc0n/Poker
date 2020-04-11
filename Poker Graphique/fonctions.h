@@ -9,6 +9,8 @@
 #define BASEX 0 // posx de départ du plateau de jeu
 #define BASEY 0  // posy de départ du plateau de jeu0
 
+//#define _CRT_SECURE_NO_WARNINGS
+
 
 // STRUCTURES
 
@@ -92,6 +94,9 @@ typedef struct {
 	Point flop[5];// coordonnées des emplacements de carte du milieu de la table (de droite a gauche)
 	Point actions;// coordonnées de l'emplacement des textes d'action
 	char* jetons[10];// images pour mises 
+	Point texte_joueur[5];//emplacement affichage joueur
+	Point tapis_image;//image jetons solde tapis
+	Point tapis_texte;//texte solde tapis
 }Graph;
 
 // emplacements joueurs sur le patron
