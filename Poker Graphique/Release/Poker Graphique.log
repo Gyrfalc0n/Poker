@@ -1,0 +1,19 @@
+﻿  game.c
+  graphique.c
+  libgraphique.c
+  main.c
+  win.c
+LINK : error LNK2001: symbole externe non résolu _main
+game.obj : error LNK2001: symbole externe non résolu __imp____acrt_iob_func
+game.obj : error LNK2001: symbole externe non résolu __imp__rand
+game.obj : error LNK2001: symbole externe non résolu __imp____stdio_common_vfprintf
+game.obj : error LNK2001: symbole externe non résolu __imp____stdio_common_vfscanf
+game.obj : error LNK2001: symbole externe non résolu __imp___itoa
+graphique.obj : error LNK2001: symbole externe non résolu __imp__PlaySoundW@12
+libgraphique.obj : error LNK2001: symbole externe non résolu __imp__exit
+libgraphique.obj : error LNK2001: symbole externe non résolu __imp__srand
+libgraphique.obj : error LNK2001: symbole externe non résolu __imp__fopen
+libgraphique.obj : error LNK2001: symbole externe non résolu __imp__fclose
+libgraphique.obj : error LNK2001: symbole externe non résolu __imp___time64
+main.obj : error LNK2001: symbole externe non résolu __imp__system
+D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\Release\Poker Graphique.exe : fatal error LNK1120: 13 externes non résolus
