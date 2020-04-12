@@ -204,29 +204,37 @@ int main(int argc, char** argv) {
     jeu.graph.tapis_image.y = 197;
     jeu.graph.tapis_texte.x = 605;
     jeu.graph.tapis_texte.y = 269;
-
+    //log & action
+    jeu.graph.action_clear.x = 384;
+    jeu.graph.action_clear.y = 642;
+    jeu.graph.action_texte1.x = 410;
+    jeu.graph.action_texte1.y = 650;
+    jeu.graph.action_texte2.x = 410;
+    jeu.graph.action_texte2.y = 686;
+    jeu.graph.action_texte3.x = 670;
+    jeu.graph.action_texte3.y = 650;
+    jeu.graph.action_texte4.x = 670;
+    jeu.graph.action_texte4.y = 686;
+    jeu.graph.log_clear.x = 55;
+    jeu.graph.log_clear.y = 530;
+    jeu.graph.log_texte.x = 55;
+    jeu.graph.log_texte.y = 539;
     // -------------------------------------------------------------------------------------------------------------------------
 
+    /*
     if (CONSOLE == 0) {
 
-        Point p = { BASEX, BASEY };
-        ouvrir_fenetre(1280, 720);
-        afficher_image("images/background.bmp", p);
+        ouvrir_fenetre(1280, 720);        
         distribution(&jeu);
-        PlaySound(L"sounds/shuffle.wav", NULL, SND_ASYNC | SND_FILENAME);
-        PlaySound(L"sounds/mise2.wav", NULL, SND_ASYNC | SND_FILENAME);
-        afficher_jeu(&jeu, 2, 5);
-
-
-        int l, c;
-        while (1)
-        {
-            p = attendre_clic();
-            l = (p.y - BASEY) / COTE;
-            c = (p.x - BASEX) / COTE;
-            printf("Ligne %d Colonne %d\n", l, c);
-        }
+        background();
+        afficher_flop_pot(&jeu, 5);
+        afficher_jeu(&jeu, 2);
+        clear_log(&jeu);
+        clear_action(&jeu);
+        Point p = { BASEX, BASEY };
+        p = attendre_clic();
     }
+    */
 
     // -------------------------------------------------------------------------------------------------------------------------
     
@@ -242,6 +250,7 @@ int main(int argc, char** argv) {
     printf("\t888        \"Y88888P\" 888    Y88b8888888888888   T88b \n");
     printf("\t                                Enguerrand VIE");
 
+    ouvrir_fenetre(1280, 720);
 
     int joueur_indice = 0; // compteur de 0 a 5 pour joueurs
     int count = 0;
@@ -249,14 +258,12 @@ int main(int argc, char** argv) {
         printf("\n\n\n\n--------------------------------------------------------------------------\n");
         printf("\t\t\t\t\033[1;35m[ Manche %d ]\033[0m", compteur);
         printf("\n--------------------------------------------------------------------------\n");
-
+        background();
         distribution(&jeu);
         blind(&jeu, jeu.manche.dealer_indice); //affiche qui est le donneur
         blind(&jeu, jeu.manche.small_blind_indice); //trigger blind & afiche
         blind(&jeu, jeu.manche.big_blind_indice);//trigger blind & afiche
         joueur_indice = jeu.manche.big_blind_indice + 1; // initialisation des indices
-
-
         //redemmarer une nouvelle manche
         for (i = 2; i <= 5; i++) { // 4 FOIS / les 4 rounds (1, round a vide pour dévoiler cartes, 1 round pour flop un round pour 4eme carte et dernier roune pour cinquieme carte)
             joueur_indice = jeu.manche.big_blind_indice + 1;
@@ -268,6 +275,8 @@ int main(int argc, char** argv) {
                 }
                 if (jeu.manche.couche[joueur_indice] == 0) { //test si le joueur est toujours dans la manche
                     afficher_round(&jeu, joueur_indice, i);
+                    afficher_flop_pot(&jeu, i);
+                    afficher_jeu(&jeu, joueur_indice);
                     choix(&jeu, joueur_indice, i);
                     if (CONSOLE) {
                         system("pause");
@@ -315,12 +324,3 @@ int main(int argc, char** argv) {
 // premier joueur a jouer est celui apres le big blind
 // premier tour cartes masquées les gens doivent s'aligner sur le big blind
 // parole dispo apres
-
-
-// MODELE
-/* while (!done){
-{
-get input
-actualiser variables
-afficher
-*/

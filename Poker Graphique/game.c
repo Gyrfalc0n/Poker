@@ -84,6 +84,7 @@ void afficher_cartes(int id) { //print quelle est la carte a partir de son id (e
 }
 
 void distribution(Jeu* jeu) {
+	son_choix(3);
 	bool to_add;
 	int random_carte, j;
 	for (int i = 0; i < 15;)
@@ -119,19 +120,59 @@ void mise(Jeu* jeu, int ammount, int joueur_indice) { //trigger quand un joueur 
 	if (jeu->joueur[joueur_indice].solde >= ammount) {
 		jeu->joueur[joueur_indice].mise += ammount;
 		jeu->joueur[joueur_indice].solde -= ammount;
+		son_mise(ammount);
 	}
 	else {
+		afficher_texte("Fonds insufisants", 13, jeu->graph.log_texte, white);
+		clear_log(jeu);
 		printf("\n\033[0;36mVous ne pouvez pas miser, fonds insuffisants\033[0m"); //rajouter all in ou se coucher si pas assez de thunes
+		char temp[100] = "Tapis (";
+		char temp2[20];
+		char temp3[] = ") [2]";
+		_itoa(tapis, temp2, 10);
+		strcat(temp, temp2);
+		strcat(temp, temp3);
+		char temp4[] = "Se coucher [1]";
+		afficher_texte(temp4, 13, jeu->graph.action_texte1, white);
+		afficher_texte(temp, 13, jeu->graph.action_texte2, white);
 		printf("\nChoix possibles : Se coucher [1] - Tapis (\033[1;32m%d\033[0m$)[2]\n", tapis);
-		scanf_s("%d", &entry);
-		switch (entry)
+		if (CONSOLE) {
+			scanf_s("%d", &entry);
+		}
+		int touche;
+		do {
+			touche = attendre_touche();
+		} while (touche != SDLK_KP1 && touche != SDLK_KP2);
+		clear_action(jeu);
+		char a[100] = "Joueur ";
+		switch (touche)
 		{
-		case 1:
+		case SDLK_KP1:
 			jeu->manche.couche[joueur_indice] = 1;
+			char b[] = " se couche";// attention just couche pas modif
+			char c[2];
+			_itoa(joueur_indice + 1, c, 10);
+			strcat(a, c);
+			strcat(a, b);
+			afficher_texte(a, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 			printf("\n\033[1;35mJoueur %d s'est couche\033[0m", joueur_indice + 1);
-		case 2:
+		case SDLK_KP2:
 			mise(jeu, tapis, joueur_indice);
+			char ba[] = " fait tapis avec ";
+			char ca[2];
+			char da[10];
+			char ea[] = "$";
+			_itoa(joueur_indice + 1, ca, 10);
+			strcat(a, ca);
+			strcat(a, ba);
+			_itoa(tapis, da, 10);
+			strcat(a, da);
+			strcat(a, ea);
+			afficher_texte(a, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 			printf("\n\033[1;35mJoueur %d fait tapis avec\033[0m \033[1;32m%d\033[0m$", joueur_indice + 1, tapis);
+			son_mise(ammount);
 			break;
 		default:
 			break;
@@ -150,15 +191,49 @@ void blind(Jeu* jeu, int joueur_indice) {
 	if (joueur_indice == jeu->manche.dealer_indice) {
 		printf("\n");
 		printf("\033[1;35mJoueur %d est le donneur\033[0m\n", joueur_indice + 1);
+		char a[100] = "Joueur ";
+		char b[] = " est le donneur";
+		char c[2];
+		_itoa(joueur_indice + 1, c, 10);
+		strcat(a, c);
+		strcat(a, b);
+		afficher_texte(a, 13, jeu->graph.log_texte, white);
+		clear_log(jeu);
 	}
 	if (joueur_indice == jeu->manche.small_blind_indice) {
 		printf("\n");
 		printf("\033[1;35mJoueur %d paye le small blind\033[0m (\033[1;32m%d\033[0m$)\n", joueur_indice + 1, jeu->manche.small_blind);
+		char a[100] = "Joueur ";
+		char b[] = " paye le small blind (";
+		char c[2];
+		char d[10];
+		char e[] = "$)";
+		_itoa(jeu->manche.small_blind, d, 10);
+		_itoa(joueur_indice + 1, c, 10);
+		strcat(a, c);
+		strcat(a, b);
+		strcat(a, d);
+		strcat(a, e);
+		afficher_texte(a, 13, jeu->graph.log_texte, white);
+		clear_log(jeu);
 		actualisation_blind(jeu);
 	}
 	if (joueur_indice == jeu->manche.big_blind_indice) {
 		printf("\n");
 		printf("\033[1;35mJoueur %d paye le big blind\033[0m (\033[1;32m%d\033[0m$)\n\n", joueur_indice + 1, jeu->manche.big_blind);
+		char a[100] = "Joueur ";
+		char b[] = " paye le big blind (";
+		char c[2];
+		char d[10];
+		char e[] = "$)";
+		_itoa(jeu->manche.big_blind, d, 10);
+		_itoa(joueur_indice + 1, c, 10);
+		strcat(a, c);
+		strcat(a, b);
+		strcat(a, d);
+		strcat(a, e);
+		afficher_texte(a, 13, jeu->graph.log_texte, white);
+		clear_log(jeu);
 		actualisation_blind(jeu);
 	}
 }
@@ -205,7 +280,7 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 void fin_round(Jeu* jeu) { //actualise le pot (reccupere les mises des joueurs), detecte le(s) joueurs gagnants et actualise les soldes des gagnants
 	for (int i = 0; i < 5; i++) {
 		jeu->manche.pot += jeu->joueur[i].mise; //le pot est egal a la somme des mises des joueurs
-		//jeu->joueur[i].mise = 0; desactiver pour continuer a afficher les mises des gens (comme le pot est actualisé, on effacera les mises a la nouvelle manche)
+		jeu->joueur[i].mise = 0; //desactiver pour continuer a afficher les mises des gens (comme le pot est actualisé, on effacera les mises a la nouvelle manche)
 		jeu->manche.parole[i] = 0; //reset des paroles
 	}
 }
@@ -254,14 +329,46 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 	int precedent = joueur_precedent(jeu, joueur_indice);
 	if (jeu->joueur[joueur_indice].mise == jeu->joueur[precedent].mise) { //test si parole possible
 		printf("\n\n\t>>>  Miser(\033[1;32m%d\033[0m$) [\033[1;36m1\033[0m] - Miser plus [\033[1;36m2\033[0m] - Parole [\033[1;36m3\033[0m] - Se coucher [\033[1;36m4\033[0m]\n\n", mise_val); //affiche les options avec le montant pour suivre (= difference de mise entre le dernier joueur sur la table et le joueur courant)
+		char a[100] = "Miser(";
+		char b[10];
+		char c[] = "$) [1]";
+		_itoa(mise_val, b, 10);
+		strcat(a, b);
+		strcat(a, c);
+		afficher_texte(a, 13, jeu->graph.action_texte1, white);
+		char d[] = "Miser plus [2]";
+		afficher_texte(d, 13, jeu->graph.action_texte2, white);
+		char e[] = "Parole [3]";
+		afficher_texte(e, 13, jeu->graph.action_texte3, white);
+		char f[] = "Se coucher [4]";
+		afficher_texte(f, 13, jeu->graph.action_texte4, white);
 	}
 	else {
 		printf("\n\n\t>>>  Suivre(\033[1;32m%d\033[0m$) [\033[1;36m1\033[0m] - Relancer [\033[1;36m2\033[0m] - Se coucher [\033[1;36m4\033[0m]\n\n", suivre); //idem mais sans parole
+		char ay[100] = "Suivre(";
+		char by[10];
+		char cy[100] = "$) [1]";
+		_itoa(suivre, by, 10);
+		strcat(ay, by);
+		strcat(ay, cy);
+		afficher_texte(ay, 13, jeu->graph.action_texte1, white);
+		char dy[] = "Relancer [2]";
+		afficher_texte(dy, 13, jeu->graph.action_texte2, white);
+		char fy[] = "Se coucher [4]";
+		afficher_texte(fy, 13, jeu->graph.action_texte4, white);
 	}
 	printf("Choix : ");
-	scanf_s("%d", &entry);
-	switch (entry) {
-	case 4: // se coucher
+	if (CONSOLE) {
+		scanf_s("%d", &entry);
+	}
+	int touche;
+	do {
+		touche = attendre_touche();
+	} while (touche != SDLK_KP1 && touche != SDLK_KP2 && touche != SDLK_KP3 && touche != SDLK_KP4);
+	clear_action(jeu);
+	char ak[100] = "Joueur ";
+	switch (touche) {
+	case SDLK_KP4: // se coucher
 		jeu->manche.couche[joueur_indice] = 1;
 		jeu->manche.nb_couche++;
 		if (jeu->manche.nb_couche == 4) {// si se coucher pour le joueur courant laisse un seul joueur en jeu = ce joueur a gagné la manche
@@ -275,40 +382,163 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 		}
 		just_couche = true;
 		printf("\n\033[1;35mJoueur %d s'est couche\033[0m\n\n", joueur_indice + 1);
+		son_choix(0);
+		char bt[] = " se couche";
+		char ct[2];
+		_itoa(joueur_indice + 1, ct, 10);
+		strcat(ak, ct);
+		strcat(ak, bt);
+		afficher_texte(ak, 13, jeu->graph.log_texte, white);
+		clear_log(jeu);
 		break;
-	case 3: // parole
+	case SDLK_KP3: // parole
 		printf("\n\033[1;35mJoueur %d a parle\033[0m\n\n", joueur_indice + 1);
 		jeu->manche.parole[joueur_indice] = 1;
+		son_choix(1);
+		char ba[] = " fait parole";
+		char ca[2];
+		_itoa(joueur_indice + 1, ca, 10);
+		strcat(ak, ca);
+		strcat(ak, ba);
+		afficher_texte(ak, 13, jeu->graph.log_texte, white);
+		clear_log(jeu);
 		break;
-	case 1: // suivre
+	case SDLK_KP1: // suivre
 		if (jeu->joueur[joueur_indice].mise == jeu->joueur[precedent].mise) {
 			mise(jeu, mise_val, joueur_indice);
 			printf("\n\033[1;35mJoueur %d mise\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1, mise_val); //option choisie miser
+			char bi[] = " mise ";
+			char ci[2];
+			char di[10];
+			char ei[] = "$";
+			_itoa(joueur_indice + 1, ci, 10);
+			strcat(ak, ci);
+			strcat(ak, bi);
+			_itoa(mise_val, di, 10);
+			strcat(ak, di);
+			strcat(ak, ei);
+			afficher_texte(ak, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 		}
 		else {
 			mise(jeu, suivre, joueur_indice);
 			printf("\n\033[1;35mJoueur %d suit avec\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1, suivre); //option choisie suivre
+			char bo[] = " suit avec ";
+			char co[2];
+			char doo[10];
+			char eo[] = "$";
+			_itoa(joueur_indice + 1, co, 10);
+			strcat(ak, co);
+			strcat(ak, bo);
+			_itoa(suivre, doo, 10);
+			strcat(ak, doo);
+			strcat(ak, eo);
+			afficher_texte(ak, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 		}
 		break;
-	case 2: // relancer
+	case SDLK_KP2: // relancer
 		printf("\n\t>>> Relancer : \033[1;32m%d\033[0m$ [1] - \033[1;32m%d\033[0m$ [2] - \033[1;32m%d\033[0m$ [3] - \033[1;32m%d\033[0m$ (Tapis)[4]\n\n", relance, relance2, relance3, tapis); //affichage des options de relance
-		scanf_s("%d", &entry2);
-		switch (entry2) {
-		case 1:
+		char aj[100] = "Relancer ";
+		char aj2[100] = "Relancer ";
+		char aj3[100] = "Relancer ";
+		char aj4[100] = "Relancer ";
+		char bj[10];
+		char cj[] = "$ [1]";
+		_itoa(relance, bj, 10);
+		strcat(aj, bj);
+		strcat(aj, cj);
+		afficher_texte(aj, 13, jeu->graph.action_texte1, white);
+		char dj[10];
+		char ej[] = "$ [2]";
+		_itoa(relance2, dj, 10);
+		strcat(aj2, dj);
+		strcat(aj2, ej);
+		afficher_texte(aj2, 13, jeu->graph.action_texte2, white);
+		char fjj[10];
+		char gj[] = "$ [3]";
+		_itoa(relance3, fjj, 10);
+		strcat(aj3, fjj);
+		strcat(aj3, gj);
+		afficher_texte(aj3, 13, jeu->graph.action_texte3, white);
+		char hj[10];
+		char ij[] = "$ [4]";
+		_itoa(tapis, hj, 10);
+		strcat(aj4, hj);
+		strcat(aj4, ij);
+		afficher_texte(aj4, 13, jeu->graph.action_texte4, white);
+		if (CONSOLE) {
+			scanf_s("%d", &entry2);
+		}
+		int touche;
+		do {
+			touche = attendre_touche();
+		} while (touche != SDLK_KP1 && touche != SDLK_KP2 && touche != SDLK_KP3 && touche != SDLK_KP4);
+		clear_action(jeu);
+		switch (touche) {
+		case SDLK_KP1:
 			mise(jeu, relance, joueur_indice);
 			printf("\n\033[1;35mJoueur %d relance\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1, relance);
+			char bb[] = " relance ";
+			char cb[2];
+			char db[10];
+			char eb[] = "$";
+			_itoa(joueur_indice + 1, cb, 10);
+			strcat(ak, cb);
+			strcat(ak, bb);
+			_itoa(relance, db, 10);
+			strcat(ak, db);
+			strcat(ak, eb);
+			afficher_texte(ak, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 			break;
-		case 2:
+		case SDLK_KP2:
 			mise(jeu, relance2, joueur_indice);
 			printf("\n\033[1;35mJoueur %d relance\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1, relance2);
+			char bq[] = " relance ";
+			char cq[2];
+			char dq[10];
+			char eq[] = "$";
+			_itoa(joueur_indice + 1, cq, 10);
+			strcat(ak, cq);
+			strcat(ak, bq);
+			_itoa(relance2, dq, 10);
+			strcat(ak, dq);
+			strcat(ak, eq);
+			afficher_texte(ak, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 			break;
-		case 3:
+		case SDLK_KP3:
 			mise(jeu, relance3, joueur_indice);
 			printf("\n\033[1;35mJoueur %d relance\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1, relance3);
+			char bz[] = " relance ";
+			char cz[2];
+			char dz[10];
+			char ez[] = "$";
+			_itoa(joueur_indice + 1, cz, 10);
+			strcat(ak, cz);
+			strcat(ak, bz);
+			_itoa(relance3, dz, 10);
+			strcat(ak, dz);
+			strcat(ak, ez);
+			afficher_texte(ak, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 			break;
-		case 4:
+		case SDLK_KP4:
 			mise(jeu, tapis, joueur_indice);
 			printf("\n\033[1;35mJoueur %d fait tapis avec\033[0m \033[1;32m%d\033[0m$\n\n", joueur_indice + 1, tapis);
+			char bm[] = " relance ";
+			char cm[2];
+			char dm[10];
+			char em[] = "$";
+			_itoa(joueur_indice + 1, cm, 10);
+			strcat(ak, cm);
+			strcat(ak, bm);
+			_itoa(tapis, dm, 10);
+			strcat(ak, dm);
+			strcat(ak, em);
+			afficher_texte(ak, 13, jeu->graph.log_texte, white);
+			clear_log(jeu);
 			break;
 		default:
 			break;
@@ -319,7 +549,7 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 	}
 
 	jeu->manche.is_end_round = true;
-	if (entry == 3) { //le cas ou tous les joueurs ont fait parole
+	if (touche == SDLK_KP3) { //le cas ou tous les joueurs ont fait parole
 		for (i = 0; i < 5; i++) {
 			if (jeu->manche.parole[i] != 1 && jeu->manche.couche[i] == 0) { //le joueur n'a pas fait parole et n'est pas couché
 				jeu->manche.is_end_round = false;
@@ -343,6 +573,7 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 // MANCHE
 
 void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et blind, en somme mets tout pret pour re boucler
+	son_choix(2);
 	jeu->joueur[jeu->manche.who_win].solde += jeu->manche.pot; //la gagnant de la manche remporte les gains
 	jeu->manche.pot = 0; // reset du pot
 	if (jeu->manche.big_blind_indice <= 3) { //update big blind indice

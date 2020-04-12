@@ -97,6 +97,15 @@ typedef struct {
 	Point texte_joueur[5];//emplacement affichage joueur
 	Point tapis_image;//image jetons solde tapis
 	Point tapis_texte;//texte solde tapis
+	//zone action
+	Point action_clear;//coord point pour reafficher rectangle = clear
+	Point action_texte1;//coord texte 1
+	Point action_texte2;
+	Point action_texte3;
+	Point action_texte4;
+	//zone log
+	Point log_clear;
+	Point log_texte;
 }Graph;
 
 // emplacements joueurs sur le patron
@@ -179,7 +188,12 @@ void check_main(Jeu*, int);
 void nouvelle_manche(Jeu*);
 int joueur_precedent(Jeu*, int);
 //fonctions graphiques
-void afficher_ttes_cartes(Jeu*);
-void afficher_jeu(Jeu*, int, int);
+void background(void);
+void son_choix(int);
+void son_mise(int);
+void afficher_jeu(Jeu*, int);
+void afficher_flop_pot(Jeu*, int);
+void clear_log(Jeu*);
+void clear_action(Jeu*);
 
 #endif
