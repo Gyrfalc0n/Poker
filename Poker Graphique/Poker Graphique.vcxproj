@@ -103,7 +103,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDLmaind.lib;SDL_ttf.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDLmaind.lib;SDL_ttf.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>

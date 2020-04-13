@@ -178,6 +178,87 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 	}
 }
 
+void afficher_jeu_win(Jeu* jeu) {//affiche le jeu normal mais avec les cartes dévoilées pour tous les joueurs non couchés
+	int emplacement = 0, mise = 0;
+	for (int i = 0; i < 5; i++) {//on affiche les mises pour les 5 joueurs
+		if (jeu->manche.couche[i] == 0) {
+			mise = jeu->joueur[i].mise;
+			char solde_string[10];
+			_itoa(jeu->joueur[i].mise, solde_string, 10);
+			char* dollar = "$";
+			strcat(solde_string, dollar);
+			char joueur[10] = "Joueur ";
+			char joueur2[2];
+			_itoa(i + 1, joueur2, 10);
+			strcat(joueur, joueur2);//joueur est le string Joueur exemple : "Joueur 1"
+			if (mise != 0) {
+				if (mise < 50) {
+					afficher_image(jeu->graph.jetons[0], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 100) {
+					afficher_image(jeu->graph.jetons[1], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 150) {
+					afficher_image(jeu->graph.jetons[2], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 200) {
+					afficher_image(jeu->graph.jetons[3], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 250) {
+					afficher_image(jeu->graph.jetons[4], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 300) {
+					afficher_image(jeu->graph.jetons[5], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 400) {
+					afficher_image(jeu->graph.jetons[6], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 500) {
+					afficher_image(jeu->graph.jetons[7], jeu->graph.slot_mises[i]);
+				}
+				else if (mise < 750) {
+					afficher_image(jeu->graph.jetons[8], jeu->graph.slot_mises[i]);
+				}
+				else { //1000
+					afficher_image(jeu->graph.jetons[9], jeu->graph.slot_mises[i]);
+				}
+			}
+			afficher_texte(solde_string, 15, jeu->graph.slot_texte_mises[i], yellow);//affichage mises par joueur
+			afficher_texte(joueur, 15, jeu->graph.texte_joueur[i], white);//afichage string "Joueur 1"
+			char solde[20] = "Solde: ";
+			char solde2[10];
+			char solde3[] = "$";
+			_itoa(jeu->joueur[i].solde, solde2, 10);
+			strcat(solde, solde2);//joueur est le string Joueur exemple : "Joueur 1"
+			strcat(solde, solde3);
+			int x_solde = jeu->graph.texte_joueur[i].x;
+			int y_solde = jeu->graph.texte_joueur[i].y + 20;
+			Point coord_solde = { x_solde, y_solde };
+			afficher_texte(solde, 11, coord_solde, cyan);//afichage solde joueur
+			afficher_image(jeu->graph.cartes[jeu->joueur[i].main[0]], jeu->graph.slot_carte[i].slot[0]);
+			afficher_image(jeu->graph.cartes[jeu->joueur[i].main[1]], jeu->graph.slot_carte[i].slot[1]);
+		}
+		else {
+			char solde_string2[10];
+			char joueur2[10] = "Joueur ";
+			afficher_texte(solde_string2, 15, jeu->graph.slot_texte_mises[i], yellow);//affichage mises par joueur
+			afficher_texte(joueur2, 15, jeu->graph.texte_joueur[i], white);//afichage string "Joueur 1"
+			char solde[20] = "Solde: ";
+			char solde2[10];
+			char solde3[] = "$";
+			_itoa(jeu->joueur[i].solde, solde2, 10);
+			strcat(solde, solde2);//joueur est le string Joueur exemple : "Joueur 1"
+			strcat(solde, solde3);
+			int x_solde = jeu->graph.texte_joueur[i].x;
+			int y_solde = jeu->graph.texte_joueur[i].y + 20;
+			Point coord_solde = { x_solde, y_solde };
+			afficher_texte(solde, 11, coord_solde, cyan);//afichage solde joueur
+			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[0]);
+			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[1]);
+		}
+	}
+}
+
 void clear_log(Jeu* jeu) {
 	attendre_touche_duree(1200);
 	dessiner_rectangle(jeu->graph.log_clear, 282, 34, zone_texte);

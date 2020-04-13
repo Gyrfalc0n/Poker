@@ -1,6 +1,6 @@
 #ifndef _FONCTIONS_H
 #define _FONCTIONS_H
-#define DEBUG 0 //debug  printf - set to 0 pour annuler les printf de debug
+#define DEBUG 1 //debug  printf - set to 0 pour annuler les printf de debug
 #define CONSOLE 0 //debug console system("")
 
 // GRAPHIQUES
@@ -73,6 +73,8 @@ typedef struct {
 	int nb_couche; //compteur de personnes couchées
 	bool is_end_round; //est a true si le round est fini
 	int who_win; //id du joueur qui gagne la manche
+	int gain;//combien est le montant du gain de la manche
+	int gagnants[5]; //tableau de 0 si joueurs pas gagnant de la manche, 1 sinon
 }Manche;
 
 typedef struct {
@@ -195,5 +197,6 @@ void afficher_jeu(Jeu*, int);
 void afficher_flop_pot(Jeu*, int);
 void clear_log(Jeu*);
 void clear_action(Jeu*);
+void afficher_jeu_win(Jeu*);
 
 #endif

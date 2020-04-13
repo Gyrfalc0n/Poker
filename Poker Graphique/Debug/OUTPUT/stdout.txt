@@ -36,7 +36,7 @@ Cartes sur le tapis :
 --------------------------------------------------------------------------
 
 
-Cartes en main : [01;33mAs [0mde [1;34mPique[0m et [01;33m9 [0mde [1;34mTrefle[0m
+Cartes en main : [01;33m9 [0mde [1;31mCoeur[0m et [01;33m9 [0mde [1;31mCarreau[0m
 
 
 Solde : [1;32m2000[0m$			 Mise actuelle : [1;32m0[0m$
@@ -61,7 +61,7 @@ Cartes sur le tapis :
 --------------------------------------------------------------------------
 
 
-Cartes en main : [01;33mValet [0mde [1;31mCoeur[0m et [01;33m3 [0mde [1;34mPique[0m
+Cartes en main : [01;33mDame [0mde [1;31mCoeur[0m et [01;33m3 [0mde [1;31mCoeur[0m
 
 
 Solde : [1;32m2000[0m$			 Mise actuelle : [1;32m0[0m$
@@ -86,7 +86,7 @@ Cartes sur le tapis :
 --------------------------------------------------------------------------
 
 
-Cartes en main : [01;33m4 [0mde [1;31mCoeur[0m et [01;33m8 [0mde [1;34mTrefle[0m
+Cartes en main : [01;33mValet [0mde [1;31mCarreau[0m et [01;33m2 [0mde [1;34mTrefle[0m
 
 
 Solde : [1;32m2000[0m$			 Mise actuelle : [1;32m0[0m$
@@ -111,7 +111,7 @@ Cartes sur le tapis :
 --------------------------------------------------------------------------
 
 
-Cartes en main : [01;33m9 [0mde [1;34mPique[0m et [01;33mValet [0mde [1;34mTrefle[0m
+Cartes en main : [01;33mAs [0mde [1;31mCarreau[0m et [01;33mAs [0mde [1;34mPique[0m
 
 
 Solde : [1;32m1980[0m$			 Mise actuelle : [1;32m20[0m$
@@ -119,33 +119,455 @@ Solde : [1;32m1980[0m$			 Mise actuelle : [1;32m20[0m$
 	>>>  Suivre([1;32m20[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
 
 Choix : 
-[1;35mJoueur 2 s'est couche[0m
+[1;35mJoueur 2 suit avec[0m [1;32m20[0m$
 
 
 
 
 
 --------------------------------------------------------------------------
-[1;35m			      Le pot est a [1;32m180[0m$
+[1;35m			      Le pot est a [1;32m200[0m$
 --------------------------------------------------------------------------
 
 Table :
 Joueur 1 : [1;32m0[0m$
+Joueur 2 : [1;32m0[0m$
 Joueur 3 : [1;32m0[0m$
 Joueur 5 : [1;32m0[0m$
 
-Cartes sur le tapis : [01;33m7 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mPique[0m | [01;33m8 [0mde [1;31mCoeur[0m | 
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | 
 
 --------------------------------------------------------------------------
 				[ [1;36mJoueur 4[0m ]
 --------------------------------------------------------------------------
 
 
-Cartes en main : [01;33mAs [0mde [1;34mPique[0m et [01;33m9 [0mde [1;34mTrefle[0m
+Cartes en main : [01;33m9 [0mde [1;31mCoeur[0m et [01;33m9 [0mde [1;31mCarreau[0m
 
 
 Solde : [1;32m1960[0m$			 Mise actuelle : [1;32m0[0m$
 
 	>>>  Miser([1;32m10[0m$) [[1;36m1[0m] - Miser plus [[1;36m2[0m] - Parole [[1;36m3[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 4 mise[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m0[0m$
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 5[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mDame [0mde [1;31mCoeur[0m et [01;33m3 [0mde [1;31mCoeur[0m
+
+
+Solde : [1;32m1960[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 5 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 1[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mValet [0mde [1;31mCarreau[0m et [01;33m2 [0mde [1;34mTrefle[0m
+
+
+Solde : [1;32m1960[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 1 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m10[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 2[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mAs [0mde [1;31mCarreau[0m et [01;33mAs [0mde [1;34mPique[0m
+
+
+Solde : [1;32m1960[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 2 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m10[0m$
+Joueur 2 : [1;32m10[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 3[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33m6 [0mde [1;34mPique[0m et [01;33m3 [0mde [1;34mPique[0m
+
+
+Solde : [1;32m1960[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 3 suit avec[0m [1;32m10[0m$
+
+
+
+
+
+--------------------------------------------------------------------------
+[1;35m			      Le pot est a [1;32m250[0m$
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m0[0m$
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 5 : [1;32m0[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 4[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33m9 [0mde [1;31mCoeur[0m et [01;33m9 [0mde [1;31mCarreau[0m
+
+
+Solde : [1;32m1950[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Miser([1;32m10[0m$) [[1;36m1[0m] - Miser plus [[1;36m2[0m] - Parole [[1;36m3[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 4 mise[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m0[0m$
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 5[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mDame [0mde [1;31mCoeur[0m et [01;33m3 [0mde [1;31mCoeur[0m
+
+
+Solde : [1;32m1950[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 5 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 1[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mValet [0mde [1;31mCarreau[0m et [01;33m2 [0mde [1;34mTrefle[0m
+
+
+Solde : [1;32m1950[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 1 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m10[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 2[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mAs [0mde [1;31mCarreau[0m et [01;33mAs [0mde [1;34mPique[0m
+
+
+Solde : [1;32m1950[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 2 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m10[0m$
+Joueur 2 : [1;32m10[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 3[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33m6 [0mde [1;34mPique[0m et [01;33m3 [0mde [1;34mPique[0m
+
+
+Solde : [1;32m1950[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 3 suit avec[0m [1;32m10[0m$
+
+
+
+
+
+--------------------------------------------------------------------------
+[1;35m			      Le pot est a [1;32m300[0m$
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m0[0m$
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 5 : [1;32m0[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | [01;33m3 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 4[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33m9 [0mde [1;31mCoeur[0m et [01;33m9 [0mde [1;31mCarreau[0m
+
+
+Solde : [1;32m1940[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Miser([1;32m10[0m$) [[1;36m1[0m] - Miser plus [[1;36m2[0m] - Parole [[1;36m3[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 4 mise[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m0[0m$
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | [01;33m3 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 5[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mDame [0mde [1;31mCoeur[0m et [01;33m3 [0mde [1;31mCoeur[0m
+
+
+Solde : [1;32m1940[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 5 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | [01;33m3 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 1[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mValet [0mde [1;31mCarreau[0m et [01;33m2 [0mde [1;34mTrefle[0m
+
+
+Solde : [1;32m1940[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 1 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m10[0m$
+Joueur 3 : [1;32m0[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | [01;33m3 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 2[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33mAs [0mde [1;31mCarreau[0m et [01;33mAs [0mde [1;34mPique[0m
+
+
+Solde : [1;32m1940[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 2 suit avec[0m [1;32m10[0m$
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m10[0m$
+Joueur 2 : [1;32m10[0m$
+Joueur 4 : [1;32m10[0m$
+Joueur 5 : [1;32m10[0m$
+
+Cartes sur le tapis : [01;33m2 [0mde [1;31mCarreau[0m | [01;33mValet [0mde [1;34mTrefle[0m | [01;33mRoi [0mde [1;34mTrefle[0m | [01;33m4 [0mde [1;31mCarreau[0m | [01;33m3 [0mde [1;31mCarreau[0m | 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 3[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33m6 [0mde [1;34mPique[0m et [01;33m3 [0mde [1;34mPique[0m
+
+
+Solde : [1;32m1940[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m10[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
+
+Choix : 
+[1;35mJoueur 3 suit avec[0m [1;32m10[0m$
+
+
+
+
+
+--------------------------------------------------------------------------
+[1;35m			      Le pot est a [1;32m350[0m$
+
+
+
+
+--------------------------------------------------------------------------
+				[1;35m[  Mains  ][0m
+--------------------------------------------------------------------------
+
+	Joueur 1 : 
+	Joueur 2 : 
+	Joueur 3 : 
+	Joueur 4 : 
+	Joueur 5 : 
+
+
+
+
+
+--------------------------------------------------------------------------
+				[1;35m[ Manche 2 ][0m
+--------------------------------------------------------------------------
+
+[1;35mJoueur 2 est le donneur[0m
+
+[1;35mJoueur 3 paye le small blind[0m ([1;32m20[0m$)
+
+[1;35mJoueur 4 paye le big blind[0m ([1;32m30[0m$)
+
+--------------------------------------------------------------------------
+
+Table :
+Joueur 1 : [1;32m0[0m$
+Joueur 2 : [1;32m0[0m$
+Joueur 3 : [1;32m40[0m$
+Joueur 4 : [1;32m60[0m$
+
+Cartes sur le tapis : 
+
+--------------------------------------------------------------------------
+				[ [1;36mJoueur 5[0m ]
+--------------------------------------------------------------------------
+
+
+Cartes en main : [01;33m9 [0mde [1;34mTrefle[0m et [01;33m7 [0mde [1;31mCoeur[0m
+
+
+Solde : [1;32m1930[0m$			 Mise actuelle : [1;32m0[0m$
+
+	>>>  Suivre([1;32m60[0m$) [[1;36m1[0m] - Relancer [[1;36m2[0m] - Se coucher [[1;36m4[0m]
 
 Choix : 

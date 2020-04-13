@@ -49,6 +49,7 @@ int main(int argc, char** argv) {
     for (i = 0; i < 15; i++) {
         jeu.manche.cartes[i] = 0;
     }
+    jeu.manche.gain = 0;
     jeu.manche.pot = 0;
     jeu.manche.dealer_indice = 0; // le premier dealer de la partie est le joueur 1
     jeu.manche.small_blind_indice = jeu.manche.dealer_indice + 1;
@@ -59,6 +60,7 @@ int main(int argc, char** argv) {
     for (i = 0; i < 5; i++) {
         jeu.manche.couche[i] = 0; // initialise l'état des 5 joueurs a 0 (pas couché) (serait a 1 si joueur couché)
         jeu.manche.parole[i] = 0;
+        jeu.manche.gagnants[i] = 0;
     }
 
     jeu.manche.who_win = -1;
@@ -307,7 +309,7 @@ int main(int argc, char** argv) {
             system("pause");
         }
         compare_main(&jeu);
-        afficher_main(&jeu, jeu.manche.who_win);//affichage de la main de celui qui a gagné
+        //afficher_main(&jeu, jeu.manche.who_win);//affichage de la main de celui qui a gagné
         //rajouter print pour qui a gagné
         nouvelle_manche(&jeu);
         compteur++;

@@ -4,6 +4,7 @@
 #include <time.h>
 #include <math.h>
 #include <string.h>
+#include <limits.h>
 
 #include <Windows.h>
 #include <mmsystem.h>
@@ -52,19 +53,153 @@ int check_couleur(Jeu* jeu, int joueur_indice, int jeu_joueur[]) {
 // comparaison des mains
 
 void compare_main(Jeu* jeu) {
-	int max = 0;
-	/*bool one_winner = false;
-	for (int i = 0; i < 5; i++) {//determination du nombre de gagnants , par défaut il est a plusieurs
-	}*/
-	//TO FIX plusieurs gagnants
-
-
-	for (int i = 0; i < 5; i++) { //un seul gagnant
+	bool gagnant_unique = false;
+	int max_indice = -1, nb_carte_haute = 0, nb_carte_haute2 = 0, max_indice2 = -1, indice1 = 0, indice2 = 0;
+	int max = 0, nb_gagnants = 0, indice_gagnant;
+	char joueurs_gagnants[5] = { 0 };//rempli de 0 si joueur n'a pas la main gagnante, 1 sinon
+	char carte_hautes[5] = { 0 };//id des joueurs qui ont main gagnante et meme carte haute max = ceux qui vont se répartir le pot
+	char carte_hautes2[5] = { 0 };//id des joueurs qui ont main gagnante et meme carte haute max = ceux qui vont se répartir le pot (cas double pair)
+	for (int i = 0; i < 5; i++) { //determination main la pluys forte parmi les joueurs
 		if (jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[0] > max) {
 			max = jeu->joueur[i].score_main[0];
-			jeu->manche.who_win = i;
+			indice_gagnant = i;
 		}
 	}
+	printf("\nmain max = %d\n", indice_gagnant);
+	bool couleur = false;
+	for (int i = 0; i < 5; i++) { //calcul du nombre de joueurs a la meme main
+		if (jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[0] == max) {
+			joueurs_gagnants[i] = 1; //tableau des joueurs avec main gagnante
+			nb_gagnants++; //calcul diviseur de gain parmi les gagnants
+		}
+	}
+	printf("\nnb gagnants = %d\n", nb_gagnants);
+	nb_gagnants -= 1; //on baisse de 1 parce qu'il s'incrémente la premiere fois pour prendre sa valeur max
+	if (nb_gagnants != 1) {// plusieurs gagnants
+		for (int i = 0; i < 5; i++) { //determination carte haute de la main gagnante
+			if (jeu->manche.couche[i] == 0 && joueurs_gagnants[i] == 1) {
+				switch (jeu->joueur[i].score_main[0]) {
+				case 5: //cas couleur, tout joueur avec la main gagne
+					couleur = true;
+					break;
+				default://tous les autres cas
+					if (jeu->joueur[i].score_main[1] > max_indice) {
+						max_indice = jeu->joueur[i].score_main[1];
+					}
+					break;
+				}
+			}
+		}
+		printf("\nmax indice1 = %d\n", max_indice);
+		if (couleur) {
+			for (int i = 0; i < 5; i++) {
+				if (joueurs_gagnants[i] == 1) {
+					jeu->manche.gagnants[i] = 1;
+				}
+			}
+			int gain_couleur = jeu->manche.pot / nb_gagnants;
+			background();
+			afficher_flop_pot(jeu, 5);
+			afficher_jeu_win(jeu);
+			for (int i = 0; i < 5; i++) {
+				if (joueurs_gagnants[i] == 1) {
+					jeu->joueur[i].solde += gain_couleur;
+					jeu->manche.gain = gain_couleur;
+					afficher_main(jeu, i);
+				}
+			}
+			goto end;
+		}
+		for (int i = 0; i < 5; i++) { //calcul du nombre de joueurs a la meme carte haute pour main gagnante
+			if (jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[1] == max_indice) {
+				carte_hautes[i] = 1; //tableau des joueurs avec main gagnante et meme carte haute gagnante
+				jeu->manche.gagnants[i] = 1;
+				indice1 = i;
+				nb_carte_haute++;
+			}
+		}
+		printf("\nnb carte haute = %d\n", nb_carte_haute);
+		if ( (max == 3 || max == 2 || max == 7) && nb_carte_haute > 1) {//cas de la double pair, de la pair et du full ou il faut check le 2eme indice
+			for (int i = 0; i < 5; i++) {//reset
+				jeu->manche.gagnants[i] = 0;
+				if (carte_hautes[i] && jeu->joueur[i].score_main[2] > max_indice2) {
+					max_indice2 = jeu->joueur[i].score_main[2];
+				}
+			}
+			printf("\nmax indice2 = %d\n", max_indice2);
+			for (int i = 0; i < 5; i++) { //calcul du nombre de joueurs a la meme carte haute pour main gagnante
+				if (carte_hautes[i] && jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[2] == max_indice2) {
+					carte_hautes2[i] = 1; //tableau des joueurs avec main gagnante et meme carte haute gagnante
+					jeu->manche.gagnants[i] = 1;
+					indice2 = i;
+					nb_carte_haute2++;
+				}
+			}
+			printf("\nnb carte haute2 = %d\n", nb_carte_haute2);
+			if (indice2 == 1) {//plusieurs joueurs qui ont la meme main, et la meme carte haute indice1, mais un seul a la max carte haute indice2
+				int gain4 = jeu->manche.pot;
+				jeu->manche.who_win = indice2;
+				background();
+				afficher_flop_pot(jeu, 5);
+				afficher_jeu_win(jeu);
+				jeu->joueur[indice2].solde += gain4;
+				jeu->manche.gain = gain4;
+				afficher_main(jeu, indice2);
+			}
+			else { //plusieurs joueurs qui ont la meme main, et la meme carte haute indice1, et plusieurs meme carte haute indice2
+				int gain_dblpair = jeu->manche.pot / nb_carte_haute2;
+				jeu->manche.who_win = indice2;
+				background();
+				afficher_flop_pot(jeu, 5);
+				afficher_jeu_win(jeu);
+				for (int i = 0; i < 5; i++) {
+					if (joueurs_gagnants[i] == 1) {
+						jeu->joueur[i].solde += gain_dblpair;
+						jeu->manche.gain = gain_dblpair;
+						afficher_main(jeu, i);
+					}
+				}
+				goto end;
+			}
+
+		}
+		else {
+			if (nb_carte_haute != 1) {//plusieurs personnes qui ont la meme main et la meme carte haute sans etre dans les cas ou il faut check indice 2
+				int gain = jeu->manche.pot / nb_carte_haute;
+				background();
+				afficher_flop_pot(jeu, 5);
+				afficher_jeu_win(jeu);
+				for (int i = 0; i < 5; i++) {
+					if (carte_hautes[i] == 1) {
+						jeu->joueur[i].solde += gain;
+						jeu->manche.gain = gain;
+						afficher_main(jeu, i);
+					}
+				}
+			}
+			else {// cas ou il y a  plusieurs personnes avec la meme main mais une seule avec indice1 max
+				int gain3 = jeu->manche.pot;
+				jeu->manche.who_win = indice1;
+				background();
+				afficher_flop_pot(jeu, 5);
+				afficher_jeu_win(jeu);
+				jeu->joueur[indice1].solde += gain3;
+				jeu->manche.gain = gain3;
+				afficher_main(jeu, indice1);
+			}
+		}
+	}
+	else {//un seul joueur qui a la main gagnante
+		int gain2 = jeu->manche.pot;
+		jeu->manche.who_win = indice_gagnant;
+		background();
+		afficher_flop_pot(jeu, 5);
+		afficher_jeu_win(jeu);
+		jeu->joueur[indice_gagnant].solde += gain2;
+		jeu->manche.gain = gain2;
+		afficher_main(jeu, indice_gagnant);
+	}
+end:;//etiquette fin de fonction
 }
 
 void afficher_main(Jeu* jeu, int joueur_indice) {
@@ -186,20 +321,32 @@ void afficher_main(Jeu* jeu, int joueur_indice) {
 	char doublepair[100] = "Double paire aux ";
 	char doublepair2[] = " et aux ";
 	char brelan[100] = "Brelan aux ";
-	char quinte[100] = "Quinte ";
+	char quinte[] = "Quinte ";
 	char couleur2[100] = "Couleur ";
 	char full[100] = "Full aux ";
 	char full2[] = "par les ";
 	char carre[100] = "Carre aux ";
 	char quinteflush[100] = "Quinte Flush ";
 	char quinteflushroyale[100] = "Quinte Flush Royale";
+	char log_win[100] = "Joueur ";
+	char log_win2[] = " : gagne ";
+	char log_win_temp[10];
+	char log_win3[] = "$";
+	strcat(log_win, temp);
+	strcat(log_win, log_win2);
+	_itoa(jeu->manche.gain, log_win_temp, 10);
+	strcat(log_win, log_win_temp);
+	strcat(log_win, log_win3);
+	char parenthese[] = ")";
 	switch (jeu->joueur[joueur_indice].score_main[0]) {
 	case 1:
 		printf("Carte haute ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", indice1);
 		strcat(cartehaute, indice1);
-		afficher_texte(cartehaute, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(cartehaute, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, cartehaute);
+		strcat(joueur, parenthese);
 		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
@@ -207,7 +354,8 @@ void afficher_main(Jeu* jeu, int joueur_indice) {
 		printf("Paire de ");
 		printf("\033[1;32m%s\033[0m", indice1);
 		strcat(paire, indice1);
-		afficher_texte(paire, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(paire, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, paire);
 		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
@@ -220,7 +368,8 @@ void afficher_main(Jeu* jeu, int joueur_indice) {
 		strcat(doublepair, indice1);
 		strcat(doublepair, doublepair2);
 		strcat(doublepair, indice2);
-		afficher_texte(doublepair, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(doublepair, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, doublepair);
 		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
@@ -229,25 +378,25 @@ void afficher_main(Jeu* jeu, int joueur_indice) {
 		printf("Brelan aux ");
 		printf("\033[1;32m%s\033[0m", indice1);
 		strcat(brelan, indice1);
-		afficher_texte(brelan, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(brelan, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, brelan);
-		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 5:
 		printf("Quinte ");
-		afficher_texte(quinte, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(quinte, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, quinte);
-		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 6:
 		printf("Couleur ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
 		strcat(couleur2, couleur);
-		afficher_texte(couleur2, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(couleur2, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, couleur2);
-		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 7:
@@ -258,36 +407,36 @@ void afficher_main(Jeu* jeu, int joueur_indice) {
 		strcat(full, indice1);
 		strcat(full, full2);
 		strcat(full, indice2);
-		afficher_texte(full, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(full, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, full);
-		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 8:
 		printf("Carré aux ");
 		printf("\033[1;32m%s\033[0m", indice1);
 		strcat(carre, indice1);
-		afficher_texte(carre, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(carre, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, carre);
-		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 9:
 		printf("Quinte flush ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
 		strcat(quinteflush, couleur);
-		afficher_texte(quinteflush, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(quinteflush, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, quinteflush);
-		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 10:
 		printf("Quinte flush royale ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
 		strcat(quinteflushroyale, couleur);
-		afficher_texte(quinteflushroyale, 13, jeu->graph.log_texte, yellow);
+		//afficher_texte(quinteflushroyale, 13, jeu->graph.log_texte, yellow);
+		afficher_texte(log_win, 13, jeu->graph.log_texte, yellow);
 		strcat(joueur, quinteflushroyale);
-		clear_action(jeu);
 		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	default:
@@ -345,10 +494,11 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	jeu_joueur[6] = jeu->manche.cartes[14]; // jeu_joueur contient donc les 7 cartes du joueur courant
 
 	//realisation tableau d'effectif
-	int effectif_carte[13] = { 0 };
+	int effectif_carte[14] = { 0 };
 	for (int i = 0; i < 7; i++) {
 		if (jeu_joueur[i] == 1 || jeu_joueur[i] == 14 || jeu_joueur[i] == 27 || jeu_joueur[i] == 40) {
 			effectif_carte[0]++; //as
+			effectif_carte[13]++; //as
 		}
 		if (jeu_joueur[i] == 2 || jeu_joueur[i] == 15 || jeu_joueur[i] == 28 || jeu_joueur[i] == 41) {
 			effectif_carte[1]++;
@@ -391,7 +541,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 	//	bool high = true, pair = false, dble_pair = false, brelan = false, quinte = false, couleur = false, full = false, carre = false, flush = false, flush_royal = false;
 
 	int max = INT_MIN, indice = -1;
-	for (int i = 0; i < 13; i++) {
+	for (int i = 0; i < 14; i++) {
 		if (effectif_carte[i] > max) {
 			max = effectif_carte[i];
 			indice = i; //indice c'est l'ID de effectif carte le plus haut

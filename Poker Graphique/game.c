@@ -270,7 +270,7 @@ void afficher_round(Jeu* jeu, int joueur_indice, int flop_indice) { // affiche l
 		//debug
 		printf("\n\n");
 		check_main(jeu, joueur_indice);
-		afficher_main(jeu, joueur_indice);
+		//afficher_main(jeu, joueur_indice);
 		printf("\n\n");
 		//debug
 	}
@@ -610,6 +610,8 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 		jeu->joueur[i].score_main[1] = -1;// reset des scores et type de mains
 		jeu->joueur[i].score_main[2] = -1;
 		jeu->joueur[i].score_main[3] = 0;
+		jeu->manche.gagnants[i] = 0;
 	}
+	jeu->manche.gain = 0;
 
 }
