@@ -300,7 +300,6 @@ int main(int argc, char** argv) {
             if (jeu.manche.couche[i] == 0) {
                 check_main(&jeu, i);
                 printf("\n\tJoueur %d : ", i + 1);
-                afficher_main(&jeu, i);
             }
         }
         printf("\n\n");
@@ -308,6 +307,7 @@ int main(int argc, char** argv) {
             system("pause");
         }
         compare_main(&jeu);
+        afficher_main(&jeu, jeu.manche.who_win);//affichage de la main de celui qui a gagné
         //rajouter print pour qui a gagné
         nouvelle_manche(&jeu);
         compteur++;

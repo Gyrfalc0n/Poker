@@ -558,7 +558,7 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 	}
 	else {
 		for (i = 0; i < 5; i++) {
-			if (jeu->manche.couche[i] == 0 || just_couche) { //si le joueur n'est pas couché, ou vient de se coucher
+			if (jeu->manche.couche[i] == 0) { //si le joueur n'est pas couché, ou vient de se coucher |||| || just_couche
 				for (int j = 0; j < 5; j++) {
 					if (jeu->manche.couche[j] == 0 && jeu->joueur[i].mise != 0 && jeu->joueur[i].mise != jeu->joueur[j].mise) { //si joueur comparés en lignes, mises pas 0 (pas trigger quand parole) et si les mises sont pas égales
 						jeu->manche.is_end_round = false;

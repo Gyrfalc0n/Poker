@@ -179,13 +179,13 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 }
 
 void clear_log(Jeu* jeu) {
-	attendre_touche_duree(1600);
+	attendre_touche_duree(1200);
 	dessiner_rectangle(jeu->graph.log_clear, 282, 34, zone_texte);
 	actualiser();
 }
 
 void clear_action(Jeu* jeu) {
-	attendre_touche_duree(1600);
+	attendre_touche_duree(1200);
 	dessiner_rectangle(jeu->graph.action_clear, 510, 63, zone_texte);
 	actualiser();
 }

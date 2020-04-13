@@ -175,54 +175,133 @@ void afficher_main(Jeu* jeu, int joueur_indice) {
 	}
 	//printf("\tMain actuelle :  \033[1;36m");
 	printf("\033[1;36m");
+	char joueur[120] = "Joueur ";
+	char temp[2];
+	char joueur2[] = " gagne avec ";
+	_itoa(joueur_indice+1, temp, 10);
+	strcat(joueur, temp);
+	strcat(joueur, joueur2);
+	char cartehaute[100] = "Carte haute (";
+	char paire[100] = "Paire de ";
+	char doublepair[100] = "Double paire aux ";
+	char doublepair2[] = " et aux ";
+	char brelan[100] = "Brelan aux ";
+	char quinte[100] = "Quinte ";
+	char couleur2[100] = "Couleur ";
+	char full[100] = "Full aux ";
+	char full2[] = "par les ";
+	char carre[100] = "Carre aux ";
+	char quinteflush[100] = "Quinte Flush ";
+	char quinteflushroyale[100] = "Quinte Flush Royale";
 	switch (jeu->joueur[joueur_indice].score_main[0]) {
 	case 1:
 		printf("Carte haute ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", indice1);
+		strcat(cartehaute, indice1);
+		afficher_texte(cartehaute, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, cartehaute);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 2:
 		printf("Paire de ");
 		printf("\033[1;32m%s\033[0m", indice1);
+		strcat(paire, indice1);
+		afficher_texte(paire, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, paire);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 3:
 		printf("Double paire aux ");
 		printf("\033[1;32m%s\033[0m", indice1);
 		printf("\033[1;36m et aux ");
 		printf("\033[1;32m%s\033[0m", indice2);
+		strcat(doublepair, indice1);
+		strcat(doublepair, doublepair2);
+		strcat(doublepair, indice2);
+		afficher_texte(doublepair, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, doublepair);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 4:
 		printf("Brelan aux ");
 		printf("\033[1;32m%s\033[0m", indice1);
+		strcat(brelan, indice1);
+		afficher_texte(brelan, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, brelan);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 5:
 		printf("Quinte ");
+		afficher_texte(quinte, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, quinte);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 6:
 		printf("Couleur ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
+		strcat(couleur2, couleur);
+		afficher_texte(couleur2, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, couleur2);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 7:
 		printf("Full aux ");
 		printf("\033[1;32m%s\033[0m", indice1);
 		printf("\033[1;36m par les ");
 		printf("\033[1;32m%s\033[0m", indice2);
+		strcat(full, indice1);
+		strcat(full, full2);
+		strcat(full, indice2);
+		afficher_texte(full, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, full);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 8:
 		printf("Carré aux ");
 		printf("\033[1;32m%s\033[0m", indice1);
+		strcat(carre, indice1);
+		afficher_texte(carre, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, carre);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 9:
 		printf("Quinte flush ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
+		strcat(quinteflush, couleur);
+		afficher_texte(quinteflush, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, quinteflush);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	case 10:
 		printf("Quinte flush royale ");
 		printf("\033[0m(\033[1;32m%s\033[0m)", couleur);
+		strcat(quinteflushroyale, couleur);
+		afficher_texte(quinteflushroyale, 13, jeu->graph.log_texte, yellow);
+		strcat(joueur, quinteflushroyale);
+		clear_action(jeu);
+		afficher_texte(joueur, 13, jeu->graph.action_texte1, yellow);
 		break;
 	default:
 		printf("score_main du joueur = 0 ");
 		break;
 	}
+	char tempx[] = "Appuyez sur ENTREE pour continuer";
+	afficher_texte(tempx, 13, jeu->graph.action_texte2, lightgrey);
+	int touche;
+	do {
+		touche = attendre_touche();
+	} while (touche != SDLK_RETURN);
+	clear_log(jeu);
+	clear_action(jeu);
 }
 
 
