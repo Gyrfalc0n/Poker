@@ -89,7 +89,7 @@ typedef struct {
 }Slot;
 
 typedef struct {
-	char* cartes[53]; //tableau des fichiers des cartes
+	char* cartes[54]; //tableau des fichiers des cartes
 	Point slot_mises[5];// exemple : slot_mises[2].x = emplacement mise coord x de l'emplacement joueur 2
 	Point slot_texte_mises[5];// exemple : slot_texte_mises[0].x = emplacement de texte coord x de l'emplacement joueur 0
 	Slot slot_carte[5]; // exemple : slot_carte[1].slot[0].x = 329 = emplacement joueur 1, premier slot, coord x = 329
@@ -108,6 +108,7 @@ typedef struct {
 	//zone log
 	Point log_clear;
 	Point log_texte;
+	Point dealer[5];//emplacement jeton dealer
 }Graph;
 
 // emplacements joueurs sur le patron

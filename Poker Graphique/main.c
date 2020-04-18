@@ -123,6 +123,7 @@ int main(int argc, char** argv) {
     jeu.graph.cartes[50] = "images/JC.bmp";
     jeu.graph.cartes[51] = "images/QC.bmp";
     jeu.graph.cartes[52] = "images/KC.bmp";
+    jeu.graph.cartes[53] = "images/fold.bmp";
     //jetons
     jeu.graph.jetons[0] = "images/jeton1.bmp";
     jeu.graph.jetons[1] = "images/jeton2.bmp";
@@ -221,6 +222,17 @@ int main(int argc, char** argv) {
     jeu.graph.log_clear.y = 530;
     jeu.graph.log_texte.x = 55;
     jeu.graph.log_texte.y = 539;
+    //dealer jeton
+    jeu.graph.dealer[0].x = 711;
+    jeu.graph.dealer[0].y = 577;
+    jeu.graph.dealer[1].x = 68;
+    jeu.graph.dealer[1].y = 484;
+    jeu.graph.dealer[2].x = 117;
+    jeu.graph.dealer[2].y = 110;
+    jeu.graph.dealer[3].x = 1086;
+    jeu.graph.dealer[3].y = 105;
+    jeu.graph.dealer[4].x = 1148;
+    jeu.graph.dealer[4].y = 478;
     // -------------------------------------------------------------------------------------------------------------------------
 
     /*

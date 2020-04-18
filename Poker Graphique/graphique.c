@@ -111,7 +111,9 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 	afficher_image(jeu->graph.cartes[jeu->joueur[joueur_indice].main[0]], jeu->graph.slot_carte[emplacement].slot[0]);
 	afficher_image(jeu->graph.cartes[jeu->joueur[joueur_indice].main[1]], jeu->graph.slot_carte[emplacement].slot[1]);
 	//affichage image et texte du pot
-
+	if (jeu->manche.dealer_indice == joueur_indice) {
+		afficher_image("images/dealer.bmp", jeu->graph.dealer[0]);
+	}
 	for (int i = 0; i < 5; i++) {//on affiche les mises pour les 5 joueurs
 		mise = jeu->joueur[joueur_indice].mise;
 		char solde_string[10];
@@ -153,6 +155,9 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 			else { //1000
 				afficher_image(jeu->graph.jetons[9], jeu->graph.slot_mises[i]);
 			}
+			if (jeu->manche.dealer_indice == joueur_indice) {
+				afficher_image("images/dealer.bmp", jeu->graph.dealer[i]);
+			}
 		}
 		afficher_texte(solde_string, 15, jeu->graph.slot_texte_mises[emplacement], yellow);//affichage mises par joueur
 		afficher_texte(joueur, 15, jeu->graph.texte_joueur[emplacement], white);//afichage string "Joueur 1"
@@ -173,8 +178,14 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 		}
 	}
 	for (int i = 1; i < 5; i++) { //affichage des cartes de dos
-		afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[0]);
-		afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[1]);
+		if (jeu->manche.couche[i] == 0) {
+			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[0]);
+			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[1]);
+		}
+		else {//afficher carte couché
+			afficher_image(jeu->graph.cartes[53], jeu->graph.slot_carte[i].slot[0]);
+		}
+
 	}
 }
 
@@ -253,8 +264,10 @@ void afficher_jeu_win(Jeu* jeu) {//affiche le jeu normal mais avec les cartes dé
 			int y_solde = jeu->graph.texte_joueur[i].y + 20;
 			Point coord_solde = { x_solde, y_solde };
 			afficher_texte(solde, 11, coord_solde, cyan);//afichage solde joueur
-			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[0]);
-			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[1]);
+			afficher_image(jeu->graph.cartes[53], jeu->graph.slot_carte[i].slot[0]);
+		}
+		if (jeu->manche.dealer_indice == i) {
+			afficher_image("images/dealer.bmp", jeu->graph.dealer[i]);
 		}
 	}
 }
