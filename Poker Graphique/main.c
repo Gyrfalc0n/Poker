@@ -249,6 +249,19 @@ int main(int argc, char** argv) {
         p = attendre_clic();
     }
     */
+    // DEBUG GRAPHIQUE 2
+
+    if (DEBUG2) {
+        ouvrir_fenetre(1280, 720);
+        background();
+        for (int i = 0; i < 5; i++) {
+            afficher_image("images/dealer.bmp", jeu.graph.dealer[i]);
+        }
+        Point k = { BASEX, BASEY };
+        k = attendre_clic();
+    }
+
+
 
     // -------------------------------------------------------------------------------------------------------------------------
     

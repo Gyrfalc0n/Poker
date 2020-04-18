@@ -113,7 +113,7 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 	//affichage image et texte du pot
 	if (jeu->manche.dealer_indice == joueur_indice) {
 		afficher_image("images/dealer.bmp", jeu->graph.dealer[0]);
-	}
+	} else { printf("debug afichage dealer bad emplacement 0"); }
 	for (int i = 0; i < 5; i++) {//on affiche les mises pour les 5 joueurs
 		mise = jeu->joueur[joueur_indice].mise;
 		char solde_string[10];
@@ -155,9 +155,9 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 			else { //1000
 				afficher_image(jeu->graph.jetons[9], jeu->graph.slot_mises[i]);
 			}
-			if (jeu->manche.dealer_indice == joueur_indice) {
-				afficher_image("images/dealer.bmp", jeu->graph.dealer[i]);
-			}
+		}
+		if (jeu->manche.dealer_indice == joueur_indice) {
+			afficher_image("images/dealer.bmp", jeu->graph.dealer[i]);
 		}
 		afficher_texte(solde_string, 15, jeu->graph.slot_texte_mises[emplacement], yellow);//affichage mises par joueur
 		afficher_texte(joueur, 15, jeu->graph.texte_joueur[emplacement], white);//afichage string "Joueur 1"

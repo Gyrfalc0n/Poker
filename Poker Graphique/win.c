@@ -108,7 +108,7 @@ void compare_main(Jeu* jeu) {
 					afficher_main(jeu, i);
 				}
 			}
-			goto end;
+			goto end_boucle;
 		}
 		for (int i = 0; i < 5; i++) { //calcul du nombre de joueurs a la meme carte haute pour main gagnante
 			if (jeu->manche.couche[i] == 0 && jeu->joueur[i].score_main[1] == max_indice) {
@@ -159,7 +159,7 @@ void compare_main(Jeu* jeu) {
 						afficher_main(jeu, i);
 					}
 				}
-				goto end;
+				goto end_boucle;
 			}
 
 		}
@@ -199,7 +199,7 @@ void compare_main(Jeu* jeu) {
 		jeu->manche.gain = gain2;
 		afficher_main(jeu, indice_gagnant);
 	}
-end:;//etiquette fin de fonction
+end_boucle:;//etiquette fin de fonction
 }
 
 void afficher_main(Jeu* jeu, int joueur_indice) {
@@ -690,7 +690,7 @@ void check_main(Jeu* jeu, int joueur_indice) {
 			jeu->joueur[joueur_indice].score_main[0] = 1; //carte haute
 			jeu->joueur[joueur_indice].score_main[1] = carte_haute;
 		}
-	fin://identificateur sortie de boucle
+	fin: //identificateur sortie de boucle
 		break;
 	default:
 		if (DEBUG == 1) {

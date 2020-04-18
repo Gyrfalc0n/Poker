@@ -1,6 +1,7 @@
 #ifndef _FONCTIONS_H
 #define _FONCTIONS_H
 #define DEBUG 1 //debug  printf - set to 0 pour annuler les printf de debug
+#define DEBUG2 0
 #define CONSOLE 0 //debug console system("")
 
 // GRAPHIQUES
