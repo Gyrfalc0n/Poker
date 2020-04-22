@@ -8,7 +8,7 @@ Poker Graphique est un jeu codé en **C**, s'executant en fenêtre grâce à la 
 ## Comment jouer
 Suivez ces instructions pour savoir comment jouer et comment faire fonctionner le jeu.
 ### Lancer le jeu
-* **Extraire** le fichier *.rar* que vous trouverez dans les *Releases*
+* **Extraire** le fichier *.rar* que vous trouverez dans les [*Releases*](https://github.com/Gyrfalc0n/Poker/releases)
 * **Executer** le *.exe*
 ### Contrôles
 Le jeu utilise les touches du clavier comme contrôles. Plus particulièrement, les touches sont les chiffres **1**, **2**, **3** et **4** du pavé numérique ainsi que la touche **Entrée**.
