@@ -16,4 +16,4 @@ Le jeu utilise les touches du clavier comme contrôles. Plus particulièrement, 
 Le jeu est prévu pour 5 joueurs humains, joués sur le même ordinateur.
 
 ## Auteur
-* **Gyrfalc0n**
+* [**Gyrfalc0n**](https://github.com/Gyrfalc0n)
