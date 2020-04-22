@@ -5,7 +5,7 @@ Poker Graphique est un projet étudiant en première année de DUT Réseaux et T
 ## Description
 Poker Graphique est un jeu codé en **C**, s'executant en fenêtre grâce à la **SDL 1.2**. Le jeu comprends aussi quelques sons. Pour information, il est compilé en 32 bits.
 
-## Comment jouer
+## Comment jouer ?
 Suivez ces instructions pour savoir comment jouer et comment faire fonctionner le jeu.
 ### Lancer le jeu
 * **Extraire** le fichier *.rar* que vous trouverez dans les [*Releases*](https://github.com/Gyrfalc0n/Poker/releases)
