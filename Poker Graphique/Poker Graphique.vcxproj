@@ -74,14 +74,14 @@
     <ReferencePath>$(ReferencePath)</ReferencePath>
     <IncludePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\include\SDL;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\debug\lib\manual-link;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Configuration)\OUTPUT\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\v2.3\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <ReferencePath>$(ReferencePath)</ReferencePath>
     <IncludePath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\include\SDL;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL\debug\lib\manual-link;D:\Document D\IUT Velizy\Cours\Poker\Poker\Poker Graphique\SDL_ttf\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Configuration)\OUTPUT\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\v2.3\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -103,7 +103,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDLmaind.lib;SDL_ttf.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDLmaind.lib;SDL_ttf.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>

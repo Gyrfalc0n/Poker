@@ -114,6 +114,10 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 	if (jeu->manche.dealer_indice == joueur_indice) {
 		afficher_image("images/dealer.bmp", jeu->graph.dealer[0]);
 	} else { printf("debug afichage dealer bad emplacement 0"); }
+	for (int i = 1; i < 5; i++) { //affichage des cartes de dos
+		afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[0]);
+		afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[1]);
+	}
 	for (int i = 0; i < 5; i++) {//on affiche les mises pour les 5 joueurs
 		mise = jeu->joueur[joueur_indice].mise;
 		char solde_string[10];
@@ -156,6 +160,9 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 				afficher_image(jeu->graph.jetons[9], jeu->graph.slot_mises[i]);
 			}
 		}
+		if (jeu->manche.couche[joueur_indice] == 1) {
+			afficher_image(jeu->graph.cartes[53], jeu->graph.slot_carte[i].slot[0]);
+		}
 		if (jeu->manche.dealer_indice == joueur_indice) {
 			afficher_image("images/dealer.bmp", jeu->graph.dealer[i]);
 		}
@@ -177,29 +184,20 @@ void afficher_jeu(Jeu* jeu, int joueur_indice) {
 			joueur_indice = 0;
 		}
 	}
-	for (int i = 1; i < 5; i++) { //affichage des cartes de dos
-		if (jeu->manche.couche[i] == 0) {
-			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[0]);
-			afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[i].slot[1]);
-		}
-		else {//afficher carte couché
-			afficher_image(jeu->graph.cartes[53], jeu->graph.slot_carte[i].slot[0]);
-		}
-
-	}
 }
 
 void afficher_jeu_win(Jeu* jeu) {//affiche le jeu normal mais avec les cartes dévoilées pour tous les joueurs non couchés
 	int emplacement = 0, mise = 0;
+
 	for (int i = 0; i < 5; i++) {//on affiche les mises pour les 5 joueurs
-		if (jeu->manche.couche[i] == 0) {
+		char joueur[15] = "Joueur ";
+		char joueur2[2];
+		if (jeu->manche.couche[i] == 0 && jeu->joueur[i].solde > 0) {
 			mise = jeu->joueur[i].mise;
 			char solde_string[10];
 			_itoa(jeu->joueur[i].mise, solde_string, 10);
 			char* dollar = "$";
 			strcat(solde_string, dollar);
-			char joueur[10] = "Joueur ";
-			char joueur2[2];
 			_itoa(i + 1, joueur2, 10);
 			strcat(joueur, joueur2);//joueur est le string Joueur exemple : "Joueur 1"
 			if (mise != 0) {
@@ -249,11 +247,8 @@ void afficher_jeu_win(Jeu* jeu) {//affiche le jeu normal mais avec les cartes dé
 			afficher_image(jeu->graph.cartes[jeu->joueur[i].main[0]], jeu->graph.slot_carte[i].slot[0]);
 			afficher_image(jeu->graph.cartes[jeu->joueur[i].main[1]], jeu->graph.slot_carte[i].slot[1]);
 		}
-		else {
-			char solde_string2[10];
-			char joueur2[10] = "Joueur ";
-			afficher_texte(solde_string2, 15, jeu->graph.slot_texte_mises[i], yellow);//affichage mises par joueur
-			afficher_texte(joueur2, 15, jeu->graph.texte_joueur[i], white);//afichage string "Joueur 1"
+		else {// joueur couché ou solde = 0
+			char solde_string2[15];
 			char solde[20] = "Solde: ";
 			char solde2[10];
 			char solde3[] = "$";
@@ -265,6 +260,14 @@ void afficher_jeu_win(Jeu* jeu) {//affiche le jeu normal mais avec les cartes dé
 			Point coord_solde = { x_solde, y_solde };
 			afficher_texte(solde, 11, coord_solde, cyan);//afichage solde joueur
 			afficher_image(jeu->graph.cartes[53], jeu->graph.slot_carte[i].slot[0]);
+			char mise[10];
+			_itoa(jeu->joueur[i].mise, mise, 10);
+			strcat(solde_string2, mise);
+			strcat(solde_string2, solde3);
+			_itoa(i + 1, joueur2, 10);
+			strcat(joueur, joueur2);//joueur est le string Joueur exemple : "Joueur 1"
+			afficher_texte(solde_string2, 15, jeu->graph.slot_texte_mises[i], yellow);//affichage mises par joueur
+			afficher_texte(joueur2, 15, jeu->graph.texte_joueur[i], white);//afichage string "Joueur 1"
 		}
 		if (jeu->manche.dealer_indice == i) {
 			afficher_image("images/dealer.bmp", jeu->graph.dealer[i]);
@@ -282,4 +285,16 @@ void clear_action(Jeu* jeu) {
 	attendre_touche_duree(1200);
 	dessiner_rectangle(jeu->graph.action_clear, 510, 63, zone_texte);
 	actualiser();
+}
+
+void joueur_suivant(Jeu* jeu) {
+	clear_action(jeu);
+	afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[0].slot[0]);
+	afficher_image(jeu->graph.cartes[0], jeu->graph.slot_carte[0].slot[1]);
+	char temp[] = "Appuyez sur ENTREE pour passer au joueur suivant";
+	afficher_texte(temp, 11, jeu->graph.action_texte2, white);
+	int touche;
+	do {
+		touche = attendre_touche();
+	} while (touche != SDLK_RETURN);
 }

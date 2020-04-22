@@ -18,15 +18,6 @@ int random(int lower, int upper) // génération basée sur le temps d'un entier al
 	return num;
 }
 
-bool is_winner_game(Jeu* jeu) { //return true si tous les joueurs sont couchés = quand un joueur a win la partie (on lui mets sa variable couché a 1) false sinon // AJOUTER ID JOUEUR QUI WIN LE JEU
-	for (int i = 0; i < 5; i++) {
-		if (jeu->manche.couche[i] == 0) { //METTRE CETTE FONCTION AVANT NOUVELLE MANCHE DANS BOUCLE
-			return false;
-		}
-	}
-	return true;
-}
-
 void afficher_cartes(int id) { //print quelle est la carte a partir de son id (ex : As de Coeur pour id = 1)
 	// print valeur de la carte
 	if (id == 1 || id == 14 || id == 27 || id == 40) {
@@ -147,8 +138,17 @@ void mise(Jeu* jeu, int ammount, int joueur_indice) { //trigger quand un joueur 
 		char a[100] = "Joueur ";
 		switch (touche)
 		{
-		case SDLK_KP1:
+		case SDLK_KP1: //se coucher
 			jeu->manche.couche[joueur_indice] = 1;
+			jeu->manche.nb_couche++;
+			if (jeu->manche.nb_couche == 4) {// si se coucher pour le joueur courant laisse un seul joueur en jeu = ce joueur a gagné la manche
+				jeu->manche.is_end_round = true;
+				for (int i = 0; i < 5; i++) { //condition pour coucher le dernier joueur en vie = le gagnant pour mettre fin a la manche
+					if (jeu->manche.couche[i] == 0) { //le gagnant de la manche est le seul a etre encore en jeu (pas couché) = victoire par forfait
+						jeu->manche.who_win = i;
+					}
+				}
+			}
 			char b[] = " se couche";// attention just couche pas modif
 			char c[2];
 			_itoa(joueur_indice + 1, c, 10);
@@ -376,7 +376,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			for (int i = 0; i < 5; i++) { //condition pour coucher le dernier joueur en vie = le gagnant pour mettre fin a la manche
 				if (jeu->manche.couche[i] == 0) { //le gagnant de la manche est le seul a etre encore en jeu (pas couché) = victoire par forfait
 					jeu->manche.who_win = i; // RESTE A AJOUTER DETERMINATION WIN POUR QUAND RESTE PLUS QUE 1 JOUEUR EN JEU A LA FIN DE LA MANCHE
-					jeu->manche.couche[i] = 1; //on couche le joueur pour passer a la manche suivante
 				}
 			}
 		}
@@ -389,7 +388,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 		strcat(ak, ct);
 		strcat(ak, bt);
 		afficher_texte(ak, 13, jeu->graph.log_texte, white);
-		clear_log(jeu);
 		break;
 	case SDLK_KP3: // parole
 		printf("\n\033[1;35mJoueur %d a parle\033[0m\n\n", joueur_indice + 1);
@@ -401,7 +399,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 		strcat(ak, ca);
 		strcat(ak, ba);
 		afficher_texte(ak, 13, jeu->graph.log_texte, white);
-		clear_log(jeu);
 		break;
 	case SDLK_KP1: // suivre
 		if (jeu->joueur[joueur_indice].mise == jeu->joueur[precedent].mise) {
@@ -418,7 +415,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			strcat(ak, di);
 			strcat(ak, ei);
 			afficher_texte(ak, 13, jeu->graph.log_texte, white);
-			clear_log(jeu);
 		}
 		else {
 			mise(jeu, suivre, joueur_indice);
@@ -434,7 +430,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			strcat(ak, doo);
 			strcat(ak, eo);
 			afficher_texte(ak, 13, jeu->graph.log_texte, white);
-			clear_log(jeu);
 		}
 		break;
 	case SDLK_KP2: // relancer
@@ -490,7 +485,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			strcat(ak, db);
 			strcat(ak, eb);
 			afficher_texte(ak, 13, jeu->graph.log_texte, white);
-			clear_log(jeu);
 			break;
 		case SDLK_KP2:
 			mise(jeu, relance2, joueur_indice);
@@ -506,7 +500,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			strcat(ak, dq);
 			strcat(ak, eq);
 			afficher_texte(ak, 13, jeu->graph.log_texte, white);
-			clear_log(jeu);
 			break;
 		case SDLK_KP3:
 			mise(jeu, relance3, joueur_indice);
@@ -522,7 +515,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			strcat(ak, dz);
 			strcat(ak, ez);
 			afficher_texte(ak, 13, jeu->graph.log_texte, white);
-			clear_log(jeu);
 			break;
 		case SDLK_KP4:
 			mise(jeu, tapis, joueur_indice);
@@ -538,7 +530,6 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 			strcat(ak, dm);
 			strcat(ak, em);
 			afficher_texte(ak, 13, jeu->graph.log_texte, white);
-			clear_log(jeu);
 			break;
 		default:
 			break;
@@ -574,7 +565,7 @@ void choix(Jeu* jeu, int joueur_indice, int flop_indice) { //demande l'action de
 
 void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et blind, en somme mets tout pret pour re boucler
 	son_choix(2);
-	jeu->joueur[jeu->manche.who_win].solde += jeu->manche.pot; //la gagnant de la manche remporte les gains
+	//jeu->joueur[jeu->manche.who_win].solde += jeu->manche.pot; //la gagnant de la manche remporte les gains
 	jeu->manche.pot = 0; // reset du pot
 	if (jeu->manche.big_blind_indice <= 3) { //update big blind indice
 		jeu->manche.big_blind_indice += 1;
@@ -598,8 +589,10 @@ void nouvelle_manche(Jeu* jeu) { //reset les valeurs du pot, update donneur et b
 	jeu->manche.small_blind += jeu->manche.big_blind / 2;
 	jeu->manche.big_blind += jeu->manche.big_blind / 2;
 
-	for (int i = 0; i < 5; i++) { //tous les joueurs sont de nouveau dans la partie
-		jeu->manche.couche[i] = 0;
+	for (int i = 0; i < 5; i++) { //tous les joueurs sont de nouveau dans la partie sauf ceux dont le solde est nul
+		if (jeu->joueur[i].solde > 0) {
+			jeu->manche.couche[i] = 0;
+		}
 	}
 	jeu->manche.nb_couche = 0;
 	jeu->manche.is_end_round = false;

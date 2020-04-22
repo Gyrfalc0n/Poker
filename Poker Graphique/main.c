@@ -300,7 +300,7 @@ int main(int argc, char** argv) {
                     joueur_indice = 0;
                     count = 0;
                 }
-                if (jeu.manche.couche[joueur_indice] == 0) { //test si le joueur est toujours dans la manche
+                if (jeu.manche.couche[joueur_indice] == 0 && jeu.joueur[joueur_indice].solde != 0) { //test si le joueur est toujours dans la manche et son solde pas = 0
                     afficher_round(&jeu, joueur_indice, i);
                     afficher_flop_pot(&jeu, i);
                     afficher_jeu(&jeu, joueur_indice);
@@ -309,7 +309,8 @@ int main(int argc, char** argv) {
                         system("pause");
                         system("cls");
                     }
-
+                    joueur_suivant(&jeu);
+                    clear_log(&jeu);
                 }
                 count = 1;
             }
@@ -334,20 +335,21 @@ int main(int argc, char** argv) {
             system("pause");
         }
         compare_main(&jeu);
-        //afficher_main(&jeu, jeu.manche.who_win);//affichage de la main de celui qui a gagné
-        //rajouter print pour qui a gagné
-        nouvelle_manche(&jeu);
-        compteur++;
+        int temp;
+        temp = check_end_game(&jeu);
+        if (temp == 0) {
+            nouvelle_manche(&jeu);
+        }
         if (CONSOLE) {
             system("cls");
         }
         if (DEBUG == 1) {
             printf("\n\nNouvelle manche");
         }
+    } //win.indice est un indice joueur
+    if (is_winner_game) {//forcement vrai puisque sorti du while
+        winner_game(&jeu);
     }
     fermer_fenetre();
     return 0;
 }
-// premier joueur a jouer est celui apres le big blind
-// premier tour cartes masquées les gens doivent s'aligner sur le big blind
-// parole dispo apres

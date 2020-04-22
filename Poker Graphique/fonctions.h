@@ -1,6 +1,6 @@
 #ifndef _FONCTIONS_H
 #define _FONCTIONS_H
-#define DEBUG 1 //debug  printf - set to 0 pour annuler les printf de debug
+#define DEBUG 0 //debug  printf - set to 0 pour annuler les printf de debug
 #define DEBUG2 0
 #define CONSOLE 0 //debug console system("")
 
@@ -176,7 +176,7 @@ typedef struct {
 // PROTOTYPES
 
 int random(int, int);
-bool is_winner_game(Jeu*); //pas utilisé encore
+bool is_winner_game(Jeu*);
 void afficher_cartes(int);
 void distribution(Jeu*);
 void mise(Jeu*, int, int);
@@ -191,6 +191,8 @@ int check_couleur(Jeu*, int, int[]);
 void check_main(Jeu*, int);
 void nouvelle_manche(Jeu*);
 int joueur_precedent(Jeu*, int);
+void winner_game(Jeu*);
+int check_end_game(Jeu*);
 //fonctions graphiques
 void background(void);
 void son_choix(int);
@@ -200,5 +202,6 @@ void afficher_flop_pot(Jeu*, int);
 void clear_log(Jeu*);
 void clear_action(Jeu*);
 void afficher_jeu_win(Jeu*);
+void joueur_suivant(Jeu*);
 
 #endif
