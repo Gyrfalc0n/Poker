@@ -1,5 +1,5 @@
 # Poker Graphique v2.3
-Poker Graphique est un projet étudiant en première année de DUT Réseaux et Télécoms. Il s'agit d'un jeu de poker en variante *Texas Hold'em*.
+Poker Graphique est un projet étudiant. Il s'agit d'un jeu de poker en variante *Texas Hold'em*.
 
 ![Poker Graphique](https://github.com/Gyrfalc0n/Poker/blob/master/poker1.png)
 ## Description
