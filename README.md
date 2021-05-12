@@ -1,4 +1,4 @@
-# Poker Graphique v2.3
+# Poker Graphique v2.3 ! DEPRECATED !
 Poker Graphique est un jeu de poker en variante *Texas Hold'em*.
 
 ![Poker Graphique](https://github.com/Gyrfalc0n/Poker/blob/master/poker1.png)
